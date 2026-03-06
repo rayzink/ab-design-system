@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Army — Adam Blair</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Avantt';font-weight:400;font-style:normal;src:url('/fonts/avantt-regular.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'Avantt';font-weight:700;font-style:normal;src:url('/fonts/avantt-bold.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'Avantt';font-weight:800;font-style:normal;src:url('/fonts/avantt-extrabold.woff2') format('woff2');font-display:swap}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0c0e12;
+  --card:#1a1d24;
+  --elevated:#22252c;
+  --cream:#FBE9D1;
+  --cream-dim:#F0ECE4;
+  --text-dim:rgba(255,255,255,0.5);
+  --text-muted:rgba(255,255,255,0.3);
+  --border:rgba(255,255,255,0.06);
+  --border-hover:rgba(255,255,255,0.12);
+  --accent:#e8461e;
+  --accent-dim:rgba(232,70,30,0.15);
+  --gold:#F4B56F;
+  --gold-dim:rgba(244,181,111,0.12);
+  --sage:#8B9A6B;
+  --sage-dim:rgba(139,154,107,0.12);
+  --slate:#7A8595;
+  --slate-dim:rgba(122,133,149,0.12);
+  --hf:'Avantt','Outfit',sans-serif;
+  --bf:'Outfit',sans-serif;
+  --mf:'JetBrains Mono',monospace;
+}
+
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--bf);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ─── Top Nav ─── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:#0c0e12ee;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  padding:0 48px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.top-nav-title{font-family:var(--hf);font-size:14px;font-weight:700;color:var(--cream);letter-spacing:-0.01em}
+.ab-logo{
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+}
+.ab-mark{
+  width:36px;height:36px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--hf);font-size:14px;font-weight:700;
+  color:#fff;letter-spacing:0.04em;
+  transition:all 0.3s;background:transparent;
+}
+.ab-logo:hover .ab-mark{border-color:var(--accent);color:var(--accent);background:rgba(232,70,30,0.04)}
+
+/* ─── Tab Nav ─── */
+.tab-nav{
+  position:fixed;top:56px;left:0;right:0;z-index:99;
+  background:#0c0e12dd;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 48px;
+  overflow-x:auto;
+}
+.nav-tab{
+  padding:14px 20px;
+  font-family:var(--bf);font-size:13px;font-weight:500;
+  letter-spacing:0.04em;text-transform:uppercase;
+  cursor:pointer;color:var(--text-muted);
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;white-space:nowrap;
+  user-select:none;
+}
+.nav-tab:hover{color:var(--cream-dim)}
+.nav-tab.active{color:var(--cream);border-bottom-color:var(--accent)}
+
+/* ─── Layout ─── */
+.page{max-width:1200px;margin:0 auto;padding:48px 48px 80px}
+.panel{display:none}
+.panel.active{display:block;animation:fadeUp 0.35s cubic-bezier(0.16,1,0.3,1)}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ─── Typography ─── */
+h1{
+  font-family:var(--hf);font-size:clamp(36px,5vw,56px);font-weight:800;
+  line-height:1.08;letter-spacing:-0.03em;
+  color:var(--cream);margin-bottom:12px;
+}
+h1 em{font-style:normal;color:var(--accent)}
+
+.subtitle{
+  font-family:var(--bf);font-size:16px;font-weight:400;
+  color:var(--text-dim);line-height:1.7;
+  margin-bottom:48px;max-width:700px;
+}
+.subtitle strong{color:var(--cream);font-weight:600}
+
+h2{
+  font-family:var(--hf);font-size:clamp(24px,3vw,32px);font-weight:700;
+  letter-spacing:-0.02em;line-height:1.15;
+  color:var(--cream);margin:56px 0 8px;
+}
+h2:first-child{margin-top:0}
+
+.section-sub{
+  font-family:var(--mf);font-size:11px;
+  color:var(--gold);letter-spacing:0.1em;
+  text-transform:uppercase;margin-bottom:28px;
+}
+
+/* ─── Diagram Placeholder ─── */
+.diagram{
+  width:100%;aspect-ratio:21/9;
+  background:linear-gradient(135deg, var(--card) 0%, var(--elevated) 100%);
+  border:1px dashed rgba(232,70,30,0.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  position:relative;overflow:hidden;margin:24px 0;
+}
+.diagram svg{opacity:0.35}
+.diagram-label{
+  font-family:var(--mf);font-size:10px;
+  color:rgba(232,70,30,0.4);text-align:center;
+  padding:0 16px;line-height:1.4;
+}
+.diagram.tall{aspect-ratio:16/9}
+.diagram.wide{aspect-ratio:3/1}
+.diagram.video::after{
+  content:'VIDEO';position:absolute;top:12px;right:12px;
+  font-family:var(--mf);font-size:9px;
+  color:rgba(232,70,30,0.25);background:rgba(232,70,30,0.06);
+  padding:2px 8px;
+}
+
+/* ─── Labels ─── */
+.label{
+  font-family:var(--mf);font-size:10px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+}
+.label.accent{color:var(--accent);background:var(--accent-dim);display:inline-block;padding:3px 10px}
+.label.green{color:var(--sage);background:var(--sage-dim);display:inline-block;padding:3px 10px}
+.label.slate{color:var(--slate);background:var(--slate-dim);display:inline-block;padding:3px 10px}
+
+/* ─── Card Grid ─── */
+.card-row{display:grid;gap:16px;margin-bottom:32px}
+.card-row.four{grid-template-columns:repeat(4,1fr)}
+.card-row.three{grid-template-columns:repeat(3,1fr)}
+.card-row.two{grid-template-columns:1fr 1fr}
+
+.card{
+  background:var(--card);border:1px solid var(--border);
+  padding:28px 24px;position:relative;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.card.highlight{border-color:var(--accent);border-width:2px}
+
+.card h3{
+  font-family:var(--hf);font-size:20px;font-weight:700;
+  line-height:1.2;margin-bottom:8px;color:var(--cream);
+}
+.card p{font-size:14px;color:var(--text-dim);line-height:1.7}
+
+.card .stat{font-family:var(--hf);font-size:28px;font-weight:700;color:var(--cream);margin-top:12px}
+.card .stat-label{font-family:var(--mf);font-size:9px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase}
+
+.card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.card .tag{font-family:var(--mf);font-size:10px;padding:4px 10px;background:var(--elevated);border:1px solid var(--border);color:var(--text-dim)}
+
+.card .wisdom{
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid var(--border);
+  font-family:var(--bf);font-size:13px;
+  color:var(--text-muted);font-style:italic;line-height:1.6;
+}
+
+/* ─── Pipeline ─── */
+.pipeline{display:flex;align-items:stretch;gap:0;margin-bottom:32px}
+.pipe-stage{flex:1;padding:20px 14px;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:all 0.2s;position:relative}
+.pipe-stage:not(:last-child){border-right:none}
+.pipe-stage:hover{background:var(--elevated)}
+.pipe-stage.active{background:var(--accent-dim);border-color:var(--accent)}
+.pipe-stage .p-num{font-family:var(--mf);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted)}
+.pipe-stage .p-name{font-family:var(--hf);font-size:16px;font-weight:700;color:var(--cream);margin:4px 0}
+.pipe-stage .p-detail{font-family:var(--mf);font-size:10px;color:var(--text-muted)}
+.pipe-stage .p-stat{font-family:var(--hf);font-size:24px;font-weight:700;margin-top:8px;color:var(--cream)}
+.pipe-arrow{width:20px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:14px;flex-shrink:0}
+
+/* ─── Callout ─── */
+.callout{border-left:3px solid var(--accent);padding:20px 24px;margin:28px 0;background:var(--accent-dim)}
+.callout p{font-size:14px;color:var(--cream-dim);line-height:1.75}
+.callout strong{font-weight:600;color:var(--cream)}
+.callout.green{border-left-color:var(--sage);background:var(--sage-dim)}
+
+/* ─── Code ─── */
+.code{font-family:var(--mf);font-size:12px;background:var(--elevated);color:#e0e0e0;padding:20px 24px;margin:16px 0;line-height:1.9;overflow-x:auto;border:1px solid var(--border)}
+.code .cmt{color:rgba(255,255,255,0.25)}
+.code .str{color:#a5d6a7}
+.code .flag{color:#ffcc80}
+
+/* ─── Detail Expand ─── */
+.detail{display:none;padding:24px;background:var(--elevated);border:1px solid var(--border);margin-top:-1px;margin-bottom:20px}
+.detail.open{display:block;animation:fadeUp 0.25s ease-out}
+.detail-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.detail h4{font-family:var(--mf);font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.detail h3{font-family:var(--hf);font-size:18px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.detail > p{font-size:13px;color:var(--text-dim);margin-bottom:20px}
+.detail ul{list-style:none;font-size:13px;color:var(--text-dim);line-height:2}
+.detail li::before{content:'\2192';margin-right:10px;color:var(--accent)}
+
+/* ─── Gap Table ─── */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:20px 0}
+th{text-align:left;font-family:var(--mf);font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.15)}
+td{padding:14px 16px;border-bottom:1px solid var(--border);color:var(--text-dim);vertical-align:top}
+td:first-child{font-weight:600;color:var(--cream);white-space:nowrap;font-family:var(--bf)}
+.status-yes{color:var(--sage);font-weight:600}
+.status-partial{color:var(--gold);font-weight:600}
+.status-no{color:var(--accent);font-weight:600}
+
+/* ─── Horizontal Timeline ─── */
+.h-timeline{position:relative;margin-bottom:32px;overflow-x:auto;padding-bottom:8px}
+.h-timeline-track{display:flex;gap:0;position:relative;min-width:max-content}
+.h-timeline-track::before{
+  content:'';position:absolute;top:100px;left:24px;right:24px;
+  height:2px;background:rgba(255,255,255,0.08);
+}
+.h-tl-item{
+  flex:1;min-width:200px;max-width:240px;
+  position:relative;padding:0 12px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+.h-tl-visual{
+  width:100%;aspect-ratio:1/1;max-width:160px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;overflow:hidden;
+  transition:border-color 0.3s;
+}
+.h-tl-item:hover .h-tl-visual{border-color:var(--border-hover)}
+.h-tl-item.current .h-tl-visual{border-color:var(--accent)}
+.h-tl-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:rgba(255,255,255,0.15);border:2px solid var(--bg);
+  margin-bottom:14px;position:relative;z-index:1;flex-shrink:0;
+}
+.h-tl-item.current .h-tl-dot{background:var(--accent)}
+.h-tl-arrow{
+  position:absolute;top:96px;right:-10px;
+  color:var(--text-muted);font-family:var(--mf);font-size:12px;z-index:1;
+}
+.h-tl-item:last-child .h-tl-arrow{display:none}
+.h-tl-label{font-family:var(--mf);font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.h-tl-item.current .h-tl-label{color:var(--accent);background:var(--accent-dim);display:inline-block;padding:2px 8px}
+.h-tl-item h3{font-family:var(--hf);font-size:16px;font-weight:700;color:var(--cream);margin-bottom:4px;line-height:1.2}
+.h-tl-item p{font-size:12px;color:var(--text-dim);line-height:1.6;max-width:200px}
+.h-tl-item .tl-result{font-family:var(--bf);font-size:11px;color:var(--text-muted);margin-top:6px;font-style:italic}
+.h-tl-item .tl-result.highlight{color:var(--accent);font-style:normal;font-weight:600}
+
+/* ─── Orange Block ─── */
+/* Principles strip */
+.principles-strip{
+  display:flex;align-items:stretch;
+  background:var(--card);border:1px solid var(--border);
+  margin-bottom:40px;overflow-x:auto;
+}
+.principle{
+  flex:1;display:flex;align-items:flex-start;gap:14px;
+  padding:20px 24px;min-width:180px;
+}
+.principle-icon{flex-shrink:0;margin-top:2px;opacity:0.8}
+.principle-text{display:flex;flex-direction:column;gap:4px}
+.principle-text strong{font-family:var(--hf);font-size:13px;font-weight:700;color:var(--cream);letter-spacing:-0.01em}
+.principle-text span{font-size:12px;color:var(--text-dim);line-height:1.5}
+.principle-divider{width:1px;background:var(--border);flex-shrink:0}
+
+.orange-block{background:var(--accent);padding:36px 32px;margin:28px 0}
+.orange-block h3{font-family:var(--hf);font-size:clamp(20px,2.5vw,28px);font-weight:700;color:var(--cream);line-height:1.15;margin-bottom:10px}
+.orange-block p{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7}
+
+/* ─── Services ─── */
+.url-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.url-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.url-dot.up{background:var(--sage);box-shadow:0 0 8px rgba(139,154,107,0.4)}
+.url-dot.off{background:#6b6e76}
+.url-name{font-weight:600;color:var(--cream);min-width:140px;font-size:14px}
+.url-addr{font-family:var(--mf);font-size:12px;color:var(--text-dim);min-width:120px}
+.url-desc{font-size:13px;color:var(--text-muted)}
+
+.step-list{counter-reset:step}
+.step{counter-increment:step;display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+.step::before{content:counter(step);font-family:var(--hf);font-size:18px;font-weight:700;color:var(--accent);min-width:24px}
+.step-text{font-size:13px;color:var(--text-dim);line-height:1.7}
+.step-text code{font-family:var(--mf);background:var(--elevated);padding:2px 8px;font-size:11px;border:1px solid var(--border);color:var(--cream-dim)}
+
+/* ─── DS Parallel ─── */
+.parallel-row{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.parallel-left{font-size:13px;color:var(--text-dim);text-align:right;padding-right:20px}
+.parallel-arrow{font-family:var(--mf);font-size:11px;color:var(--accent);padding:0 8px}
+.parallel-right{font-size:13px;color:var(--cream);padding-left:20px;font-weight:500}
+
+.ds-card{background:var(--card);border:1px solid var(--border);padding:28px 24px;transition:border-color 0.2s}
+.ds-card:hover{border-color:var(--border-hover)}
+.ds-card .bullet{display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
+.ds-card .bullet::before{content:'\25CF';color:var(--accent);font-size:6px;line-height:24px;flex-shrink:0}
+.ds-card .bullet p{font-size:13px;color:var(--text-dim);line-height:1.7}
+.ds-card .bullet strong{color:var(--cream);font-weight:600}
+
+/* ─── Footer ─── */
+.footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-family:var(--mf);font-size:11px;color:var(--text-muted);letter-spacing:0.04em}
+.footer a{color:var(--text-dim);text-decoration:none}
+
+/* ─── Responsive ─── */
+@media(max-width:900px){
+  .top-nav{padding:0 20px}
+  .tab-nav{padding:0 20px;top:48px}
+  .nav-tab{padding:12px 14px;font-size:11px}
+  .page{padding:32px 20px 60px}
+  .card-row.four,.card-row.three{grid-template-columns:1fr 1fr}
+  .card-row.two{grid-template-columns:1fr}
+  .pipeline{flex-wrap:wrap}
+  .pipe-stage{min-width:110px}
+  .detail-cols{grid-template-columns:1fr}
+  .parallel-row{grid-template-columns:1fr;gap:4px;text-align:left}
+  .parallel-left{text-align:left;padding-right:0}
+  .parallel-right{padding-left:0}
+  .parallel-arrow{display:none}
+  .diagram{aspect-ratio:16/9}
+  .h-tl-item{min-width:160px;max-width:180px}
+  .h-tl-visual{max-width:120px}
+  .h-timeline-track::before{top:80px}
+  .h-tl-arrow{top:76px}
+  .footer{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Top Nav ─── -->
+<nav class="top-nav">
+  <a class="ab-logo" href="/">
+    <div class="ab-mark">AB</div>
+  </a>
+  <span class="top-nav-title">Agent Army</span>
+</nav>
+
+<!-- ─── Tab Nav ─── -->
+<nav class="tab-nav">
+  <div class="nav-tab active" data-tab="journey">The Journey</div>
+  <div class="nav-tab" data-tab="story">What I Built</div>
+  <div class="nav-tab" data-tab="pipeline">How It Builds</div>
+  <div class="nav-tab" data-tab="systems">All Systems</div>
+  <div class="nav-tab" data-tab="gaps">Gaps & Roadmap</div>
+  <div class="nav-tab" data-tab="dsai">DS + AI</div>
+  <div class="nav-tab" data-tab="demo">Live Demo</div>
+</nav>
+
+<div style="height:104px"></div><!-- spacer for fixed navs -->
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: THE JOURNEY                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel active" id="panel-journey">
+
+<h1>Five pivots to get here.</h1>
+<div class="subtitle">
+  Each attempt taught me what agents actually need. Not what I <em style="color:var(--accent);font-style:normal">wanted</em> to build, what <em style="color:var(--accent);font-style:normal">worked</em>.
+</div>
+
+<div class="h-timeline">
+  <div class="h-timeline-track">
+
+    <!-- Pivot 1: RTS Vision — grid/command center -->
+    <div class="h-tl-item">
+      <div class="h-tl-visual">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <rect x="10" y="10" width="35" height="25" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="55" y="10" width="35" height="25" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="10" y="45" width="35" height="25" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="55" y="45" width="35" height="25" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <circle cx="27" cy="22" r="4" fill="var(--accent)" opacity="0.6"/>
+          <circle cx="72" cy="22" r="4" fill="var(--gold)" opacity="0.4"/>
+          <circle cx="27" cy="57" r="4" fill="var(--sage)" opacity="0.4"/>
+          <circle cx="72" cy="57" r="4" fill="var(--accent)" opacity="0.3"/>
+          <line x1="31" y1="22" x2="55" y2="22" stroke="var(--accent)" stroke-width="1" opacity="0.2" stroke-dasharray="3 3"/>
+          <line x1="27" y1="26" x2="27" y2="45" stroke="var(--accent)" stroke-width="1" opacity="0.2" stroke-dasharray="3 3"/>
+          <text x="50" y="88" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">MISSION CONTROL</text>
+        </svg>
+      </div>
+      <div class="h-tl-dot"></div>
+      <span class="h-tl-arrow">&rarr;</span>
+      <div class="h-tl-label">Pivot 1</div>
+      <h3>The RTS vision.</h3>
+      <p>Command center for agents. Vision was right, execution layer wasn't there.</p>
+    </div>
+
+    <!-- Pivot 2: Agent OS — layered platform -->
+    <div class="h-tl-item">
+      <div class="h-tl-visual">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <rect x="15" y="60" width="70" height="14" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="20" y="42" width="60" height="14" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--card)"/>
+          <rect x="25" y="24" width="50" height="14" rx="2" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="var(--card)"/>
+          <text x="50" y="70" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.25)">RUNTIME</text>
+          <text x="50" y="52" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.2)">AGENTS</text>
+          <text x="50" y="34" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.15)">APPS</text>
+          <path d="M50 14 L50 24" stroke="var(--gold)" stroke-width="1" opacity="0.3" stroke-dasharray="2 2"/>
+          <circle cx="50" cy="11" r="3" fill="var(--gold)" opacity="0.3"/>
+          <text x="50" y="90" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">AGENT OS</text>
+        </svg>
+      </div>
+      <div class="h-tl-dot"></div>
+      <span class="h-tl-arrow">&rarr;</span>
+      <div class="h-tl-label">Pivot 2</div>
+      <h3>An OS for agents.</h3>
+      <p>Agents build anything. Output was basic, not differentiated.</p>
+    </div>
+
+    <!-- Pivot 3: Design layer — paintbrush/artboard -->
+    <div class="h-tl-item">
+      <div class="h-tl-visual">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <rect x="20" y="18" width="60" height="50" rx="2" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="28" y="26" width="20" height="12" rx="1" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="0.5" opacity="0.3"/>
+          <rect x="28" y="42" width="44" height="3" rx="1" fill="rgba(255,255,255,0.06)"/>
+          <rect x="28" y="48" width="36" height="3" rx="1" fill="rgba(255,255,255,0.04)"/>
+          <rect x="28" y="54" width="28" height="3" rx="1" fill="rgba(255,255,255,0.03)"/>
+          <line x="20" y1="74" x2="80" y2="74" stroke="var(--accent)" stroke-width="1.5" opacity="0.25"/>
+          <text x="50" y="84" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--accent)" opacity="0.3">STILL GENERIC</text>
+          <line x1="30" y1="80" x2="70" y2="80" stroke="var(--accent)" stroke-width="0.5" opacity="0.2"/>
+          <text x="50" y="94" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">DESIGN LAYER</text>
+        </svg>
+      </div>
+      <div class="h-tl-dot"></div>
+      <span class="h-tl-arrow">&rarr;</span>
+      <div class="h-tl-label">Pivot 3</div>
+      <h3>Design won't save it.</h3>
+      <p>Better prompts, still generic. Not a moat.</p>
+    </div>
+
+    <!-- Pivot 4: Discord/Alfred — chat bubbles -->
+    <div class="h-tl-item">
+      <div class="h-tl-visual">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <rect x="18" y="14" width="64" height="60" rx="4" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="var(--elevated)"/>
+          <rect x="26" y="24" width="38" height="10" rx="5" fill="var(--sage)" opacity="0.12" stroke="var(--sage)" stroke-width="0.5" opacity="0.3"/>
+          <text x="45" y="31" font-family="var(--mf)" font-size="6" fill="var(--sage)" opacity="0.5">logged 1800 cal</text>
+          <rect x="36" y="38" width="30" height="10" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+          <text x="51" y="45" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.25)">meal plan?</text>
+          <rect x="26" y="52" width="42" height="10" rx="5" fill="var(--sage)" opacity="0.12" stroke="var(--sage)" stroke-width="0.5" opacity="0.3"/>
+          <text x="47" y="59" font-family="var(--mf)" font-size="6" fill="var(--sage)" opacity="0.5">here's your plan</text>
+          <circle cx="50" cy="84" r="3" fill="var(--sage)" opacity="0.5"/>
+          <text x="50" y="94" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">ALFRED</text>
+        </svg>
+      </div>
+      <div class="h-tl-dot"></div>
+      <span class="h-tl-arrow">&rarr;</span>
+      <div class="h-tl-label">Pivot 4</div>
+      <h3>Discord + Alfred.</h3>
+      <p>Real agent, real users, real daily value. Still hardening.</p>
+    </div>
+
+    <!-- Current: Self-improving system — recursive loop -->
+    <div class="h-tl-item current">
+      <div class="h-tl-visual">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <!-- Recursive improvement loop -->
+          <circle cx="50" cy="45" r="22" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.3"/>
+          <polygon points="72,42 72,48 66,45" fill="var(--accent)" opacity="0.5"/>
+          <!-- Inner agents -->
+          <circle cx="50" cy="35" r="4" fill="var(--accent)" opacity="0.4"/>
+          <circle cx="40" cy="50" r="4" fill="var(--accent)" opacity="0.3"/>
+          <circle cx="60" cy="50" r="4" fill="var(--accent)" opacity="0.3"/>
+          <text x="50" y="37" text-anchor="middle" font-family="var(--mf)" font-size="4" fill="var(--cream)" opacity="0.6">BUILD</text>
+          <text x="40" y="52" text-anchor="middle" font-family="var(--mf)" font-size="4" fill="var(--cream)" opacity="0.5">TEST</text>
+          <text x="60" y="52" text-anchor="middle" font-family="var(--mf)" font-size="4" fill="var(--cream)" opacity="0.5">SHIP</text>
+          <!-- Upward improvement arrow -->
+          <path d="M50 18 L50 8" stroke="var(--sage)" stroke-width="1.5" opacity="0.5"/>
+          <polygon points="47,10 50,4 53,10" fill="var(--sage)" opacity="0.5"/>
+          <text x="50" y="80" text-anchor="middle" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.5">SELF-IMPROVING</text>
+          <text x="50" y="92" text-anchor="middle" font-family="var(--mf)" font-size="5" fill="rgba(255,255,255,0.2)">agents improve agents</text>
+        </svg>
+      </div>
+      <div class="h-tl-dot"></div>
+      <div class="h-tl-label">Current</div>
+      <h3>Self-improving system.</h3>
+      <p>Agents build, test, and ship code that improves the agents themselves.</p>
+      <div class="tl-result highlight">&rarr; 25 tasks shipped autonomously.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="callout">
+  <p><strong>The through-line:</strong> From "agents build everything" to "agents build for a specific domain where the output compounds."</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: WHAT I BUILT                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-story">
+
+<h1>Agents that write code <em>for other agents.</em></h1>
+<div class="subtitle">
+  Task &rarr; research &rarr; plan &rarr; code &rarr; test &rarr; review. <strong>25 of 30 tasks completed without me touching it.</strong>
+</div>
+
+<div class="diagram" style="aspect-ratio:21/9;padding:24px">
+  <svg width="100%" height="100%" viewBox="0 0 800 280" fill="none" style="max-width:800px;opacity:1">
+    <!-- Dev Pipeline box -->
+    <rect x="40" y="30" width="240" height="180" rx="4" stroke="var(--accent)" stroke-width="1.5" fill="var(--accent)" fill-opacity="0.04"/>
+    <text x="160" y="56" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="var(--accent)" letter-spacing="0.1em">DEV PIPELINE</text>
+    <!-- Dev agents -->
+    <circle cx="90" cy="100" r="16" fill="var(--card)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="90" y="104" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--cream-dim)">R</text>
+    <circle cx="140" cy="100" r="16" fill="var(--card)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="140" y="104" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--cream-dim)">A</text>
+    <circle cx="190" cy="100" r="16" fill="var(--card)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="190" y="104" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--cream-dim)">B</text>
+    <circle cx="240" cy="100" r="16" fill="var(--card)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="240" y="104" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--cream-dim)">T</text>
+    <text x="90" y="130" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.2)">Research</text>
+    <text x="140" y="130" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.2)">Architect</text>
+    <text x="190" y="130" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.2)">Builder</text>
+    <text x="240" y="130" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.2)">Tester</text>
+    <!-- Arrows between dev agents -->
+    <path d="M106 100 L124 100" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arrowW)"/>
+    <path d="M156 100 L174 100" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arrowW)"/>
+    <path d="M206 100 L224 100" stroke="rgba(255,255,255,0.15)" stroke-width="1" marker-end="url(#arrowW)"/>
+    <!-- Code output -->
+    <rect x="100" y="150" width="120" height="40" rx="2" fill="var(--elevated)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+    <text x="115" y="166" font-family="var(--mf)" font-size="7" fill="var(--sage)" opacity="0.6">+ def scan():</text>
+    <text x="115" y="178" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">+   return sig</text>
+
+    <!-- Arrow: Dev Pipeline → Swarm Trader -->
+    <path d="M280 140 C360 140, 360 140, 440 140" stroke="var(--accent)" stroke-width="2" fill="none"/>
+    <polygon points="438,136 446,140 438,144" fill="var(--accent)"/>
+    <text x="360" y="130" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--accent)" opacity="0.6">ships code</text>
+
+    <!-- Swarm Trader box -->
+    <rect x="450" y="30" width="300" height="180" rx="4" stroke="var(--sage)" stroke-width="1.5" fill="var(--sage)" fill-opacity="0.03"/>
+    <text x="600" y="56" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="var(--sage)" letter-spacing="0.1em" opacity="0.7">SWARM TRADER</text>
+    <!-- Trading agents -->
+    <circle cx="500" cy="100" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="530" cy="90" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="560" cy="100" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="590" cy="88" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="620" cy="100" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="650" cy="92" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <circle cx="680" cy="100" r="12" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="600" y="130" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.2)">10 agents &middot; $100K paper</text>
+    <!-- Chart line -->
+    <polyline points="480,175 510,168 540,172 570,158 600,162 630,148 660,152 700,140" stroke="var(--sage)" stroke-width="1.5" opacity="0.35" fill="none"/>
+
+    <!-- Recursive loop arrow bottom -->
+    <path d="M600 220 C600 260, 160 260, 160 220" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-dasharray="6 4" opacity="0.4"/>
+    <polygon points="162,222 156,228 168,228" fill="var(--accent)" opacity="0.4"/>
+    <text x="400" y="256" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--accent)" opacity="0.35">improves &rarr; trades &rarr; generates tasks &rarr; improves</text>
+
+    <!-- Arrow markers -->
+    <defs>
+      <marker id="arrowW" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="rgba(255,255,255,0.15)"/></marker>
+    </defs>
+  </svg>
+</div>
+
+<div class="principles-strip">
+  <div class="principle">
+    <div class="principle-icon" style="color:var(--accent)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="5"/></svg>
+    </div>
+    <div class="principle-text">
+      <strong>Self-improving</strong>
+      <span>Dev agents improve the system that builds them</span>
+    </div>
+  </div>
+  <div class="principle-divider"></div>
+  <div class="principle">
+    <div class="principle-icon" style="color:var(--sage)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <div class="principle-text">
+      <strong>Zero API cost</strong>
+      <span>Claude Code on Max subscription. No per-token billing.</span>
+    </div>
+  </div>
+  <div class="principle-divider"></div>
+  <div class="principle">
+    <div class="principle-icon" style="color:rgba(122,133,149,0.8)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="principle-text">
+      <strong>Safe by design</strong>
+      <span>Isolated git worktrees. Kill switch. Write gate.</span>
+    </div>
+  </div>
+  <div class="principle-divider"></div>
+  <div class="principle">
+    <div class="principle-icon" style="color:var(--gold)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </div>
+    <div class="principle-text">
+      <strong>Right model, right job</strong>
+      <span>Haiku research. Sonnet builds. Opus on failure.</span>
+    </div>
+  </div>
+</div>
+
+<h2>Four systems, one machine.</h2>
+<div class="section-sub">Everything runs on a Mac Mini. No cloud. No infra team.</div>
+
+<div class="card-row four">
+  <div class="card">
+    <div class="label">Production 24/7</div>
+    <h3>Alfred</h3>
+    <p>Discord agent. Food tracking, recipes, fitness. 14 cron jobs. 2 users.</p>
+    <div class="tags"><span class="tag">Gemini Flash</span><span class="tag">Discord</span></div>
+  </div>
+  <div class="card">
+    <div class="label accent">Core System</div>
+    <h3>Dev Pipeline</h3>
+    <p>4 Claude agents. 7-stage pipeline. 25 tasks shipped. React + FastAPI dashboard.</p>
+    <div class="tags"><span class="tag">Claude CLI</span><span class="tag">React 19</span></div>
+  </div>
+  <div class="card">
+    <div class="label">10 Agents</div>
+    <h3>Swarm Trader</h3>
+    <p>Autonomous swing trading. Intel sharing bus. Self-improving via trade grading.</p>
+    <div class="tags"><span class="tag">Alpaca</span><span class="tag">PostgreSQL</span></div>
+  </div>
+  <div class="card">
+    <div class="label">Ops</div>
+    <h3>Mission Control</h3>
+    <p>Single-file Python dashboard. Zero dependencies. Auto-refreshes every 30s.</p>
+    <div class="tags"><span class="tag">Python stdlib</span></div>
+  </div>
+</div>
+
+<div class="orange-block">
+  <h3>The pitch in one sentence.</h3>
+  <p>I build autonomous agents that coordinate, self-improve, and ship real code. All from a single Mac Mini with flat-rate model costs.</p>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: HOW IT BUILDS                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-pipeline">
+
+<h1>One task in &rarr; <em>code shipped.</em></h1>
+<div class="subtitle">
+  The orchestrator is a <strong>pure state machine</strong>. No LLM for coordination. Claude only runs inside agent phases.
+</div>
+
+<h2>How tasks get created</h2>
+<div class="section-sub">Drop a link in Discord. The system does the rest.</div>
+
+<div class="diagram" style="padding:0;border:none;background:transparent;display:block;aspect-ratio:auto">
+  <svg viewBox="0 0 800 180" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="180" rx="6" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+    <text x="400" y="22" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">DROP-LINKS PIPELINE</text>
+
+    <!-- Step 1: Discord -->
+    <rect x="20" y="40" width="120" height="80" rx="4" fill="var(--elevated)" stroke="rgba(122,133,149,0.5)" stroke-width="1"/>
+    <text x="80" y="62" text-anchor="middle" font-family="var(--hf)" font-size="10" fill="rgba(122,133,149,0.9)" font-weight="700">Discord</text>
+    <text x="80" y="78" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">Drop link in</text>
+    <text x="80" y="90" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">#drop-links</text>
+    <text x="80" y="108" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.3)">Alfred collects</text>
+
+    <path d="M145 80 L175 80" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="173,76 181,80 173,84" fill="rgba(255,255,255,0.3)"/>
+
+    <!-- Step 2: Fetch -->
+    <rect x="185" y="40" width="120" height="80" rx="4" fill="var(--elevated)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <text x="245" y="62" text-anchor="middle" font-family="var(--hf)" font-size="10" fill="var(--cream)" font-weight="700">Pre-fetch</text>
+    <text x="245" y="78" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">Playwright grabs</text>
+    <text x="245" y="90" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">content + screenshots</text>
+    <text x="245" y="108" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.3)">headless browser</text>
+
+    <path d="M310 80 L340 80" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="338,76 346,80 338,84" fill="rgba(255,255,255,0.3)"/>
+
+    <!-- Step 3: Claude Research -->
+    <rect x="350" y="40" width="120" height="80" rx="4" fill="var(--accent)" fill-opacity="0.06" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="410" y="62" text-anchor="middle" font-family="var(--hf)" font-size="10" fill="var(--accent)" font-weight="700">Deep Research</text>
+    <text x="410" y="78" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">Claude analyzes,</text>
+    <text x="410" y="90" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">rates, recommends</text>
+    <text x="410" y="108" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--accent)" opacity="0.5">actionable tasks</text>
+
+    <path d="M475 80 L505 80" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="503,76 511,80 503,84" fill="rgba(255,255,255,0.3)"/>
+
+    <!-- Step 4: Discord Review -->
+    <rect x="515" y="40" width="120" height="80" rx="4" fill="var(--elevated)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="575" y="62" text-anchor="middle" font-family="var(--hf)" font-size="10" fill="var(--gold)" font-weight="700">Review</text>
+    <text x="575" y="78" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">Alfred posts to</text>
+    <text x="575" y="90" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">#review on Discord</text>
+    <text x="575" y="108" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--gold)" opacity="0.5">human approves</text>
+
+    <path d="M640 80 L670 80" stroke="var(--sage)" stroke-width="1.5" opacity="0.5"/><polygon points="668,76 676,80 668,84" fill="var(--sage)" opacity="0.5"/>
+
+    <!-- Step 5: Pipeline -->
+    <rect x="680" y="40" width="100" height="80" rx="4" fill="var(--sage)" fill-opacity="0.06" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="730" y="62" text-anchor="middle" font-family="var(--hf)" font-size="10" fill="var(--sage)" font-weight="700">Pipeline</text>
+    <text x="730" y="78" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">Tasks created,</text>
+    <text x="730" y="90" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">agents execute</text>
+    <text x="730" y="108" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--sage)" opacity="0.5">autonomous</text>
+
+    <!-- Bottom summary -->
+    <text x="400" y="148" text-anchor="middle" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.4)">Drop a blog post, GitHub repo, or research paper &rarr; get actionable improvements shipped to your codebase</text>
+    <text x="400" y="166" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.25)">This is the primary intake mechanism. Human curates, system executes</text>
+  </svg>
+</div>
+
+<h2 style="margin-top:40px">The pipeline</h2>
+<div class="section-sub">Once a task exists, here's how it flows.</div>
+
+<div class="diagram" style="aspect-ratio:21/9;padding:20px">
+  <svg width="100%" height="100%" viewBox="0 0 800 200" fill="none" style="max-width:800px;opacity:1">
+    <!-- Pipeline stages -->
+    <rect x="20" y="50" width="100" height="100" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="70" y="80" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--gold)" letter-spacing="0.06em">BACKLOG</text>
+    <rect x="30" y="92" width="80" height="6" rx="1" fill="rgba(255,255,255,0.04)"/>
+    <rect x="30" y="102" width="60" height="6" rx="1" fill="rgba(255,255,255,0.03)"/>
+    <rect x="30" y="112" width="70" height="6" rx="1" fill="rgba(255,255,255,0.03)"/>
+    <rect x="30" y="122" width="50" height="6" rx="1" fill="rgba(255,255,255,0.02)"/>
+    <text x="70" y="142" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.15)">32 tasks</text>
+
+    <path d="M125 100 L155 100" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/><polygon points="153,96 161,100 153,104" fill="var(--accent)" opacity="0.4"/>
+
+    <rect x="165" y="50" width="100" height="100" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="215" y="80" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--gold)" letter-spacing="0.06em">RESEARCH</text>
+    <circle cx="200" cy="110" r="10" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="200" y="113" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.3)">H</text>
+    <text x="215" y="135" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.15)">Haiku</text>
+
+    <path d="M270 100 L300 100" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/><polygon points="298,96 306,100 298,104" fill="var(--accent)" opacity="0.4"/>
+
+    <rect x="310" y="50" width="100" height="100" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="360" y="80" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--gold)" letter-spacing="0.06em">ARCHITECT</text>
+    <circle cx="345" cy="110" r="10" fill="var(--card)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="345" y="113" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.3)">S</text>
+    <text x="360" y="135" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.15)">Sonnet</text>
+
+    <path d="M415 100 L445 100" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/><polygon points="443,96 451,100 443,104" fill="var(--accent)" opacity="0.4"/>
+
+    <rect x="455" y="50" width="100" height="100" rx="3" fill="var(--accent)" fill-opacity="0.06" stroke="var(--accent)" stroke-width="1.5" stroke-opacity="0.3"/>
+    <text x="505" y="80" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--accent)" letter-spacing="0.06em">BUILD</text>
+    <circle cx="490" cy="110" r="10" fill="var(--card)" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.3"/>
+    <text x="490" y="113" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--accent)" opacity="0.6">S</text>
+    <text x="505" y="135" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--accent)" opacity="0.3">worktree</text>
+
+    <path d="M560 100 L590 100" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/><polygon points="588,96 596,100 588,104" fill="var(--accent)" opacity="0.4"/>
+
+    <rect x="600" y="50" width="100" height="100" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="650" y="80" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="var(--gold)" letter-spacing="0.06em">TEST</text>
+    <rect x="620" y="95" width="12" height="20" rx="1" fill="var(--sage)" opacity="0.2"/>
+    <rect x="636" y="100" width="12" height="15" rx="1" fill="var(--sage)" opacity="0.15"/>
+    <rect x="652" y="92" width="12" height="23" rx="1" fill="var(--sage)" opacity="0.2"/>
+    <rect x="668" y="105" width="12" height="10" rx="1" fill="var(--accent)" opacity="0.15"/>
+    <text x="650" y="135" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.15)">1K+ runs</text>
+
+    <path d="M705 100 L735 100" stroke="var(--sage)" stroke-width="1.5" opacity="0.4"/><polygon points="733,96 741,100 733,104" fill="var(--sage)" opacity="0.4"/>
+
+    <rect x="745" y="65" width="40" height="70" rx="3" fill="var(--sage)" fill-opacity="0.06" stroke="var(--sage)" stroke-width="1.5" stroke-opacity="0.3"/>
+    <text x="765" y="96" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--sage)" opacity="0.6">&#10003;</text>
+    <text x="765" y="110" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--sage)" opacity="0.4">SHIP</text>
+
+    <!-- Retry arc -->
+    <path d="M650 155 C650 185, 505 185, 505 155" stroke="var(--accent)" stroke-width="1" fill="none" stroke-dasharray="4 3" opacity="0.25"/>
+    <text x="578" y="182" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--accent)" opacity="0.25">retry + escalate</text>
+
+    <!-- State machine label -->
+    <text x="400" y="30" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="rgba(255,255,255,0.15)">PURE STATE MACHINE / NO LLM IN COORDINATION LOOP</text>
+  </svg>
+</div>
+
+<div class="pipeline">
+  <div class="pipe-stage active" data-stage="backlog">
+    <div class="p-num">Intake</div>
+    <div class="p-name">Backlog</div>
+    <div class="p-detail">human / api</div>
+    <div class="p-stat">32</div>
+    <div class="p-detail">tasks</div>
+  </div>
+  <div class="pipe-arrow">&rarr;</div>
+  <div class="pipe-stage" data-stage="research">
+    <div class="p-num">Phase 1</div>
+    <div class="p-name">Research</div>
+    <div class="p-detail">claude &middot; haiku</div>
+    <div class="p-stat">46</div>
+    <div class="p-detail">runs</div>
+  </div>
+  <div class="pipe-arrow">&rarr;</div>
+  <div class="pipe-stage" data-stage="architect">
+    <div class="p-num">Phase 2</div>
+    <div class="p-name">Architect</div>
+    <div class="p-detail">claude &middot; sonnet</div>
+    <div class="p-stat">1.1K</div>
+    <div class="p-detail">runs</div>
+  </div>
+  <div class="pipe-arrow">&rarr;</div>
+  <div class="pipe-stage" data-stage="build">
+    <div class="p-num">Phase 3</div>
+    <div class="p-name">Build</div>
+    <div class="p-detail">claude &middot; sonnet/opus</div>
+    <div class="p-stat">22</div>
+    <div class="p-detail">runs</div>
+  </div>
+  <div class="pipe-arrow">&rarr;</div>
+  <div class="pipe-stage" data-stage="test">
+    <div class="p-num">Phase 4</div>
+    <div class="p-name">Test</div>
+    <div class="p-detail">pytest &middot; regression</div>
+    <div class="p-stat">1K+</div>
+    <div class="p-detail">runs</div>
+  </div>
+  <div class="pipe-arrow">&rarr;</div>
+  <div class="pipe-stage" data-stage="review">
+    <div class="p-num">Gate</div>
+    <div class="p-name">Review</div>
+    <div class="p-detail">approve / reject</div>
+    <div class="p-stat">25</div>
+    <div class="p-detail">shipped</div>
+  </div>
+</div>
+
+<div id="stage-detail-area"></div>
+
+<div class="card-row two">
+  <div class="card">
+    <h3>1. Isolate</h3>
+    <div class="code">git worktree add /tmp/swarm-builder-{run_id} \<br>  -b agent/{task-slug}<br><br><span class="cmt"># Clean branch. Can't touch main.</span></div>
+  </div>
+  <div class="card">
+    <h3>2. Execute</h3>
+    <div class="code">claude \<br>  <span class="flag">--print</span> <span class="flag">--dangerously-skip-permissions</span> \<br>  <span class="flag">--model</span> <span class="str">sonnet</span> <span class="flag">--max-turns</span> <span class="str">25</span> \<br>  <span class="flag">-p</span> <span class="str">"$RESEARCH + $PLAN + $TASK"</span><br><br><span class="cmt"># All within Max subscription. No API calls.</span></div>
+  </div>
+</div>
+
+<div class="card-row three">
+  <div class="card">
+    <div class="label">Coordination</div>
+    <h3>Scheduler</h3>
+    <p>Polls every 30s. Finds idle agent + waiting task. Spawns subprocess. Exponential backoff.</p>
+  </div>
+  <div class="card">
+    <div class="label">Resilience</div>
+    <h3>Retry & Escalate</h3>
+    <p>Roll back, inject failure context, retry. Auto-escalate: Haiku &rarr; Sonnet &rarr; Opus. Max 5.</p>
+  </div>
+  <div class="card">
+    <div class="label">Safety</div>
+    <h3>Write Gate</h3>
+    <p>Scores every diff: test pass rate, diff size, plan match. Kill switch. Daily budget cap: 50 runs.</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 4: ALL SYSTEMS                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-systems">
+
+<h1>Four systems. <em>One Mac Mini.</em></h1>
+<div class="subtitle">PostgreSQL and Redis in Docker, everything else native processes.</div>
+
+<div class="diagram" style="padding:0;border:none;background:transparent;display:block;aspect-ratio:auto">
+  <svg viewBox="0 0 800 320" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="800" height="320" rx="6" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+    <text x="400" y="28" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="0.1em">SYSTEM ARCHITECTURE / ONE MAC MINI</text>
+
+    <!-- Central hub: PostgreSQL + Redis -->
+    <rect x="320" y="120" width="160" height="80" rx="4" fill="var(--elevated)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <text x="400" y="148" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="var(--cream)" font-weight="500">SHARED INFRA</text>
+    <rect x="335" y="158" width="56" height="20" rx="2" fill="rgba(139,154,107,0.12)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="363" y="172" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--sage)" opacity="0.9">PostgreSQL</text>
+    <rect x="400" y="158" width="56" height="20" rx="2" fill="rgba(244,181,111,0.12)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="428" y="172" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--gold)" opacity="0.9">Redis</text>
+    <text x="400" y="192" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.35)">Docker containers</text>
+
+    <!-- Alfred (top-left) -->
+    <rect x="40" y="50" width="180" height="90" rx="4" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <circle cx="60" cy="72" r="8" fill="var(--sage)" opacity="0.15" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="60" y="75" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--sage)">A</text>
+    <text x="78" y="75" font-family="var(--hf)" font-size="11" fill="var(--cream)" font-weight="700">Alfred</text>
+    <text x="55" y="95" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.55)">Discord Agent</text>
+    <text x="55" y="108" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.35)">14 crons | 7 skills | Gemini Flash</text>
+    <rect x="150" y="58" width="56" height="16" rx="2" fill="var(--sage)" opacity="0.12"/>
+    <text x="178" y="69" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--sage)" opacity="0.8">PROD 24/7</text>
+    <!-- Connection to center -->
+    <path d="M220 100 L320 145" stroke="var(--sage)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+
+    <!-- Dev Pipeline (top-right) -->
+    <rect x="580" y="50" width="180" height="90" rx="4" fill="var(--elevated)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.5"/>
+    <circle cx="600" cy="72" r="8" fill="var(--gold)" opacity="0.15" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="600" y="75" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--gold)">D</text>
+    <text x="618" y="75" font-family="var(--hf)" font-size="11" fill="var(--cream)" font-weight="700">Dev Pipeline</text>
+    <text x="595" y="95" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.55)">4 Claude Agents</text>
+    <text x="595" y="108" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.35)">25/30 done | 7 stages | Claude CLI</text>
+    <rect x="700" y="58" width="46" height="16" rx="2" fill="var(--gold)" opacity="0.12"/>
+    <text x="723" y="69" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="var(--gold)" opacity="0.8">CORE</text>
+    <!-- Connection to center -->
+    <path d="M580 100 L480 145" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+
+    <!-- Swarm Trader (bottom-left) -->
+    <rect x="40" y="180" width="180" height="90" rx="4" fill="var(--elevated)" stroke="rgba(122,133,149,0.5)" stroke-width="1"/>
+    <circle cx="60" cy="202" r="8" fill="rgba(122,133,149,0.15)" stroke="rgba(122,133,149,0.6)" stroke-width="1"/>
+    <text x="60" y="205" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(122,133,149,1)">S</text>
+    <text x="78" y="205" font-family="var(--hf)" font-size="11" fill="var(--cream)" font-weight="700">Swarm Trader</text>
+    <text x="55" y="225" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.55)">10-Agent Fleet</text>
+    <text x="55" y="238" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.35)">21 scanners | 355 tests | 28K LOC</text>
+    <rect x="150" y="188" width="56" height="16" rx="2" fill="rgba(122,133,149,0.12)"/>
+    <text x="178" y="199" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(122,133,149,0.8)">PAPER</text>
+    <!-- Connection to center -->
+    <path d="M220 215 L320 170" stroke="rgba(122,133,149,0.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+    <!-- Mission Control (bottom-right) -->
+    <rect x="580" y="180" width="180" height="90" rx="4" fill="var(--elevated)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+    <circle cx="600" cy="202" r="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="600" y="205" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.6)">M</text>
+    <text x="618" y="205" font-family="var(--hf)" font-size="11" fill="var(--cream)" font-weight="700">Mission Control</text>
+    <text x="595" y="225" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.3)">Ops Dashboard</text>
+    <text x="595" y="238" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.15)">Kanban | Runs | Reviews | React 19</text>
+    <rect x="700" y="188" width="46" height="16" rx="2" fill="rgba(255,255,255,0.03)"/>
+    <text x="723" y="199" text-anchor="middle" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.25)">OPS</text>
+    <!-- Connection to center -->
+    <path d="M580 215 L480 170" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4 3"/>
+
+    <!-- Mac Mini label at bottom -->
+    <rect x="300" y="280" width="200" height="28" rx="3" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <text x="400" y="298" text-anchor="middle" font-family="var(--mf)" font-size="8" fill="rgba(255,255,255,0.2)">Mac Mini M2 Pro, 32GB</text>
+    <path d="M400 240 L400 280" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 3"/>
+  </svg>
+</div>
+
+<div class="card-row two" style="margin-bottom:16px">
+  <div class="card">
+    <div class="label green">Production 24/7</div>
+    <h3>Alfred: Discord Agent</h3>
+    <p>Personal AI assistant. Food tracking, recipes, meal planning, daily fitness reports via Discord.</p>
+    <div class="card-row four" style="gap:8px;margin-top:20px;margin-bottom:0">
+      <div><div class="stat">14</div><div class="stat-label">cron jobs</div></div>
+      <div><div class="stat">7</div><div class="stat-label">skills</div></div>
+      <div><div class="stat">12</div><div class="stat-label">channels</div></div>
+      <div><div class="stat">2</div><div class="stat-label">users</div></div>
+    </div>
+    <div class="tags"><span class="tag">Gemini Flash 2.5</span><span class="tag">OpenClaw</span><span class="tag">Discord</span></div>
+  </div>
+  <div class="card">
+    <div class="label accent">Core System</div>
+    <h3>Dev Pipeline</h3>
+    <p>4 Claude-powered agents. 7-stage pipeline. React dashboard with Kanban board.</p>
+    <div class="card-row four" style="gap:8px;margin-top:20px;margin-bottom:0">
+      <div><div class="stat">25/30</div><div class="stat-label">done</div></div>
+      <div><div class="stat">1.1K</div><div class="stat-label">architect</div></div>
+      <div><div class="stat">1K+</div><div class="stat-label">test runs</div></div>
+      <div><div class="stat">7</div><div class="stat-label">stages</div></div>
+    </div>
+    <div class="tags"><span class="tag">Claude CLI</span><span class="tag">React 19</span><span class="tag">FastAPI</span></div>
+  </div>
+</div>
+
+<div class="diagram" style="padding:0;border:none;background:transparent;display:block;aspect-ratio:auto">
+  <svg viewBox="0 0 800 380" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <!-- Browser chrome -->
+    <rect width="800" height="380" rx="6" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+    <rect width="800" height="32" rx="6" fill="var(--elevated)"/>
+    <rect y="26" width="800" height="6" fill="var(--elevated)"/>
+    <circle cx="18" cy="16" r="5" fill="#ff5f57" opacity="0.7"/>
+    <circle cx="36" cy="16" r="5" fill="#febc2e" opacity="0.7"/>
+    <circle cx="54" cy="16" r="5" fill="#8B9A6B" opacity="0.7"/>
+    <rect x="260" y="8" width="280" height="16" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <text x="400" y="20" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.4)">localhost:5180</text>
+
+    <!-- Sidebar -->
+    <rect x="0" y="32" width="140" height="348" fill="rgba(255,255,255,0.03)"/>
+    <line x1="140" y1="32" x2="140" y2="380" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="20" y="58" font-family="var(--hf)" font-size="10" fill="var(--cream)" font-weight="700">MC v2</text>
+    <rect x="12" y="68" width="116" height="22" rx="3" fill="var(--accent)" fill-opacity="0.15"/>
+    <text x="24" y="83" font-family="var(--bf)" font-size="8" fill="var(--accent)">Kanban Board</text>
+    <text x="24" y="104" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.45)">Run History</text>
+    <text x="24" y="120" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.45)">Reviews</text>
+    <text x="24" y="136" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.45)">Agent Status</text>
+    <text x="24" y="152" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.45)">Settings</text>
+
+    <!-- Kanban columns -->
+    <text x="160" y="56" font-family="var(--hf)" font-size="10" fill="var(--cream)" font-weight="600">Pipeline Kanban</text>
+
+    <!-- Backlog column -->
+    <rect x="155" y="66" width="125" height="300" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="217" y="84" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.55)">BACKLOG (5)</text>
+    <rect x="163" y="92" width="109" height="36" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="171" y="106" font-family="var(--bf)" font-size="7" fill="var(--cream)">Add docstrings</text>
+    <text x="171" y="118" font-family="var(--mf)" font-size="5.5" fill="rgba(255,255,255,0.35)">overlap_guard.py</text>
+    <rect x="163" y="134" width="109" height="36" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="171" y="148" font-family="var(--bf)" font-size="7" fill="var(--cream)">Type hints IntelBus</text>
+    <text x="171" y="160" font-family="var(--mf)" font-size="5.5" fill="rgba(255,255,255,0.35)">intel_bus.py</text>
+    <rect x="163" y="176" width="109" height="28" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.08)" stroke-width="1" opacity="0.7"/>
+    <rect x="163" y="210" width="109" height="28" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.08)" stroke-width="1" opacity="0.5"/>
+    <rect x="163" y="244" width="109" height="28" rx="3" fill="var(--elevated)" stroke="rgba(255,255,255,0.08)" stroke-width="1" opacity="0.3"/>
+
+    <!-- In Progress column -->
+    <rect x="290" y="66" width="125" height="300" rx="4" fill="rgba(244,181,111,0.04)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="352" y="84" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--gold)" opacity="0.8">IN PROGRESS (2)</text>
+    <rect x="298" y="92" width="109" height="44" rx="3" fill="var(--elevated)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="306" y="106" font-family="var(--bf)" font-size="7" fill="var(--cream)">Refactor scanner</text>
+    <text x="306" y="118" font-family="var(--mf)" font-size="5.5" fill="rgba(255,255,255,0.35)">momentum_scanner.py</text>
+    <rect x="306" y="124" width="50" height="6" rx="1" fill="var(--gold)" opacity="0.25"/>
+    <rect x="306" y="124" width="32" height="6" rx="1" fill="var(--gold)" opacity="0.6"/>
+    <rect x="298" y="142" width="109" height="44" rx="3" fill="var(--elevated)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="306" y="156" font-family="var(--bf)" font-size="7" fill="var(--cream)">Add risk limits</text>
+    <text x="306" y="168" font-family="var(--mf)" font-size="5.5" fill="rgba(255,255,255,0.35)">portfolio_manager.py</text>
+    <rect x="306" y="174" width="50" height="6" rx="1" fill="var(--gold)" opacity="0.25"/>
+    <rect x="306" y="174" width="18" height="6" rx="1" fill="var(--gold)" opacity="0.6"/>
+
+    <!-- Review column -->
+    <rect x="425" y="66" width="125" height="300" rx="4" fill="rgba(232,70,30,0.04)" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="487" y="84" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--accent)" opacity="0.8">REVIEW (3)</text>
+    <rect x="433" y="92" width="109" height="36" rx="3" fill="var(--elevated)" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="441" y="106" font-family="var(--bf)" font-size="7" fill="var(--cream)">Fix trade executor</text>
+    <text x="441" y="118" font-family="var(--mf)" font-size="5.5" fill="var(--sage)" opacity="0.8">tests passing</text>
+    <rect x="433" y="134" width="109" height="36" rx="3" fill="var(--elevated)" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.4"/>
+    <rect x="433" y="176" width="109" height="36" rx="3" fill="var(--elevated)" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.25"/>
+
+    <!-- Done column -->
+    <rect x="560" y="66" width="125" height="300" rx="4" fill="rgba(139,154,107,0.04)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="622" y="84" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="var(--sage)" opacity="0.8">DONE (25)</text>
+    <rect x="568" y="92" width="109" height="30" rx="3" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.4"/>
+    <text x="576" y="110" font-family="var(--bf)" font-size="7" fill="rgba(255,255,255,0.5)">Add position sizing</text>
+    <rect x="568" y="128" width="109" height="30" rx="3" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.3"/>
+    <rect x="568" y="164" width="109" height="30" rx="3" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.25"/>
+    <rect x="568" y="200" width="109" height="30" rx="3" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.15"/>
+    <rect x="568" y="236" width="109" height="30" rx="3" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.1"/>
+
+    <!-- Stats bar at bottom -->
+    <rect x="155" y="350" width="540" height="24" rx="3" fill="rgba(255,255,255,0.04)"/>
+    <text x="170" y="365" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.45)">25 completed</text>
+    <text x="260" y="365" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.45)">83% success rate</text>
+    <text x="365" y="365" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.45)">1.1K architect runs</text>
+    <text x="480" y="365" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.45)">1K+ test runs</text>
+    <circle cx="600" cy="362" r="3" fill="var(--sage)" opacity="0.7"/><text x="610" y="365" font-family="var(--mf)" font-size="6.5" fill="var(--sage)" opacity="0.7">scheduler active</text>
+  </svg>
+</div>
+
+<div class="card-row two">
+  <div class="card">
+    <div class="label slate">Paper Trading</div>
+    <h3>Swarm Trader</h3>
+    <p>10 agents, $100K paper capital. Intel sharing bus. Self-improving via trade grading and contest-based capital reallocation.</p>
+    <div class="card-row four" style="gap:8px;margin-top:20px;margin-bottom:0">
+      <div><div class="stat">10</div><div class="stat-label">agents</div></div>
+      <div><div class="stat">21</div><div class="stat-label">scanners</div></div>
+      <div><div class="stat">355</div><div class="stat-label">tests</div></div>
+      <div><div class="stat">28K</div><div class="stat-label">LOC</div></div>
+    </div>
+    <div class="tags"><span class="tag">Alpaca</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span><span class="tag">CNN + XGBoost</span></div>
+  </div>
+  <div class="card">
+    <div class="label">Ops</div>
+    <h3>Mission Control v1</h3>
+    <p>Single-file Python dashboard. Bird's-eye view of all services. Auto-refreshes. Zero dependencies.</p>
+    <div class="card-row four" style="gap:8px;margin-top:20px;margin-bottom:0">
+      <div><div class="stat">4</div><div class="stat-label">services</div></div>
+      <div><div class="stat">30s</div><div class="stat-label">refresh</div></div>
+      <div><div class="stat">0</div><div class="stat-label">deps</div></div>
+      <div><div class="stat">1</div><div class="stat-label">file</div></div>
+    </div>
+    <div class="tags"><span class="tag">Python stdlib</span><span class="tag">Auto-refresh</span></div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 5: GAPS & ROADMAP                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-gaps">
+
+<h1>Honest assessment. <em>Where it's going.</em></h1>
+<div class="subtitle"><strong>What I have, what I don't, and what's next.</strong></div>
+
+<div class="diagram" style="padding:0;border:none;background:transparent;display:block;aspect-ratio:auto">
+  <svg viewBox="0 0 800 260" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="260" rx="6" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+    <text x="400" y="28" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">CAPABILITY GAP ANALYSIS</text>
+
+    <!-- Axis labels -->
+    <text x="50" y="55" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.45)">CAPABILITY</text>
+    <text x="680" y="55" font-family="var(--mf)" font-size="7" fill="var(--accent)" opacity="0.8">MY SYSTEM</text>
+    <text x="740" y="55" font-family="var(--mf)" font-size="7" fill="var(--sage)" opacity="0.8">BENCHMARK</text>
+
+    <!-- Bars: each capability has two horizontal bars -->
+    <!-- Coordinator -->
+    <text x="130" y="80" text-anchor="end" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.7)">Coordinator</text>
+    <rect x="140" y="70" width="180" height="10" rx="2" fill="var(--sage)" opacity="0.25"/>
+    <rect x="140" y="70" width="180" height="10" rx="2" fill="none" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <rect x="140" y="82" width="40" height="10" rx="2" fill="var(--accent)" opacity="0.5"/>
+    <rect x="140" y="82" width="40" height="10" rx="2" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="188" y="90" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.8">state machine</text>
+
+    <!-- Parallel -->
+    <text x="130" y="114" text-anchor="end" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.7)">Parallel Exec</text>
+    <rect x="140" y="104" width="160" height="10" rx="2" fill="var(--sage)" opacity="0.25"/>
+    <rect x="140" y="104" width="160" height="10" rx="2" fill="none" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <rect x="140" y="116" width="20" height="10" rx="2" fill="var(--accent)" opacity="0.5"/>
+    <rect x="140" y="116" width="20" height="10" rx="2" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="168" y="124" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.8">sequential</text>
+
+    <!-- Self-Healing -->
+    <text x="130" y="148" text-anchor="end" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.7)">Self-Healing</text>
+    <rect x="140" y="138" width="150" height="10" rx="2" fill="var(--sage)" opacity="0.25"/>
+    <rect x="140" y="138" width="150" height="10" rx="2" fill="none" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <rect x="140" y="150" width="100" height="10" rx="2" fill="var(--accent)" opacity="0.5"/>
+    <rect x="140" y="150" width="100" height="10" rx="2" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="248" y="158" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.8">retry + rollback</text>
+
+    <!-- Memory -->
+    <text x="130" y="182" text-anchor="end" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.7)">Memory Mesh</text>
+    <rect x="140" y="172" width="170" height="10" rx="2" fill="var(--sage)" opacity="0.25"/>
+    <rect x="140" y="172" width="170" height="10" rx="2" fill="none" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <rect x="140" y="184" width="50" height="10" rx="2" fill="var(--accent)" opacity="0.5"/>
+    <rect x="140" y="184" width="50" height="10" rx="2" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.6"/>
+    <text x="198" y="192" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.8">shared .md</text>
+
+    <!-- Self-Improvement (where I win) -->
+    <text x="130" y="216" text-anchor="end" font-family="var(--bf)" font-size="8" fill="rgba(255,255,255,0.7)">Self-Improve</text>
+    <rect x="140" y="206" width="60" height="10" rx="2" fill="var(--sage)" opacity="0.25"/>
+    <rect x="140" y="206" width="60" height="10" rx="2" fill="none" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <rect x="140" y="218" width="200" height="10" rx="2" fill="var(--accent)" opacity="0.6"/>
+    <rect x="140" y="218" width="200" height="10" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-opacity="0.8"/>
+    <text x="348" y="226" font-family="var(--mf)" font-size="5.5" fill="var(--accent)">recursive dev pipeline</text>
+
+    <!-- Legend note -->
+    <text x="400" y="250" text-anchor="middle" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.35)">Gaps become the roadmap. Self-improvement is the moat.</text>
+  </svg>
+</div>
+
+<table>
+  <tr><th>Concept</th><th>Mature Benchmark</th><th>My System</th><th>Status</th></tr>
+  <tr><td>Coordinator</td><td>Smart model routes to specialists</td><td>Deterministic orchestrator, pipeline routing</td><td class="status-partial">Partial</td></tr>
+  <tr><td>Parallel Agents</td><td>5 agents simultaneously</td><td>2 builder instances, sequential pipeline</td><td class="status-partial">Partial</td></tr>
+  <tr><td>Interns</td><td>Sub-agents, 60s timeout</td><td>Nothing equivalent</td><td class="status-no">Gap</td></tr>
+  <tr><td>Agent Comms</td><td>Agents hand off, argue, synthesize</td><td>3-space shared memory + Discord alerts + Intel Bus</td><td class="status-partial">Solid</td></tr>
+  <tr><td>Governance</td><td>Council &rarr; Policy Gate &rarr; Learn</td><td>Policy engine: risk thresholds, per-agent rules, high-risk paths</td><td class="status-yes">Built</td></tr>
+  <tr><td>Memory Mesh</td><td>Graph triples, confidence, decay</td><td>JSONL 3-space system: dedup, confidence, echo/fizzle, nightly decay</td><td class="status-yes">Built</td></tr>
+  <tr><td>Self-Healing</td><td>Sentinel, auto-remediation</td><td>Sentinel: stuck-run reset, quality monitoring, auto-pause, health scoring</td><td class="status-yes">Built</td></tr>
+  <tr><td>Heartbeat</td><td>30 min: flush, status, health</td><td>Sentinel 60s loop, health.json, incident logging</td><td class="status-yes">Built</td></tr>
+  <tr><td>Budget</td><td>Daily ceiling, auto light mode</td><td>Cost tracker, Opus daily cap, auto-downgrade to Sonnet</td><td class="status-yes">Built</td></tr>
+  <tr><td>24h Cycle</td><td>Agents work shifts</td><td>Demand-driven scheduler + Alfred crons + sentinel background</td><td class="status-partial">Mostly</td></tr>
+</table>
+
+<div class="callout green">
+  <p><strong>What I have that they don't:</strong> Recursive self-improvement. 25 autonomous completions. Full memory system with decay. Sentinel self-healing. Policy-driven governance. Zero API costs.</p>
+</div>
+
+<h2>Roadmap</h2>
+<div class="section-sub">Remaining gaps become the next iteration.</div>
+
+<div class="card-row three">
+  <div class="card"><div class="label accent">Next</div><h3>Coordinator pattern.</h3><p>LLM-powered router. Read task intent, fan out to specialists instead of linear pipeline.</p></div>
+  <div class="card"><div class="label accent">Next</div><h3>Full parallel execution.</h3><p>N concurrent agents. Intern pattern for subtask decomposition with timeouts.</p></div>
+  <div class="card"><div class="label accent">Next</div><h3>Agent dialogue.</h3><p>Agents argue, synthesize, hand off. Move beyond shared memory to real-time communication.</p></div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 6: DESIGN SYSTEMS + AI             -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-dsai">
+
+<h1>The same problem, <em>different tools.</em></h1>
+<div class="subtitle">
+  Design systems at 4 companies. Design-to-code handoff has always been the gap. Now I'm building systems that <strong>collapse it.</strong>
+</div>
+
+<div style="background:var(--card);border:1px solid var(--border);padding:8px 0;margin-bottom:40px">
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;padding:10px 28px;margin-bottom:4px">
+    <div style="font-family:var(--mf);font-size:10px;color:var(--text-muted);text-align:right;letter-spacing:0.08em;text-transform:uppercase">Design System Problem</div>
+    <div style="width:40px"></div>
+    <div style="font-family:var(--mf);font-size:10px;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase">Agent Army Solution</div>
+  </div>
+  <div class="parallel-row" style="padding-left:28px;padding-right:28px"><div class="parallel-left">Component generation from specs</div><div class="parallel-arrow">&rarr;</div><div class="parallel-right">Agent pipeline auto-generates from specs</div></div>
+  <div class="parallel-row" style="padding-left:28px;padding-right:28px"><div class="parallel-left">Design token validation</div><div class="parallel-arrow">&rarr;</div><div class="parallel-right">Automated testing catches inconsistencies</div></div>
+  <div class="parallel-row" style="padding-left:28px;padding-right:28px"><div class="parallel-left">Documentation that stays current</div><div class="parallel-arrow">&rarr;</div><div class="parallel-right">Agents write docs as they ship code</div></div>
+  <div class="parallel-row" style="padding-left:28px;padding-right:28px"><div class="parallel-left">Accessibility checking</div><div class="parallel-arrow">&rarr;</div><div class="parallel-right">Automated in test phase, not bolted on</div></div>
+  <div class="parallel-row" style="padding-left:28px;padding-right:28px;border-bottom:none"><div class="parallel-left">Design QA</div><div class="parallel-arrow">&rarr;</div><div class="parallel-right">System IS the source of truth</div></div>
+</div>
+
+<div class="card-row two" style="margin-bottom:24px">
+  <div class="ds-card">
+    <div class="label accent">SalesRabbit</div>
+    <h3 style="font-family:var(--hf);font-size:18px;font-weight:700;color:var(--cream);margin-bottom:12px">Unified Flutter Design System</h3>
+    <div class="bullet"><p><strong>3 products unified</strong> into single cross-platform system</p></div>
+    <div class="bullet"><p><strong>3 codebases reconciled</strong> into one shared library</p></div>
+    <div class="bullet"><p><strong>AI workflows championed</strong>, generative prototyping, persona sim</p></div>
+  </div>
+  <div class="ds-card">
+    <div class="label green">Cricut</div>
+    <h3 style="font-family:var(--hf);font-size:18px;font-weight:700;color:var(--cream);margin-bottom:12px">Component Library at Scale</h3>
+    <div class="bullet"><p><strong>7.5M users</strong> served across web and app</p></div>
+    <div class="bullet"><p><strong>Subscription UI</strong>, 2M to 2.6M subscribers</p></div>
+    <div class="bullet"><p><strong>34% conversion lift</strong> via value-forward paywall system</p></div>
+  </div>
+</div>
+
+<div class="card-row three">
+  <div class="card"><div class="label accent">Simultaneous</div><h3>DS ops pipeline.</h3><p>Spec &rarr; tokens &rarr; a11y &rarr; scaffold &rarr; docs. Same architecture that ships trading code.</p></div>
+  <div class="card"><div class="label accent">Data-Driven</div><h3>Figma plugin.</h3><p>Component generation fed by real usage data, not generic AI output.</p></div>
+  <div class="card"><div class="label accent">The Shift</div><h3>System learns to design.</h3><p>When the pipeline understands design constraints like test assertions, the handoff disappears.</p></div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 7: LIVE DEMO                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="panel" id="panel-demo">
+
+<h1>Live demo. <em>Everything is running.</em></h1>
+<div class="subtitle">2 tasks pre-loaded for a live pipeline run.</div>
+
+<div class="diagram" style="padding:0;border:none;background:transparent;display:block;aspect-ratio:auto">
+  <svg viewBox="0 0 800 280" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="280" rx="6" fill="var(--card)" stroke="var(--border)" stroke-width="1"/>
+    <text x="400" y="28" text-anchor="middle" font-family="var(--mf)" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">LIVE DEMO FLOW</text>
+
+    <!-- Terminal window -->
+    <rect x="40" y="45" width="320" height="200" rx="4" fill="#0a0c10" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <rect x="40" y="45" width="320" height="22" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="40" y="63" width="320" height="4" fill="rgba(255,255,255,0.06)"/>
+    <circle cx="56" cy="56" r="4" fill="#ff5f57" opacity="0.8"/>
+    <circle cx="70" cy="56" r="4" fill="#febc2e" opacity="0.8"/>
+    <circle cx="84" cy="56" r="4" fill="#8B9A6B" opacity="0.8"/>
+    <text x="200" y="59" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.4)">scheduler.py</text>
+
+    <!-- Terminal content -->
+    <text x="52" y="85" font-family="var(--mf)" font-size="7" fill="var(--sage)">$ python3 scheduler.py</text>
+    <text x="52" y="100" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">[10:32:04] Scheduler started. Polling every 30s...</text>
+    <text x="52" y="114" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">[10:32:34] Found idle agent. Task: "Add docstrings"</text>
+    <text x="52" y="128" font-family="var(--mf)" font-size="6.5" fill="var(--gold)" opacity="0.8">[10:32:35] Phase: RESEARCH (Haiku)</text>
+    <text x="52" y="142" font-family="var(--mf)" font-size="6.5" fill="var(--gold)" opacity="0.8">[10:33:12] Phase: ARCHITECT (Sonnet)</text>
+    <text x="52" y="156" font-family="var(--mf)" font-size="6.5" fill="var(--accent)" opacity="0.8">[10:34:48] Phase: BUILD (Sonnet)</text>
+    <text x="52" y="170" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.5)">[10:36:20] Phase: TEST</text>
+    <text x="52" y="184" font-family="var(--mf)" font-size="6.5" fill="var(--sage)">[10:36:45] All tests passing. Gate score: 0.94</text>
+    <text x="52" y="198" font-family="var(--mf)" font-size="6.5" fill="var(--sage)">[10:36:46] REVIEW: Auto-approved. Merged to main.</text>
+    <rect x="52" y="210" width="6" height="12" rx="1" fill="var(--sage)" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.2s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Arrow from terminal to dashboard -->
+    <path d="M370 145 L430 145" stroke="var(--accent)" stroke-width="2" opacity="0.6"/>
+    <polygon points="428,140 438,145 428,150" fill="var(--accent)" opacity="0.6"/>
+
+    <!-- Mini dashboard -->
+    <rect x="440" y="45" width="320" height="200" rx="4" fill="#0a0c10" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <rect x="440" y="45" width="320" height="22" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="440" y="63" width="320" height="4" fill="rgba(255,255,255,0.06)"/>
+    <circle cx="456" cy="56" r="4" fill="#ff5f57" opacity="0.8"/>
+    <circle cx="470" cy="56" r="4" fill="#febc2e" opacity="0.8"/>
+    <circle cx="484" cy="56" r="4" fill="#8B9A6B" opacity="0.8"/>
+    <text x="600" y="59" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.4)">localhost:5180</text>
+
+    <!-- Task card moving across columns -->
+    <rect x="455" y="80" width="70" height="14" rx="2" fill="rgba(255,255,255,0.05)"/>
+    <text x="490" y="90" text-anchor="middle" font-family="var(--mf)" font-size="5.5" fill="rgba(255,255,255,0.4)">BACKLOG</text>
+    <rect x="535" y="80" width="70" height="14" rx="2" fill="rgba(244,181,111,0.1)"/>
+    <text x="570" y="90" text-anchor="middle" font-family="var(--mf)" font-size="5.5" fill="var(--gold)" opacity="0.6">BUILDING</text>
+    <rect x="615" y="80" width="70" height="14" rx="2" fill="rgba(232,70,30,0.1)"/>
+    <text x="650" y="90" text-anchor="middle" font-family="var(--mf)" font-size="5.5" fill="var(--accent)" opacity="0.6">REVIEW</text>
+    <rect x="695" y="80" width="50" height="14" rx="2" fill="rgba(139,154,107,0.1)"/>
+    <text x="720" y="90" text-anchor="middle" font-family="var(--mf)" font-size="5.5" fill="var(--sage)" opacity="0.6">DONE</text>
+
+    <!-- Animated task card -->
+    <rect x="698" y="100" width="44" height="28" rx="2" fill="var(--elevated)" stroke="var(--sage)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="720" y="114" text-anchor="middle" font-family="var(--mf)" font-size="5" fill="var(--sage)" opacity="0.8">docstrings</text>
+    <text x="720" y="123" text-anchor="middle" font-family="var(--mf)" font-size="4.5" fill="var(--sage)" opacity="0.6">merged</text>
+
+    <!-- Second task in progress -->
+    <rect x="538" y="100" width="64" height="28" rx="2" fill="var(--elevated)" stroke="var(--gold)" stroke-width="1" stroke-opacity="0.5"/>
+    <text x="570" y="114" text-anchor="middle" font-family="var(--mf)" font-size="5" fill="var(--gold)" opacity="0.8">type hints</text>
+    <rect x="544" y="120" width="52" height="4" rx="1" fill="var(--gold)" opacity="0.2"/>
+    <rect x="544" y="120" width="28" height="4" rx="1" fill="var(--gold)" opacity="0.5"/>
+
+    <!-- Agent status indicators -->
+    <text x="460" y="155" font-family="var(--mf)" font-size="6.5" fill="rgba(255,255,255,0.4)">AGENTS</text>
+    <circle cx="462" cy="168" r="3" fill="var(--sage)" opacity="0.7"/>
+    <text x="470" y="171" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.45)">agent-0: idle</text>
+    <circle cx="462" cy="183" r="3" fill="var(--gold)" opacity="0.7"/>
+    <text x="470" y="186" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.45)">agent-1: building type_hints</text>
+    <circle cx="462" cy="198" r="3" fill="var(--sage)" opacity="0.7"/>
+    <text x="470" y="201" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.45)">agent-2: idle</text>
+    <circle cx="462" cy="213" r="3" fill="var(--sage)" opacity="0.7"/>
+    <text x="470" y="216" font-family="var(--mf)" font-size="6" fill="rgba(255,255,255,0.45)">agent-3: idle</text>
+
+    <!-- Bottom label -->
+    <text x="400" y="268" text-anchor="middle" font-family="var(--mf)" font-size="7" fill="rgba(255,255,255,0.35)">~5 min per task end-to-end | Zero API costs | Max subscription only</text>
+  </svg>
+</div>
+
+<div class="card-row two">
+  <div class="card">
+    <h3>Running Services</h3>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">MC v2 Dashboard</div><div class="url-addr">localhost:5180</div><div class="url-desc">Kanban, runs, reviews</div></div>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">MC v2 API</div><div class="url-addr">localhost:8890</div><div class="url-desc">35+ endpoints</div></div>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">Swarm Trader</div><div class="url-addr">localhost:8080</div><div class="url-desc">10-agent fleet</div></div>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">OpenClaw</div><div class="url-addr">localhost:18789</div><div class="url-desc">Alfred (Discord)</div></div>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">PostgreSQL</div><div class="url-addr">localhost:5432</div><div class="url-desc">Market data</div></div>
+    <div class="url-row"><div class="url-dot up"></div><div class="url-name">Redis</div><div class="url-addr">localhost:6379</div><div class="url-desc">State + cache</div></div>
+  </div>
+  <div class="card">
+    <h3>Demo Script</h3>
+    <div class="step-list">
+      <div class="step"><div class="step-text">Open <code>localhost:5180</code>. Kanban board, 25 completed tasks.</div></div>
+      <div class="step"><div class="step-text">Click a task. Walk through: research &rarr; plan &rarr; diff &rarr; tests.</div></div>
+      <div class="step"><div class="step-text">Start scheduler: <code>python3 scheduler.py</code></div></div>
+      <div class="step"><div class="step-text">Watch 2 tasks flow through the pipeline live.</div></div>
+      <div class="step"><div class="step-text">Show Swarm Trader fleet at <code>localhost:8080</code></div></div>
+      <div class="step"><div class="step-text">Show Alfred on Discord posting a fitness report.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <p><strong>Pre-loaded:</strong> "Add docstrings to overlap_guard.py" and "Add type hints to IntelBus class." ~5 min each.</p>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span>Adam Blair &middot; March 2026</span>
+  <span>Press 1&ndash;7 to switch tabs &middot; <a href="/">Portfolio</a></span>
+</div>
+
+</div>
+
+<script>
+// Tab switching
+const tabs = document.querySelectorAll('.nav-tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+
+// Keyboard 1-7
+document.addEventListener('keydown', e => {
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 7) tabs[n-1]?.click();
+});
+
+// Pipeline stage click
+const stages = document.querySelectorAll('.pipe-stage');
+const detailArea = document.getElementById('stage-detail-area');
+const details = {
+  backlog: ['Backlog \u2014 Task Intake','Tasks from manual creation, drop-links pipeline, or API','Sources','Manual creation via API','Drop-links research pipeline (Alfred)','Task decomposition from research agent','Rollback from failed downstream phases','Properties','Title, description, tags, project','Priority score for ordering','Blocked-by dependencies (DAG)','Parent/subtask relationships (epics)'],
+  research: ['Research Agent','Claude CLI reads codebase and generates analysis report','What It Does','Reads task + relevant source files','Analyzes codebase patterns and conventions','Identifies affected modules and dependencies','Writes structured report to results/research/','Mechanics','Model: Haiku \u2192 Sonnet on retry','Timeout: 300s','Can decompose complex tasks into subtasks','Output: Markdown report with file references'],
+  architect: ['Architect Agent','Plans implementation from research findings','What It Does','Reads research report + source files','Creates step-by-step implementation plan','References specific files, functions, line numbers','Quality gate: must reference \u22651 .py file','Mechanics','Model: Sonnet (default)','Plan completeness score (0-1)','Plan lint: structural quality check','Output: Markdown plan in results/architect/'],
+  build: ['Builder Agent','Claude CLI implements code in isolated git worktree','What It Does','Creates git worktree on new branch','Receives task + research + architect plan','Claude edits files, runs tests, commits','On failure: injects failure context for retry','Mechanics','Model: Sonnet \u2192 Opus auto-escalate','Max turns: 25 (full agentic loop)','Timeout: 600s','Write gate: diff size + test pass + plan match'],
+  test: ['Testing Agent','Runs full test suite and compares against main','What It Does','Checks out builder branch in new worktree','Runs pytest or vitest','Compares results against main baseline','Detects regressions','Mechanics','Smoke tests + import checks first','Full suite if smoke passes','Max retries: 5 (flaky tolerance)','Coverage tracking'],
+  review: ['Review Gate','Human approval or auto-approve based on policy','Review Package','Git diff with change stats','Test results (pass/fail/coverage)','Gate score (0-1 quality metric)','Research + architect plan for context','Actions','Approve \u2192 merge to main \u2192 done','Reject \u2192 rollback for retry','Auto-approve if policy allows','25 of 30 completed successfully'],
+};
+stages.forEach(s => {
+  s.addEventListener('click', () => {
+    stages.forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+    const d = details[s.dataset.stage];
+    if (!d) return;
+    detailArea.innerHTML = `<div class="detail open"><h3>${d[0]}</h3><p>${d[1]}</p><div class="detail-cols"><div><h4>${d[2]}</h4><ul>${d.slice(3,7).map(i=>'<li>'+i+'</li>').join('')}</ul></div><div><h4>${d[7]}</h4><ul>${d.slice(8,12).map(i=>'<li>'+i+'</li>').join('')}</ul></div></div></div>`;
+  });
+});
+</script>
+</body>
+</html>

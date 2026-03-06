@@ -1,0 +1,20 @@
+{
+  "name": "remotion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preview": "remotion studio src/index.js",
+    "render": "remotion render src/index.js CalendarVideo out/calendar.mp4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/bundler": "^4.0.431",
+    "@remotion/cli": "^4.0.431",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.431"
+  }
+}

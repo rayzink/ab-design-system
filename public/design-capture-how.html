@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Design Capture Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0c0e12;
+    --bg-card: #1a1d24;
+    --bg-elevated: #22252c;
+    --text: #ffffff;
+    --text-dim: #9a9ca2;
+    --text-muted: #6b6e76;
+    --border: rgba(255,255,255,0.06);
+    --accent: #e8461e;
+    --quote-accent: #F4B56F;
+    --success: #8B9A6B;
+    --info: #7A8595;
+    --heading: 'Outfit', sans-serif;
+    --body: 'Outfit', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --radius: 4px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    overflow-x: hidden;
+  }
+
+  /* ── Nav ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(12,14,18,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-left { display: flex; align-items: center; gap: 14px; }
+  .nav-back {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .nav-back:hover { color: var(--text); border-color: var(--text-muted); }
+  .nav-back svg { width: 12px; height: 12px; }
+  .nav-brand { font-family: var(--heading); font-size: 14px; font-weight: 600; }
+  .nav-brand span { color: var(--accent); }
+  .nav-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 80px 48px 60px;
+    max-width: 720px;
+  }
+  .hero h1 {
+    font-family: var(--heading);
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: rise 0.6s ease forwards;
+  }
+  .hero p {
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    opacity: 0;
+    animation: rise 0.6s ease 0.15s forwards;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Step ── */
+  .step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 64px 48px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .step-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--quote-accent);
+    margin-bottom: 12px;
+  }
+  .step-label .sep { color: var(--text-muted); margin: 0 5px; }
+  .step-title {
+    font-family: var(--heading);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .step-desc {
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .step-desc strong { color: var(--text); font-weight: 500; }
+
+  /* ── Visual card ── */
+  .vis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* ── Step 1: Speak ── */
+  .vis-mic-area {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .vis-mic-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    background: rgba(255,95,95,0.08);
+    border: 1px solid rgba(255,95,95,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .vis-mic-icon svg { width: 18px; height: 18px; color: #ff5f5f; }
+  .vis-waveform {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 28px;
+  }
+  .vis-waveform span {
+    flex: 1;
+    background: rgba(255,95,95,0.5);
+    border-radius: 1px;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .vis-waveform span:nth-child(1) { height: 30%; animation-delay: 0s; }
+  .vis-waveform span:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+  .vis-waveform span:nth-child(3) { height: 90%; animation-delay: 0.2s; }
+  .vis-waveform span:nth-child(4) { height: 45%; animation-delay: 0.3s; }
+  .vis-waveform span:nth-child(5) { height: 75%; animation-delay: 0.4s; }
+  .vis-waveform span:nth-child(6) { height: 100%; animation-delay: 0.15s; }
+  .vis-waveform span:nth-child(7) { height: 55%; animation-delay: 0.25s; }
+  .vis-waveform span:nth-child(8) { height: 80%; animation-delay: 0.35s; }
+  .vis-waveform span:nth-child(9) { height: 35%; animation-delay: 0.45s; }
+  .vis-waveform span:nth-child(10) { height: 65%; animation-delay: 0.05s; }
+  .vis-waveform span:nth-child(11) { height: 50%; animation-delay: 0.22s; }
+  .vis-waveform span:nth-child(12) { height: 85%; animation-delay: 0.33s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+  .vis-rec-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #ff5f5f;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .vis-rec-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ff5f5f;
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .vis-transcript-lines {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .vis-t-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .vis-t-time {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .vis-t-text { color: var(--text); }
+  .vis-t-text.dim { color: var(--text-dim); font-style: italic; }
+
+  /* ── Step 2: Extract ── */
+  .vis-extract-flow {
+    display: grid;
+    grid-template-columns: 1fr 24px 1fr;
+    gap: 0;
+    align-items: center;
+  }
+  .vis-extract-in {
+    padding: 14px;
+    border-right: 1px solid var(--border);
+  }
+  .vis-extract-in .lbl {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .vis-extract-text {
+    font-size: 11px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .vis-extract-text mark {
+    background: rgba(232,70,30,0.12);
+    color: var(--accent);
+    border-radius: 2px;
+    padding: 0 3px;
+  }
+  .vis-extract-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+  .vis-extract-arrow svg { width: 14px; height: 14px; }
+  .vis-extract-out {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .vis-extract-out .lbl {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--success);
+    margin-bottom: 2px;
+  }
+  .vis-idea-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+  }
+  .vis-idea-title {
+    font-family: var(--heading);
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .vis-idea-type {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--accent);
+    background: rgba(232,70,30,0.06);
+    padding: 1px 5px;
+    border-radius: var(--radius);
+    display: inline-block;
+  }
+
+  /* ── Step 3: Tokens ── */
+  .vis-token-label {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .vis-token-label::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s ease infinite;
+  }
+  .vis-token-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .vis-token-cell {
+    background: var(--bg-card);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .vis-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .vis-tname { font-family: var(--mono); font-size: 9px; color: var(--text-dim); }
+  .vis-tval { font-family: var(--mono); font-size: 8px; color: var(--text-muted); }
+  .vis-token-footer {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 16px;
+  }
+  .vis-font-item { display: flex; flex-direction: column; gap: 2px; }
+  .vis-font-lbl {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .vis-font-val { font-size: 12px; color: var(--text); }
+
+  /* ── Step 4: Render ── */
+  .vis-render-bar {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .vis-render-lbl {
+    font-family: var(--heading);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+  .vis-dots { display: flex; gap: 4px; }
+  .vis-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+  }
+  .vis-render-frame {
+    background: var(--bg);
+    padding: 28px 24px;
+  }
+  .vis-hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .vis-hero-h1 {
+    font-family: var(--heading);
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+  .vis-hero-sub {
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .vis-hero-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--heading);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: var(--radius);
+  }
+
+  /* ── Step 5: Refine ── */
+  .vis-refine-preview {
+    background: var(--bg);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .vis-refine-component {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .vis-refine-headline {
+    font-family: var(--heading);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .vis-refine-subtext {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .vis-refine-bar {
+    padding: 12px 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .vis-refine-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid rgba(232,70,30,0.3);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-family: var(--body);
+    font-size: 11px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+  }
+  .vis-refine-input .typed { color: var(--text-dim); }
+  .vis-cursor {
+    width: 1px;
+    height: 13px;
+    background: var(--accent);
+    margin-left: 1px;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .vis-regen-btn {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--heading);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    white-space: nowrap;
+  }
+  .vis-refine-hint {
+    padding: 0 14px 12px;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .vis-refine-hint kbd {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1px 4px;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text-dim);
+  }
+
+  /* ── Step 6: Kanban ── */
+  .vis-kb-toolbar {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .vis-kb-title {
+    font-family: var(--heading);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .vis-kb-stats {
+    display: flex;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+  }
+  .vis-kb-stats strong { color: var(--text); font-weight: 500; }
+  .vis-kb-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .vis-kb-col { border-right: 1px solid var(--border); }
+  .vis-kb-col:last-child { border-right: none; }
+  .vis-kb-col-head {
+    padding: 8px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .vis-kb-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .vis-kb-col-name {
+    font-family: var(--heading);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .vis-kb-col-count {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+  .vis-kb-cards { padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+  .vis-kb-c {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px;
+  }
+  .vis-kb-c-thumb {
+    height: 20px;
+    background: var(--bg-elevated);
+    border-radius: 2px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 3px;
+    overflow: hidden;
+  }
+  .vis-kb-c-thumb .b { height: 3px; border-radius: 1px; }
+  .vis-kb-c-name {
+    font-family: var(--body);
+    font-size: 8px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .vis-kb-c.approved {
+    border-color: rgba(139,154,107,0.2);
+    position: relative;
+  }
+  .vis-kb-c.approved::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    opacity: 0.6;
+  }
+
+  /* ── Summary ── */
+  .summary {
+    padding: 80px 48px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .summary.visible { opacity: 1; transform: translateY(0); }
+  .summary-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--quote-accent);
+    margin-bottom: 12px;
+  }
+  .summary-title {
+    font-family: var(--heading);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .summary-cell { background: var(--bg-card); padding: 24px; }
+  .summary-role {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--quote-accent);
+    margin-bottom: 10px;
+  }
+  .summary-text {
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .summary-text strong { color: var(--text); font-weight: 500; }
+  .insight-box {
+    border-left: 2px solid var(--accent);
+    padding: 20px 24px;
+    background: rgba(232,70,30,0.03);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    max-width: 720px;
+  }
+  .insight-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .insight-text {
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .insight-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── Wireflow ── */
+  .wireflow {
+    padding: 48px 48px 64px;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-elevated) transparent;
+    opacity: 0;
+    animation: rise 0.6s ease 0.3s forwards;
+  }
+  .wireflow::-webkit-scrollbar { height: 4px; }
+  .wireflow::-webkit-scrollbar-track { background: transparent; }
+  .wireflow::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 2px; }
+  .wf-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    min-width: 1320px;
+    position: relative;
+  }
+
+  /* Node card */
+  .wf-node {
+    width: 200px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .wf-node-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--quote-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wf-node-num .wf-actor {
+    font-size: 8px;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1px 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .wf-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .wf-card:hover { border-color: rgba(255,255,255,0.12); }
+  .wf-card-title {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--heading);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wf-card-title svg { width: 12px; height: 12px; color: var(--text-muted); flex-shrink: 0; }
+  .wf-card-body { padding: 0; }
+  .wf-caption {
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Connector arrow */
+  .wf-conn {
+    flex-shrink: 0;
+    width: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 62px;
+    gap: 4px;
+  }
+  .wf-conn-line {
+    width: 100%;
+    height: 0;
+    border-top: 1px dashed var(--text-muted);
+    position: relative;
+  }
+  .wf-conn-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid var(--text-muted);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+  .wf-conn-label {
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* Feedback loop */
+  .wf-feedback {
+    position: absolute;
+    bottom: -52px;
+    right: 224px;
+    width: 272px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .wf-fb-path {
+    flex: 1;
+    height: 32px;
+    border: 1px dashed var(--accent);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    position: relative;
+  }
+  .wf-fb-path::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: -4px;
+    width: 0; height: 0;
+    border-bottom: 5px solid var(--accent);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+  }
+  .wf-fb-label {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+
+  /* Mini mockup internals */
+  .wf-mic-row {
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .wf-mic-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius);
+    background: rgba(255,95,95,0.08);
+    border: 1px solid rgba(255,95,95,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .wf-mic-dot svg { width: 10px; height: 10px; color: #ff5f5f; }
+  .wf-mini-wave {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    height: 16px;
+  }
+  .wf-mini-wave span {
+    flex: 1;
+    background: rgba(255,95,95,0.4);
+    border-radius: 1px;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .wf-mini-wave span:nth-child(1) { height: 30%; animation-delay: 0s; }
+  .wf-mini-wave span:nth-child(2) { height: 65%; animation-delay: 0.12s; }
+  .wf-mini-wave span:nth-child(3) { height: 90%; animation-delay: 0.24s; }
+  .wf-mini-wave span:nth-child(4) { height: 40%; animation-delay: 0.36s; }
+  .wf-mini-wave span:nth-child(5) { height: 75%; animation-delay: 0.18s; }
+  .wf-mini-wave span:nth-child(6) { height: 55%; animation-delay: 0.3s; }
+  .wf-mini-wave span:nth-child(7) { height: 80%; animation-delay: 0.06s; }
+  .wf-mini-wave span:nth-child(8) { height: 35%; animation-delay: 0.42s; }
+  .wf-rec {
+    font-family: var(--mono);
+    font-size: 7px;
+    color: #ff5f5f;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .wf-rec-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #ff5f5f;
+    animation: pulse 1.5s ease infinite;
+  }
+  .wf-tline {
+    padding: 3px 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 9px;
+    color: var(--text-dim);
+    line-height: 1.3;
+  }
+  .wf-tline .t {
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .wf-tlines { padding: 6px 0; }
+
+  /* Extract mini */
+  .wf-extr-row {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wf-extr-txt {
+    flex: 1;
+    font-size: 8px;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+  .wf-extr-txt em { color: var(--accent); font-style: normal; }
+  .wf-extr-arr { color: var(--text-muted); font-size: 10px; flex-shrink: 0; }
+  .wf-extr-cards { display: flex; flex-direction: column; gap: 3px; padding: 6px 10px; }
+  .wf-extr-c {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 4px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wf-extr-c-name {
+    font-family: var(--heading);
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .wf-extr-c-type {
+    font-family: var(--mono);
+    font-size: 6px;
+    color: var(--accent);
+    background: rgba(232,70,30,0.06);
+    padding: 1px 4px;
+    border-radius: 2px;
+  }
+
+  /* Token mini */
+  .wf-tok-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .wf-tok-cell {
+    background: var(--bg-card);
+    padding: 5px 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .wf-tok-sw {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .wf-tok-n {
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--text-dim);
+  }
+  .wf-tok-foot {
+    padding: 6px 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--text-muted);
+  }
+  .wf-tok-foot strong { color: var(--text-dim); font-weight: 500; }
+
+  /* Render mini */
+  .wf-render-bar {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wf-render-bar span { font-family: var(--heading); font-size: 8px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .wf-dots { display: flex; gap: 3px; }
+  .wf-dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--bg-elevated); border: 1px solid var(--border); display: block; }
+  .wf-render-body {
+    background: var(--bg);
+    padding: 12px 10px;
+  }
+  .wf-r-eye { font-family: var(--mono); font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+  .wf-r-h1 { font-family: var(--heading); font-size: 14px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 4px; }
+  .wf-r-sub { font-size: 8px; font-weight: 300; color: var(--text-dim); line-height: 1.3; margin-bottom: 8px; }
+  .wf-r-cta { display: inline-block; background: var(--accent); color: #fff; font-family: var(--heading); font-size: 8px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius); }
+
+  /* Refine mini */
+  .wf-ref-preview {
+    background: var(--bg);
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .wf-ref-h { font-family: var(--heading); font-size: 11px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 3px; }
+  .wf-ref-s { font-size: 8px; font-weight: 300; color: var(--text-dim); line-height: 1.3; }
+  .wf-ref-bar {
+    padding: 7px 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .wf-ref-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid rgba(232,70,30,0.25);
+    border-radius: 2px;
+    padding: 4px 7px;
+    font-size: 8px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .wf-ref-btn {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--heading);
+    font-size: 7px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  /* Kanban mini */
+  .wf-kb-head {
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--heading);
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .wf-kb-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .wf-kb-col { border-right: 1px solid var(--border); }
+  .wf-kb-col:last-child { border-right: none; }
+  .wf-kb-col-h {
+    padding: 4px 5px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .wf-kb-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+  .wf-kb-col-n {
+    font-family: var(--heading);
+    font-size: 6px;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+  .wf-kb-items { padding: 4px; display: flex; flex-direction: column; gap: 3px; }
+  .wf-kb-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 3px 4px;
+  }
+  .wf-kb-item-name { font-size: 6px; font-weight: 500; color: var(--text); }
+  .wf-kb-item.done { border-color: rgba(139,154,107,0.2); }
+  .wf-kb-item.done .wf-kb-item-name { color: var(--success); }
+
+  .wf-scroll-hint {
+    text-align: center;
+    padding: 0 48px 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: rise 0.6s ease 0.5s forwards;
+  }
+  .wf-scroll-hint span { opacity: 0.5; }
+
+  /* ── Footer spacer ── */
+  .footer-space { height: 80px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a href="design-capture.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Capture
+    </a>
+    <div class="nav-brand">Design <span>Capture</span></div>
+  </div>
+  <div class="nav-sub">How it works</div>
+</nav>
+
+<div class="hero">
+  <h1>How Design Capture works</h1>
+  <p>Talk through your ideas. AI listens, extracts, generates, and you triage. Six steps from conversation to components.</p>
+</div>
+
+<!-- ═══════ WIREFLOW DIAGRAM ═══════ -->
+<div class="wf-scroll-hint"><span>← scroll →</span></div>
+<div class="wireflow">
+  <div class="wf-track">
+
+    <!-- 1 · Designer Speaks -->
+    <div class="wf-node">
+      <div class="wf-node-num">01 <span class="wf-actor">Human</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          Transcript Panel
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-mic-row">
+            <div class="wf-mic-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg></div>
+            <div class="wf-mini-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="wf-rec"><span class="wf-rec-dot"></span>REC</div>
+          </div>
+          <div class="wf-tlines">
+            <div class="wf-tline"><span class="t">10:32</span> hero section with bold headline</div>
+            <div class="wf-tline"><span class="t">10:32</span> nav bar, logo left, links right</div>
+            <div class="wf-tline" style="color:var(--text-muted);font-style:italic"><span class="t">10:33</span> maybe a pricing table...</div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Designer speaks naturally. Web Speech API transcribes live.</div>
+    </div>
+
+    <div class="wf-conn">
+      <div class="wf-conn-line"></div>
+      <div class="wf-conn-label">every 10s</div>
+    </div>
+
+    <!-- 2 · AI Extracts -->
+    <div class="wf-node">
+      <div class="wf-node-num">02 <span class="wf-actor">AI</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Idea Extraction
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-extr-row" style="border-bottom:1px solid var(--border)">
+            <div class="wf-extr-txt">"...a <em>hero section</em> with bold headline and a <em>nav bar</em>..."</div>
+            <div class="wf-extr-arr">→</div>
+          </div>
+          <div class="wf-extr-cards">
+            <div class="wf-extr-c">
+              <span class="wf-extr-c-name">Bold Hero</span>
+              <span class="wf-extr-c-type">hero</span>
+            </div>
+            <div class="wf-extr-c">
+              <span class="wf-extr-c-name">Nav Bar</span>
+              <span class="wf-extr-c-type">nav</span>
+            </div>
+            <div class="wf-extr-c" style="opacity:0.4">
+              <span class="wf-extr-c-name">Pricing</span>
+              <span class="wf-extr-c-type">pricing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Claude parses transcript into discrete, buildable UI ideas.</div>
+    </div>
+
+    <div class="wf-conn">
+      <div class="wf-conn-line"></div>
+      <div class="wf-conn-label">+ tokens</div>
+    </div>
+
+    <!-- 3 · Tokens Constrain -->
+    <div class="wf-node">
+      <div class="wf-node-num">03 <span class="wf-actor">System</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Token Injection
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-tok-grid">
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#0c0e12"></div><span class="wf-tok-n">bg</span></div>
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#1a1d24"></div><span class="wf-tok-n">card</span></div>
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#e8461e"></div><span class="wf-tok-n">accent</span></div>
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#ffffff"></div><span class="wf-tok-n">text</span></div>
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#F4B56F"></div><span class="wf-tok-n">quote</span></div>
+            <div class="wf-tok-cell"><div class="wf-tok-sw" style="background:#8B9A6B"></div><span class="wf-tok-n">success</span></div>
+          </div>
+          <div class="wf-tok-foot">
+            <span><strong>Outfit</strong> heading</span>
+            <span><strong>JetBrains</strong> mono</span>
+            <span><strong>4px</strong> radius</span>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Every prompt wrapped with full token set. AI can't go off-brand.</div>
+    </div>
+
+    <div class="wf-conn">
+      <div class="wf-conn-line"></div>
+      <div class="wf-conn-label">Claude API</div>
+    </div>
+
+    <!-- 4 · Components Render -->
+    <div class="wf-node">
+      <div class="wf-node-num">04 <span class="wf-actor">Output</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Live Preview
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-render-bar">
+            <span>iframe</span>
+            <div class="wf-dots"><i></i><i></i><i></i></div>
+          </div>
+          <div class="wf-render-body">
+            <div class="wf-r-eye">Design System</div>
+            <div class="wf-r-h1">Build faster.</div>
+            <div class="wf-r-sub">AI components constrained by your tokens.</div>
+            <div class="wf-r-cta">Get Started</div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Raw HTML renders in sandboxed iframe. Visual review, not code.</div>
+    </div>
+
+    <div class="wf-conn">
+      <div class="wf-conn-line"></div>
+      <div class="wf-conn-label">iterate</div>
+    </div>
+
+    <!-- 5 · Refine -->
+    <div class="wf-node">
+      <div class="wf-node-num">05 <span class="wf-actor">Human</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Refine
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-ref-preview">
+            <div class="wf-ref-h">Build faster.</div>
+            <div class="wf-ref-s">AI components constrained by tokens.</div>
+          </div>
+          <div class="wf-ref-bar">
+            <div class="wf-ref-input">make headline larger</div>
+            <div class="wf-ref-btn">Regen</div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Type corrections. AI receives current HTML + instruction.</div>
+    </div>
+
+    <div class="wf-conn">
+      <div class="wf-conn-line"></div>
+      <div class="wf-conn-label">approve</div>
+    </div>
+
+    <!-- 6 · Approve to Page -->
+    <div class="wf-node">
+      <div class="wf-node-num">06 <span class="wf-actor">Board</span></div>
+      <div class="wf-card">
+        <div class="wf-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Kanban Board
+        </div>
+        <div class="wf-card-body">
+          <div class="wf-kb-head">Triage Board</div>
+          <div class="wf-kb-cols">
+            <div class="wf-kb-col">
+              <div class="wf-kb-col-h"><div class="wf-kb-dot" style="background:var(--text-muted)"></div><span class="wf-kb-col-n">Queue</span></div>
+              <div class="wf-kb-items">
+                <div class="wf-kb-item"><div class="wf-kb-item-name">Pricing</div></div>
+              </div>
+            </div>
+            <div class="wf-kb-col">
+              <div class="wf-kb-col-h"><div class="wf-kb-dot" style="background:var(--accent)"></div><span class="wf-kb-col-n">Ready</span></div>
+              <div class="wf-kb-items">
+                <div class="wf-kb-item"><div class="wf-kb-item-name">Footer</div></div>
+              </div>
+            </div>
+            <div class="wf-kb-col">
+              <div class="wf-kb-col-h"><div class="wf-kb-dot" style="background:var(--quote-accent)"></div><span class="wf-kb-col-n">Review</span></div>
+              <div class="wf-kb-items">
+                <div class="wf-kb-item"><div class="wf-kb-item-name">Hero</div></div>
+              </div>
+            </div>
+            <div class="wf-kb-col">
+              <div class="wf-kb-col-h"><div class="wf-kb-dot" style="background:var(--success)"></div><span class="wf-kb-col-n">Done</span></div>
+              <div class="wf-kb-items">
+                <div class="wf-kb-item done"><div class="wf-kb-item-name">Nav ✓</div></div>
+                <div class="wf-kb-item done"><div class="wf-kb-item-name">CTA ✓</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-caption">Approve &amp; Add to Page. Assemble from voice alone.</div>
+    </div>
+
+    <!-- Feedback loop: Step 5 → Step 4 -->
+    <div class="wf-feedback">
+      <div class="wf-fb-path">
+        <div class="wf-fb-label">refine loop</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Step 1: Designer speaks -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">1<span class="sep">&middot;</span>Human</div>
+    <div class="step-title">Designer speaks</div>
+    <div class="step-desc">Hit record and describe what you want to build. The Web Speech API transcribes in real time. Talk naturally — <strong>the system extracts ideas from your stream of consciousness.</strong> No prompts to write, no forms to fill.</div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-mic-area">
+        <div class="vis-mic-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <div class="vis-waveform">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="vis-rec-badge">
+          <span class="vis-rec-dot"></span>
+          REC
+        </div>
+      </div>
+      <div class="vis-transcript-lines">
+        <div class="vis-t-line">
+          <span class="vis-t-time">10:32:04</span>
+          <span class="vis-t-text">I want a hero section with a bold headline and a call to action button</span>
+        </div>
+        <div class="vis-t-line">
+          <span class="vis-t-time">10:32:11</span>
+          <span class="vis-t-text">also a nav bar with the logo on the left and links on the right</span>
+        </div>
+        <div class="vis-t-line">
+          <span class="vis-t-time">10:32:18</span>
+          <span class="vis-t-text dim">maybe a pricing table with three tiers...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step 2: AI extracts ideas -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">2<span class="sep">&middot;</span>AI</div>
+    <div class="step-title">Ideas extracted from speech</div>
+    <div class="step-desc">Every 10 seconds, the transcript buffer is sent to Claude. The AI parses natural language into <strong>discrete, buildable UI ideas</strong> — each with a title, description, component type, and the exact quote that triggered it. Filler talk is ignored.</div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-extract-flow">
+        <div class="vis-extract-in">
+          <div class="lbl">Transcript</div>
+          <div class="vis-extract-text">"I want a <mark>hero section</mark> with a bold headline and a call to action button, also a <mark>nav bar</mark> with the logo on the left..."</div>
+        </div>
+        <div class="vis-extract-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="vis-extract-out">
+          <div class="lbl">Extracted</div>
+          <div class="vis-idea-card">
+            <div class="vis-idea-title">Bold Hero Section</div>
+            <span class="vis-idea-type">hero</span>
+          </div>
+          <div class="vis-idea-card">
+            <div class="vis-idea-title">Navigation Bar</div>
+            <span class="vis-idea-type">nav</span>
+          </div>
+          <div class="vis-idea-card" style="opacity:0.5">
+            <div class="vis-idea-title">Pricing Table</div>
+            <span class="vis-idea-type">pricing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step 3: Tokens constrain -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">3<span class="sep">&middot;</span>System</div>
+    <div class="step-title">Tokens constrain generation</div>
+    <div class="step-desc">Before generating code, the system wraps every prompt with your full design token set. Colors, fonts, spacing, radii. <strong>The AI cannot use values outside this set.</strong> Output is on-brand by construction, not by review.</div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-token-label">Injected automatically</div>
+      <div class="vis-token-grid">
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#0c0e12"></div><div><div class="vis-tname">bg</div><div class="vis-tval">#0c0e12</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#1a1d24"></div><div><div class="vis-tname">card</div><div class="vis-tval">#1a1d24</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#22252c"></div><div><div class="vis-tname">elevated</div><div class="vis-tval">#22252c</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#ffffff"></div><div><div class="vis-tname">text</div><div class="vis-tval">#ffffff</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#e8461e"></div><div><div class="vis-tname">accent</div><div class="vis-tval">#e8461e</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#F4B56F"></div><div><div class="vis-tname">quote</div><div class="vis-tval">#F4B56F</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#8B9A6B"></div><div><div class="vis-tname">success</div><div class="vis-tval">#8B9A6B</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#9a9ca2"></div><div><div class="vis-tname">dim</div><div class="vis-tval">#9a9ca2</div></div></div>
+        <div class="vis-token-cell"><div class="vis-swatch" style="background:#6b6e76"></div><div><div class="vis-tname">muted</div><div class="vis-tval">#6b6e76</div></div></div>
+      </div>
+      <div class="vis-token-footer">
+        <div class="vis-font-item"><span class="vis-font-lbl">Heading</span><span class="vis-font-val" style="font-weight:700">Outfit</span></div>
+        <div class="vis-font-item"><span class="vis-font-lbl">Mono</span><span class="vis-font-val" style="font-family:var(--mono)">JetBrains</span></div>
+        <div class="vis-font-item"><span class="vis-font-lbl">Radius</span><span class="vis-font-val" style="font-family:var(--mono);font-size:10px">4px</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step 4: Live render -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">4<span class="sep">&middot;</span>Output</div>
+    <div class="step-title">Components render live</div>
+    <div class="step-desc">Claude returns raw HTML. It drops into a sandboxed iframe — <strong>a live, interactive preview.</strong> The designer sees the actual rendered component, not a code diff. Each card on the board gets a thumbnail captured from this render.</div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-render-bar">
+        <span class="vis-render-lbl">Live Preview</span>
+        <div class="vis-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="vis-render-frame">
+        <div class="vis-hero-eyebrow">Design System</div>
+        <div class="vis-hero-h1">Build faster.<br>Stay on brand.</div>
+        <div class="vis-hero-sub">AI-generated components constrained by your design tokens. Every output is production-ready.</div>
+        <div class="vis-hero-cta">Get Started</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step 5: Refine -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">5<span class="sep">&middot;</span>Human</div>
+    <div class="step-title">Refine with instructions</div>
+    <div class="step-desc">Click any card to open its preview. Type a correction — <strong>"make the headline larger"</strong> or <strong>"vertically center the nav items."</strong> The AI receives your existing HTML plus your instruction and regenerates. Iterate until it's right.</div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-refine-preview">
+        <div class="vis-refine-component">
+          <div class="vis-refine-headline">Build faster. Stay on brand.</div>
+          <div class="vis-refine-subtext">AI-generated components constrained by your tokens.</div>
+          <div style="margin-top:6px">
+            <span style="display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:600;padding:5px 14px;border-radius:var(--radius);font-family:var(--heading);">Get Started</span>
+          </div>
+        </div>
+      </div>
+      <div class="vis-refine-bar">
+        <div class="vis-refine-input">
+          <span class="typed">make the headline larger and add more spacing</span>
+          <span class="vis-cursor"></span>
+        </div>
+        <div class="vis-regen-btn">Regenerate</div>
+      </div>
+      <div class="vis-refine-hint">
+        Press <kbd>Enter</kbd> to regenerate &middot; AI receives current HTML + your instruction
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step 6: Approve to page -->
+<div class="step">
+  <div class="step-text">
+    <div class="step-label">6<span class="sep">&middot;</span>Board</div>
+    <div class="step-title">Approve to page</div>
+    <div class="step-desc">Drag cards across the kanban board. When a component reaches Review, click <strong>Approve &amp; Add to Page</strong> — the HTML injects into a live sample page between hero and footer. Assemble a full page from voice alone. <strong>No redlines. No handoff.</strong></div>
+  </div>
+  <div class="step-vis">
+    <div class="vis-card">
+      <div class="vis-kb-toolbar">
+        <div class="vis-kb-title">Board</div>
+        <div class="vis-kb-stats">
+          <span><strong>5</strong> total</span>
+        </div>
+      </div>
+      <div class="vis-kb-board">
+        <div class="vis-kb-col">
+          <div class="vis-kb-col-head"><div class="vis-kb-dot" style="background:var(--text-muted)"></div><span class="vis-kb-col-name">Not Started</span><span class="vis-kb-col-count">1</span></div>
+          <div class="vis-kb-cards">
+            <div class="vis-kb-c"><div class="vis-kb-c-thumb"><div class="b" style="background:var(--bg);width:50%"></div><div class="b" style="background:var(--bg);width:70%"></div></div><div class="vis-kb-c-name">Pricing</div></div>
+          </div>
+        </div>
+        <div class="vis-kb-col">
+          <div class="vis-kb-col-head"><div class="vis-kb-dot" style="background:var(--accent)"></div><span class="vis-kb-col-name">Ready</span><span class="vis-kb-col-count">1</span></div>
+          <div class="vis-kb-cards">
+            <div class="vis-kb-c" style="border-color:rgba(232,70,30,0.2)"><div class="vis-kb-c-thumb"><div class="b" style="background:var(--accent);width:40%;opacity:0.8"></div><div class="b" style="background:var(--bg);width:60%"></div></div><div class="vis-kb-c-name">Footer</div></div>
+          </div>
+        </div>
+        <div class="vis-kb-col">
+          <div class="vis-kb-col-head"><div class="vis-kb-dot" style="background:var(--quote-accent)"></div><span class="vis-kb-col-name">Review</span><span class="vis-kb-col-count">1</span></div>
+          <div class="vis-kb-cards">
+            <div class="vis-kb-c" style="border-color:rgba(244,181,111,0.2)"><div class="vis-kb-c-thumb"><div class="b" style="background:var(--accent);width:35%;height:4px"></div><div class="b" style="background:var(--bg);width:80%"></div></div><div class="vis-kb-c-name">Hero</div></div>
+          </div>
+        </div>
+        <div class="vis-kb-col">
+          <div class="vis-kb-col-head"><div class="vis-kb-dot" style="background:var(--success)"></div><span class="vis-kb-col-name">Done</span><span class="vis-kb-col-count">2</span></div>
+          <div class="vis-kb-cards">
+            <div class="vis-kb-c approved" style="opacity:0.8;border-color:rgba(139,154,107,0.15)"><div class="vis-kb-c-thumb"><div class="b" style="background:var(--success);width:45%;opacity:0.5"></div></div><div class="vis-kb-c-name">Nav</div></div>
+            <div class="vis-kb-c approved" style="opacity:0.6;border-color:rgba(139,154,107,0.1)"><div class="vis-kb-c-thumb"><div class="b" style="background:var(--success);width:55%;opacity:0.3"></div></div><div class="vis-kb-c-name">CTA Row</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary-label">Summary</div>
+  <div class="summary-title">Who does what</div>
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <div class="summary-role">Designer</div>
+      <div class="summary-text">Talks through ideas. Reviews output. Refines with plain language. Approves to page. <strong>Directs — doesn't code.</strong></div>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-role">Design System</div>
+      <div class="summary-text">The constraint layer. Wraps every generation with tokens. <strong>Makes AI output safe to ship.</strong></div>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-role">Claude AI</div>
+      <div class="summary-text">Extracts ideas from speech. Generates HTML. Applies refinements. <strong>Executes — doesn't decide.</strong></div>
+    </div>
+  </div>
+  <div class="insight-box">
+    <div class="insight-label">The insight</div>
+    <div class="insight-text"><strong>Voice is the most natural design tool.</strong> Designers already talk through ideas in reviews, crits, and standups. Design Capture turns that conversation into components — no translation step, no ticket, no handoff. The design system ensures every output is on-brand by default.</div>
+  </div>
+</div>
+
+<div class="footer-space"></div>
+
+<script>
+// Scroll-triggered reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.step, .summary').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

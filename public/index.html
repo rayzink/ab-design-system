@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AB / Adam Blair</title>
+<link rel="icon" href="/favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0e12;--bg-card:#1a1d24;--bg-elevated:#22252c;
+  --text:#ffffff;--text-dim:#9a9ca2;--text-muted:#6b6e76;
+  --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+  --accent:#e8461e;--gold:#F4B56F;--success:#8B9A6B;
+  --radius:4px;
+  --heading:'Outfit',sans-serif;--body:'Outfit',sans-serif;
+  --mono:'JetBrains Mono',monospace;--serif:'Lora',Georgia,serif;
+}
+html{height:100%}
+body{
+  font-family:var(--body);background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;min-height:100%;
+  display:flex;flex-direction:column;
+}
+
+/* Grain */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;opacity:0.4;
+}
+
+/* Grid lines */
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size:80px 80px;
+}
+.grid-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 50% at 50% 40%,transparent 0%,var(--bg) 70%);
+}
+
+/* Topbar */
+.topbar{
+  position:relative;z-index:10;padding:24px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ab-logo{
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+}
+.ab-mark{
+  width:36px;height:36px;border:1px solid var(--border);border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--heading);font-size:14px;font-weight:700;
+  color:var(--text);letter-spacing:0.04em;
+  transition:all 0.3s;background:transparent;
+}
+.ab-logo:hover .ab-mark{border-color:var(--accent);color:var(--accent);background:rgba(232,70,30,0.04)}
+.ab-name{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.topbar-status{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.04em}
+
+/* Main content */
+.main{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px;position:relative;z-index:1;
+  overflow-y:auto;
+}
+.hero{text-align:center;margin-bottom:64px;max-width:600px}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
+  opacity:0;animation:fadeUp 0.6s 0.2s forwards;
+}
+.hero-title{
+  font-family:var(--serif);font-size:clamp(32px,5vw,48px);
+  font-weight:400;font-style:italic;line-height:1.15;
+  color:var(--text);margin-bottom:16px;
+  opacity:0;animation:fadeUp 0.6s 0.35s forwards;
+}
+.hero-title em{font-style:normal;color:var(--gold)}
+.hero-sub{
+  font-size:15px;color:var(--text-dim);line-height:1.6;max-width:440px;margin:0 auto;
+  opacity:0;animation:fadeUp 0.6s 0.5s forwards;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Cards grid */
+.cards{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:16px;width:100%;max-width:800px;
+}
+.card{
+  position:relative;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:8px;
+  padding:32px 28px;text-decoration:none;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+  overflow:hidden;display:flex;flex-direction:column;gap:12px;
+  opacity:0;animation:fadeUp 0.6s forwards;
+}
+.card:nth-child(1){animation-delay:0.5s}
+.card:nth-child(2){animation-delay:0.6s}
+.card:nth-child(3){animation-delay:0.7s}
+.card:nth-child(4){animation-delay:0.8s}
+
+.card::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity 0.4s;pointer-events:none;
+}
+.card:nth-child(1)::before{background:radial-gradient(ellipse at 30% 20%,rgba(244,181,111,0.06) 0%,transparent 60%)}
+.card:nth-child(2)::before{background:radial-gradient(ellipse at 70% 20%,rgba(232,70,30,0.06) 0%,transparent 60%)}
+.card:nth-child(3)::before{background:radial-gradient(ellipse at 30% 80%,rgba(139,154,107,0.06) 0%,transparent 60%)}
+.card:nth-child(4)::before{background:radial-gradient(ellipse at 70% 80%,rgba(232,70,30,0.04) 0%,transparent 60%)}
+
+.card:hover{
+  border-color:var(--border-hover);
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.3);
+}
+.card:hover::before{opacity:1}
+
+.card-num{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;
+  color:var(--text-muted);text-transform:uppercase;
+}
+.card-title{
+  font-family:var(--serif);font-size:24px;font-style:italic;
+  color:var(--text);line-height:1.2;
+}
+.card:nth-child(1) .card-title{color:var(--gold)}
+.card:nth-child(2) .card-title{color:var(--accent)}
+.card:nth-child(3) .card-title{color:var(--success)}
+
+.card-desc{
+  font-size:13px;color:var(--text-muted);line-height:1.55;flex:1;
+}
+.card-arrow{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10px;color:var(--text-muted);
+  letter-spacing:0.04em;margin-top:8px;
+  transition:all 0.3s;
+}
+.card-arrow svg{
+  width:14px;height:14px;stroke:currentColor;fill:none;
+  stroke-width:1.5;transition:transform 0.3s;
+}
+.card:hover .card-arrow{color:var(--text)}
+.card:hover .card-arrow svg{transform:translateX(4px)}
+
+.card-tag{
+  position:absolute;top:16px;right:16px;
+  font-family:var(--mono);font-size:8px;letter-spacing:0.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:var(--radius);
+  border:1px solid var(--border);color:var(--text-muted);
+}
+.card-tag.live{border-color:rgba(139,154,107,0.2);color:var(--success);background:rgba(139,154,107,0.04)}
+.card-tag.ext{border-color:rgba(232,70,30,0.15);color:var(--accent)}
+
+/* Next Steps */
+.next-steps{
+  width:100%;max-width:800px;margin-top:16px;
+  opacity:0;animation:fadeUp 0.6s 0.9s forwards;
+}
+.next-steps-toggle{
+  width:100%;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;padding:24px 28px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:border-color 0.3s,box-shadow 0.3s;
+  position:relative;overflow:hidden;
+}
+.next-steps-toggle::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(244,181,111,0.04) 0%,transparent 60%);
+  transition:opacity 0.4s;pointer-events:none;
+}
+.next-steps-toggle:hover{border-color:var(--border-hover);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.next-steps-toggle:hover::before{opacity:1}
+.next-steps-toggle-left{display:flex;align-items:center;gap:16px}
+.next-steps-num{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--text-muted);text-transform:uppercase}
+.next-steps-title{font-family:var(--serif);font-size:24px;font-style:italic;color:var(--gold);line-height:1.2}
+.next-steps-chevron{
+  width:24px;height:24px;color:var(--text-muted);transition:transform 0.3s;flex-shrink:0;
+}
+.next-steps.open .next-steps-chevron{transform:rotate(180deg)}
+.next-steps-body{
+  display:none;background:var(--bg-card);
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 8px 8px;
+  padding:0 28px 32px;
+  overflow:hidden;
+}
+.next-steps.open .next-steps-toggle{border-radius:8px 8px 0 0;border-bottom-color:transparent}
+.next-steps.open .next-steps-body{display:block;animation:fadeUp 0.4s ease}
+.ns-section{margin-top:32px}
+.ns-section-head{
+  display:flex;align-items:center;gap:10px;margin-bottom:20px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.ns-section-icon{
+  width:28px;height:28px;border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ns-section-title{font-family:var(--heading);font-size:14px;font-weight:700;color:var(--text)}
+.ns-section-tag{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:2px 8px;border-radius:var(--radius);margin-left:auto;
+}
+.ns-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;min-width:0}
+.ns-card{
+  background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;transition:border-color 0.2s;min-width:0;overflow:hidden;
+}
+.ns-card:hover{border-color:var(--border-hover)}
+.ns-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.ns-card-title{font-family:var(--heading);font-size:12px;font-weight:600;color:var(--text)}
+.ns-card-desc{font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:8px}
+.ns-card-meta{display:flex;align-items:center;gap:6px;padding-top:8px;border-top:1px solid var(--border)}
+.ns-badge{
+  font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:0.04em;
+  padding:2px 6px;border-radius:var(--radius);white-space:nowrap;
+}
+.ns-badge.high{background:rgba(232,70,30,0.08);color:var(--accent)}
+.ns-badge.med{background:rgba(244,181,111,0.08);color:var(--gold)}
+.ns-badge.low{background:rgba(107,110,118,0.1);color:var(--text-muted)}
+.ns-badge.time{background:rgba(139,154,107,0.08);color:var(--success)}
+@media(max-width:640px){
+  .ns-grid{grid-template-columns:1fr}
+}
+
+/* Footer */
+.footer{
+  position:relative;z-index:1;padding:24px 40px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  border-top:1px solid var(--border);
+}
+.footer-text{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:0.06em}
+.footer-text span{color:var(--gold)}
+
+/* Mobile */
+@media(max-width:640px){
+  .topbar{padding:16px 20px}
+  .main{padding:24px 20px}
+  .cards{grid-template-columns:1fr;max-width:400px}
+  .hero{margin-bottom:40px}
+  .footer{padding:20px}
+  .ab-name{display:none}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="ab-logo" href="/">
+    <div class="ab-mark">AB</div>
+    <span class="ab-name">Adam Blair</span>
+  </a>
+  <div class="topbar-right">
+    <div class="topbar-dot"></div>
+    <span class="topbar-status">Systems Online</span>
+  </div>
+</header>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">Design + AI</div>
+    <h1 class="hero-title">Design systems that <em>build themselves</em></h1>
+    <p class="hero-sub">A collection of tools and demos exploring the intersection of design systems, voice interfaces, and autonomous agents.</p>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="/design-capture.html">
+      <span class="card-tag live">Live Demo</span>
+      <span class="card-num">1</span>
+      <span class="card-title">Design Capture</span>
+      <span class="card-desc">Voice-to-UI: speak a page into existence using AI and your design system. Token-constrained generation with live preview.</span>
+      <span class="card-arrow">Launch <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+
+    <a class="card" href="/interview-arch-diagram.html">
+      <span class="card-tag">Architecture</span>
+      <span class="card-num">2</span>
+      <span class="card-title">Agent Army</span>
+      <span class="card-desc">Multi-agent architecture for autonomous dev pipelines. Research, plan, build, test, review. No human in the loop.</span>
+      <span class="card-arrow">Explore <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+
+    <a class="card" href="/travel.html">
+      <span class="card-tag">Output</span>
+      <span class="card-num">3</span>
+      <span class="card-title">Costa Rica 2026</span>
+      <span class="card-desc">Spreadsheet data transformed into a polished travel itinerary, styled automatically by the design system.</span>
+      <span class="card-arrow">View <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+
+    <a class="card" href="https://adamblair.design" target="_blank" rel="noopener">
+      <span class="card-tag ext">External</span>
+      <span class="card-num">4</span>
+      <span class="card-title">Portfolio</span>
+      <span class="card-desc">The live portfolio site, the design system in production. The foundation everything here is built on.</span>
+      <span class="card-arrow">Visit <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+    </a>
+  </div>
+
+  <div class="next-steps" id="nextSteps">
+    <div class="next-steps-toggle" onclick="document.getElementById('nextSteps').classList.toggle('open')">
+      <div class="next-steps-toggle-left">
+        <span class="next-steps-num">05</span>
+        <span class="next-steps-title">Next Steps</span>
+      </div>
+      <svg class="next-steps-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="next-steps-body">
+
+      <!-- Design Capture -->
+      <div class="ns-section">
+        <div class="ns-section-head">
+          <div class="ns-section-icon" style="background:rgba(232,70,30,0.08);border:1px solid rgba(232,70,30,0.15)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8461e" stroke-width="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <span class="ns-section-title">Design Capture</span>
+          <span class="ns-section-tag" style="background:rgba(232,70,30,0.08);color:var(--accent)">Live Demo</span>
+        </div>
+        <div class="ns-grid">
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Token Violation Audit</div></div>
+            <div class="ns-card-desc">Post-generation validation flags off-system values. Red "Off-System" badge, no extra API calls.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~4 hrs</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Figma MCP Token Sync</div></div>
+            <div class="ns-card-desc">Connect to Figma's MCP server. Constraint layer updates automatically when tokens change in Figma.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~1 day</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">W3C Token Export</div></div>
+            <div class="ns-card-desc">Export tokens in DTCG format. Plugs into Tokens Studio, Style Dictionary, Supernova out of the box.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~4 hrs</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Storybook Story Generation</div></div>
+            <div class="ns-card-desc">Auto-generate CSF3 story files alongside HTML components. The answer to "what happens after Done?"</div>
+            <div class="ns-card-meta"><span class="ns-badge med">Med Impact</span><span class="ns-badge time">~1 day</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Multi-Speaker Attribution</div></div>
+            <div class="ns-card-desc">Speaker diarization on the audio stream. Each Kanban card shows who said what and when.</div>
+            <div class="ns-card-meta"><span class="ns-badge med">Med Impact</span><span class="ns-badge time">~2 days</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">ZenBusiness Theme Mode</div></div>
+            <div class="ns-card-desc">Swap in ZenBusiness brand tokens. Theme dropdown proves the system is brand-agnostic.</div>
+            <div class="ns-card-meta"><span class="ns-badge low">Nice to Have</span><span class="ns-badge time">~3 hrs</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Army -->
+      <div class="ns-section">
+        <div class="ns-section-head">
+          <div class="ns-section-icon" style="background:rgba(244,181,111,0.08);border:1px solid rgba(244,181,111,0.15)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F4B56F" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <span class="ns-section-title">Agent Army</span>
+          <span class="ns-section-tag" style="background:rgba(244,181,111,0.08);color:var(--gold)">Architecture</span>
+        </div>
+        <div class="ns-grid">
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Parallel Agent Execution</div></div>
+            <div class="ns-card-desc">Replace sequential subprocess calls with Agent SDK subagent spawning. Run phases in parallel with context isolation.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~2 days</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">DS Constraint as Agent Skill</div></div>
+            <div class="ns-card-desc">Package token rules and a11y contracts as a portable skill manifest. Reusable across the full pipeline.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~1 day</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Intern Subtask Pattern</div></div>
+            <div class="ns-card-desc">Bounded 60-second subagents for narrow work: one test, one import check. Reduces retries and context waste.</div>
+            <div class="ns-card-meta"><span class="ns-badge high">High Impact</span><span class="ns-badge time">~2 days</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">LLM-Powered Task Routing</div></div>
+            <div class="ns-card-desc">Single Haiku call at intake classifies task type and returns a routing plan. State machine stays deterministic.</div>
+            <div class="ns-card-meta"><span class="ns-badge med">Med Impact</span><span class="ns-badge time">~1 day</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">Adversarial Review Phase</div></div>
+            <div class="ns-card-desc">Two subagents debate each diff: one advocates, one finds flaws. Richer review than scoring alone.</div>
+            <div class="ns-card-meta"><span class="ns-badge med">Med Impact</span><span class="ns-badge time">~1 day</span></div>
+          </div>
+          <div class="ns-card">
+            <div class="ns-card-head"><div class="ns-card-title">ZenBusiness Research Pipeline</div></div>
+            <div class="ns-card-desc">Drop competitor links in Discord. Alfred pre-fetches, Claude generates comparative analysis cards.</div>
+            <div class="ns-card-meta"><span class="ns-badge low">Nice to Have</span><span class="ns-badge time">~3 days</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <span class="footer-text">Built with the <span>AB Design System</span></span>
+</footer>
+</body>
+</html>
