@@ -1118,7 +1118,7 @@
   }
   .modal-overlay.open { display: flex; }
   .modal {
-    width: 85vw; max-width: 960px; height: 80vh;
+    width: 90vw; max-width: 1100px; height: 80vh;
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 8px; overflow: hidden;
     display: flex; flex-direction: column;
@@ -1198,27 +1198,48 @@
     background: rgba(244,181,111,0.1); color: var(--quote-accent); flex-shrink: 0;
   }
 
-  /* Variations strip */
-  .modal-variations {
-    flex-shrink: 0; display: none; border-bottom: 1px solid var(--border);
-    padding: 8px 20px; overflow-x: auto;
+  /* Modal content area: iframe left, sidebar right */
+  .modal-content {
+    display: flex; flex: 1; overflow: hidden;
   }
-  .modal-variations.has-variations { display: flex; gap: 8px; align-items: center; }
-  .modal-var-thumb {
-    width: 80px; height: 52px; border-radius: var(--radius);
-    background: var(--bg); border: 2px solid transparent;
+  .modal-body { flex: 1; overflow: hidden; }
+
+  /* Variations sidebar */
+  .modal-sidebar {
+    width: 180px; flex-shrink: 0;
+    background: var(--bg); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .sidebar-head {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted);
+    padding: 12px 10px 8px; flex-shrink: 0;
+  }
+  .sidebar-thumbs {
+    flex: 1; overflow-y: auto; padding: 0 10px 10px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .sidebar-thumb {
+    width: 160px; height: 100px; border-radius: 4px;
+    background: var(--bg-elevated); border: 2px solid transparent;
     overflow: hidden; cursor: pointer; flex-shrink: 0;
     transition: border-color 0.15s;
   }
-  .modal-var-thumb:hover { border-color: var(--text-muted); }
-  .modal-var-thumb.active { border-color: var(--accent); }
-  .modal-var-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
-  .modal-var-thumb .no-thumb {
+  .sidebar-thumb:hover { border-color: var(--text-muted); }
+  .sidebar-thumb.active { border-color: var(--accent); }
+  .sidebar-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+  .sidebar-thumb .no-thumb {
     width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 8px; color: var(--text-muted);
+    font-family: var(--mono); font-size: 9px; color: var(--text-muted);
   }
-
-  .modal-body { flex: 1; overflow: hidden; }
+  .sidebar-add-btn {
+    flex-shrink: 0; margin: 8px 10px 10px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em;
+    padding: 6px 0; border-radius: var(--radius);
+    border: 1px dashed var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+  }
+  .sidebar-add-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(232,70,30,0.04); }
   .modal-iframe { width: 100%; height: 100%; border: none; background: var(--bg); }
   .modal-foot {
     flex-shrink: 0; padding: 12px 20px;
@@ -1340,7 +1361,7 @@
 
 <div class="topbar">
   <div class="topbar-left">
-    <a href="/" class="ab-home" style="width:28px;height:28px;border:1px solid rgba(255,255,255,0.06);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-size:11px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;flex-shrink:0;margin-right:8px" onmouseover="this.style.borderColor='#e8461e';this.style.color='#e8461e'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.color='#fff'">AB</a>
+    <a href="index.html" class="ab-home" style="width:28px;height:28px;border:1px solid rgba(255,255,255,0.06);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-size:11px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;flex-shrink:0;margin-right:8px" onmouseover="this.style.borderColor='#e8461e';this.style.color='#e8461e'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.color='#fff'">AB</a>
     <div class="app-name">Design <span>Capture</span></div>
   </div>
   <div class="topbar-center">
@@ -1629,7 +1650,7 @@
     <div class="findings-scroll">
       <div class="findings-hero">
         <h2>Findings</h2>
-        <p>Problems encountered while building the voice-to-UI pipeline, and how each was resolved. A living log of prompt engineering, rendering, and extraction challenges.</p>
+        <p>Key insights from building and iterating on a voice-driven UI generation pipeline. Each finding represents a pattern that emerged across multiple prompt-engineering and rendering cycles.</p>
       </div>
       <div class="findings-list">
 
@@ -1637,24 +1658,19 @@
           <div class="finding-header">
             <span class="finding-num">1</span>
             <div class="finding-head-text">
-              <div class="finding-title">Sonnet labels components wrong</div>
-              <div class="finding-summary">User says "badge" but extraction returns "button" as componentType</div>
+              <div class="finding-title">LLMs need page state to interpret intent</div>
+              <div class="finding-summary">Without knowing what's on the page, every request becomes "create new" instead of "modify existing"</div>
             </div>
             <span class="finding-tag extraction">Extraction</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">The extraction prompt listed generic component types (hero, nav, card, form, etc.) as examples. Sonnet would map "badge" to the nearest known type — "button." Even when the user explicitly said "badge," the model defaulted to familiar categories.</div>
+            <div class="finding-problem">The extraction model had no awareness of the current page. "Fix the hero text wrapping" and "build a hero section" were indistinguishable. Every request became a create action, producing duplicate components instead of modifying existing ones.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Rewrote the extraction prompt with an exhaustive componentType list (badge, tooltip, tag, avatar, chip, pill, etc.) and added the rule: "Use the EXACT element name the speaker used." Added 3 few-shot examples showing correct extraction, including one where "badge" stays "badge."</div>
-            <div class="finding-code">componentType: "the specific element type the speaker mentioned —
-use their exact word: badge, tooltip, tag, avatar, icon, pill,
-chip, toggle, switch, dropdown..."
-
-<em>// Few-shot example:</em>
-Transcript: "add a badge to the AI Chat button"
-Output: { componentType: "button", actionType: "modify" }</div>
+            <div class="finding-solution">Inject the live page's component tree into the extraction prompt. Scrape all <code>data-component</code> attributes, their text content, and design tokens from the page iframe. The model can then map spoken references ("the hero label") to actual elements and distinguish modify vs. create intent.</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">Agentic UI tools need grounding in current state. The model isn't looking at the screen — you have to serialize the relevant page context into every prompt. This is the single highest-leverage improvement in the pipeline.</div>
           </div>
         </div>
 
@@ -1662,22 +1678,19 @@ Output: { componentType: "button", actionType: "modify" }</div>
           <div class="finding-header">
             <span class="finding-num">2</span>
             <div class="finding-head-text">
-              <div class="finding-title">Modifications extracted as new components</div>
-              <div class="finding-summary">"Fix the text wrapping" creates a standalone label instead of modifying the existing one</div>
+              <div class="finding-title">Context scope determines output quality</div>
+              <div class="finding-summary">Too little context → isolated fragments. Too much → the model rewrites everything.</div>
             </div>
-            <span class="finding-tag extraction">Extraction</span>
+            <span class="finding-tag generation">Generation</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">The extraction prompt had no concept of the page's current state. It couldn't distinguish "fix something that exists" from "build something new." Every idea came back as actionType: "create" with no reference to existing elements.</div>
+            <div class="finding-problem">Early prompts passed only the target element's HTML. A hero label fix rendered as an orphaned line of text with no visual context. But passing the entire page caused the model to redesign unrelated sections. Finding the right scope — enough context to judge the change, not so much that the model improvises — was the core challenge.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Three changes: (1) Added <code>getPageContentSummary()</code> that scrapes all <code>data-component</code> attributes from the page iframe and includes them in the prompt. (2) Added <code>targetElement</code> field mapped to data-component names. (3) Made actionType default to "modify" with the rule: "adding something TO an existing element = modify that element." Few-shot examples show the distinction clearly.</div>
-            <div class="finding-code"><em>// Page context injected into extraction prompt:</em>
-[Hero Label] &lt;p&gt; text: "Product Designer · AI Engineer · Salt Lake City"
-  tokens: font: JetBrains Mono 12px/400, color: #F4B56F
-[Hero Heading] &lt;h1&gt; text: "Designing"
-  tokens: font: Outfit clamp(80px,10vw,140px)/700</div>
+            <div class="finding-solution">Built a tiered context system: element-level edits get the target + immediate siblings. Section-level changes (like adding a background image to the hero) get the full <code>&lt;section&gt;</code> block. The prompt explicitly states "return this HTML with ONLY the requested change applied" and "everything else must remain identical."</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">Context scoping is the most sensitive lever in generative UI. The right window is: the smallest DOM subtree that makes the change visually evaluable. Too narrow and you can't judge impact; too wide and the model starts "helping" with things you didn't ask for.</div>
           </div>
         </div>
 
@@ -1685,24 +1698,19 @@ Output: { componentType: "button", actionType: "modify" }</div>
           <div class="finding-header">
             <span class="finding-num">3</span>
             <div class="finding-head-text">
-              <div class="finding-title">Generated badges aren't round</div>
-              <div class="finding-summary">Sonnet creates square or rectangular badges instead of circular dots</div>
+              <div class="finding-title">Variations need hard constraints, not creative freedom</div>
+              <div class="finding-summary">"Generate 5 variations" produces 5 completely different components instead of 5 takes on one element</div>
             </div>
             <span class="finding-tag generation">Generation</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">Telling Sonnet to "add a badge dot" produced various shapes — pills, squares, rounded rectangles. The design system's 4px border-radius was being applied to everything, including elements that should be circles.</div>
+            <div class="finding-problem">Asking for "5 variations of the hero label" produced 5 entirely different hero sections — different layouts, different copy, different structure. The model interpreted "variation" as creative license over the entire output. Each one was a redesign, not an exploration of one element.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Added an explicit BADGE PATTERN block to <code>buildGenPrompt()</code> that fires when the description contains "badge," "dot," or "indicator." It provides the exact CSS as a copy-paste snippet rather than trusting Sonnet to infer the visual.</div>
-            <div class="finding-code"><em>// Explicit CSS in prompt:</em>
-Add a child: &lt;span style="position:absolute;
-  top:-3px; right:-3px; width:10px; height:10px;
-  <em>border-radius:50%</em>; background:#e8461e;
-  display:block;"&gt;&lt;/span&gt;</div>
+            <div class="finding-solution">Constrain the variation scope explicitly: "Only vary the SPECIFIC element requested. Do NOT change surrounding elements, layout structure, or unrelated components. Keep ALL text content identical. Only vary the targeted element's styling: font size, weight, letter-spacing, color, spacing, alignment." The prompt must name what CAN change and what CANNOT.</div>
             <div class="finding-label">Takeaway</div>
-            <div class="finding-solution">Sonnet needs exact CSS values for visual patterns. Vague instructions like "circular badge" fail ~40% of the time. Providing the literal style string brings it to ~95%.</div>
+            <div class="finding-solution">LLMs default to maximizing the "creative" interpretation of variation. For design exploration, you need the opposite — hold everything constant except one variable. The prompt engineering pattern is: enumerate what's frozen, then give a narrow band of permitted change.</div>
           </div>
         </div>
 
@@ -1710,21 +1718,19 @@ Add a child: &lt;span style="position:absolute;
           <div class="finding-header">
             <span class="finding-num">4</span>
             <div class="finding-head-text">
-              <div class="finding-title">Previews show elements in isolation</div>
-              <div class="finding-summary">A text wrap fix looks correct but has no surrounding context to judge against</div>
+              <div class="finding-title">Replace-in-place vs. append is a critical routing decision</div>
+              <div class="finding-summary">Approving a hero modification added a second hero at the bottom instead of updating the existing one</div>
             </div>
             <span class="finding-tag generation">Generation</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">When modifying a single element (like the hero label), the generation prompt only included that element's HTML. The preview showed just a line of gold text on a dark background — no heading, no nav, nothing to compare against. You couldn't tell if the fix actually worked.</div>
+            <div class="finding-problem">The approval flow had one path: append the generated HTML as a new section. This works for new components (a testimonial card, a footer) but fails completely for modifications. "Add a background image to the hero" produced a second hero below the contact section. The system couldn't distinguish "new thing" from "changed version of existing thing."</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Added <code>getElementContext()</code> that walks up the DOM to find the nearest parent with a <code>data-component</code> attribute. The generation prompt now includes both the target element AND surrounding context, with instructions to "include neighboring elements so the change is visible in context."</div>
-            <div class="finding-code"><em>// getElementContext() walks up to parent component:</em>
-Target: Hero Label → Parent: Hero Section
-Prompt includes the full hero section HTML so
-the preview shows: label + heading + CTA together</div>
+            <div class="finding-solution">Route approvals based on action type. Modify actions use DOM-based replacement — parse the page, find the matching <code>data-component</code>, swap it with the generated HTML. Create actions append. The approval overlay shows the real before/after diff using the correct strategy, so the designer sees exactly what will change.</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">Any AI tool that generates UI into an existing page needs a merge strategy, not just an append strategy. This mirrors how design tools work — you don't paste a new artboard, you modify a layer. The routing decision (replace vs. append) must be made at extraction time and carried through the entire pipeline.</div>
           </div>
         </div>
 
@@ -1732,22 +1738,19 @@ the preview shows: label + heading + CTA together</div>
           <div class="finding-header">
             <span class="finding-num">5</span>
             <div class="finding-head-text">
-              <div class="finding-title">Mobile fix shows the problem, not the solution</div>
-              <div class="finding-summary">Text wrap fix renders at desktop width where wrapping doesn't occur</div>
+              <div class="finding-title">Prescriptive CSS outperforms descriptive prompts</div>
+              <div class="finding-summary">Giving the model exact style strings produces consistent results; describing the visual does not</div>
             </div>
             <span class="finding-tag generation">Generation</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">The prompt said "fix for mobile" but the generated HTML rendered at whatever width the capture iframe was — usually wide enough that no wrapping occurred. Or it wrapped in a 375px div but didn't actually change the CSS, just showing the same broken layout at mobile width.</div>
+            <div class="finding-problem">"Add a circular badge" produced squares, pills, and rounded rectangles. "Make it bigger" sometimes doubled font-size, sometimes added padding. The model's interpretation of visual descriptions is inconsistent — it has no pixel-level understanding of what "circular" or "bigger" looks like in CSS.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Rewrote the mobile branch of <code>buildGenPrompt()</code> to be explicit: "Wrap in <code>width:375px</code>. APPLY THE FIX — show text fitting properly, not still broken. Fix options: reduce font-size, add white-space:nowrap, flex-wrap." The key phrase: "The output must show the SOLUTION."</div>
-            <div class="finding-code"><em>// Before:</em> "Show the element AS IT WOULD APPEAR AT 375px"
-<em>→ Sonnet just shows the broken version at 375px</em>
-
-<em>// After:</em> "APPLY THE FIX — show text fitting properly"
-<em>→ Sonnet actually modifies the CSS to fix it</em></div>
+            <div class="finding-solution">For common patterns (badges, mobile fixes, sizing), provide literal CSS in the prompt: <code>border-radius:50%; width:10px; height:10px</code>. For design token enforcement, inject the actual token values rather than referencing them by name. The model copies what you give it reliably; it generates what you describe unreliably.</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">There's a spectrum from "describe the outcome" to "provide the code." For visual CSS details, pushing toward the prescriptive end produces dramatically better consistency. The prompt is most effective when it reads like a code review comment, not a design brief.</div>
           </div>
         </div>
 
@@ -1755,23 +1758,19 @@ the preview shows: label + heading + CTA together</div>
           <div class="finding-header">
             <span class="finding-num">6</span>
             <div class="finding-head-text">
-              <div class="finding-title">Large elements render as white blobs</div>
-              <div class="finding-summary">Hero heading at 140px overflows the capture frame, producing a white circle</div>
+              <div class="finding-title">Thumbnails are the primary feedback loop</div>
+              <div class="finding-summary">Without instant visual feedback, the review cycle collapses</div>
             </div>
             <span class="finding-tag rendering">Rendering</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">The hero heading uses <code>font-size: clamp(80px, 10vw, 140px)</code>. When "make it bigger" increased this further, the rendered text exceeded the 500×300 max capture dimensions. html2canvas clipped it or produced artifacts — typically a white circle or blob in the thumbnail.</div>
+            <div class="finding-problem">Generated HTML needed to be visually evaluated at a glance — but early thumbnails were broken. Large elements overflowed and became white blobs. Small components (buttons, badges) rendered as tiny dots in huge canvases. Without usable thumbnails, every review required opening the full preview modal, destroying the kanban workflow's speed.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Updated <code>renderAndCapture()</code> to detect oversized content and apply CSS <code>transform: scale()</code> to shrink it proportionally before capture. Max bounds increased to 600×400. If content exceeds that, a scale factor is computed and applied to <code>transform-origin: top left</code>.</div>
-            <div class="finding-code"><em>// Auto-scale for oversized content:</em>
-if (rawW > maxW || rawH > maxH) {
-  const scale = Math.min(maxW/rawW, maxH/rawH);
-  d.body.style.transform = `scale(${scale})`;
-  d.body.style.transformOrigin = 'top left';
-}</div>
+            <div class="finding-solution">Auto-scale oversized content before capture. Auto-size the canvas to content bounds + padding. Center small components with flexbox. These rendering fixes turned thumbnails into a reliable at-a-glance signal — you can evaluate 5 variations in the sidebar without opening any of them.</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">In a generative UI workflow, the thumbnail IS the interface. If the visual preview is broken, the entire tool feels broken — even if the generated HTML is perfect. Invest in the rendering pipeline as much as the generation pipeline.</div>
           </div>
         </div>
 
@@ -1779,71 +1778,19 @@ if (rawW > maxW || rawH > maxH) {
           <div class="finding-header">
             <span class="finding-num">7</span>
             <div class="finding-head-text">
-              <div class="finding-title">Thumbnails tiny or off-center</div>
-              <div class="finding-summary">Small components (badges, buttons) appeared as dots in the upper corner of thumbnails</div>
+              <div class="finding-title">Voice input changes the extraction problem</div>
+              <div class="finding-summary">Spoken design direction is ambiguous, referential, and context-dependent in ways typed prompts aren't</div>
             </div>
-            <span class="finding-tag rendering">Rendering</span>
+            <span class="finding-tag extraction">Extraction</span>
             <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           </div>
           <div class="finding-detail">
             <div class="finding-label">Problem</div>
-            <div class="finding-problem">The capture iframe was fixed at 800×600 with the component rendered at actual size. A 120px button appeared as a tiny dot in the corner of a huge dark canvas. The thumbnail's <code>object-fit: contain</code> shrank it further.</div>
+            <div class="finding-problem">Designers don't speak in structured prompts. A design review sounds like: "that hero label, make it a bit more punchy — oh and give me like 5 options for the background." One sentence contains a modify action, a subjective quality ("punchy"), a separate task, and a variation count. The extraction model needs to decompose natural speech into discrete, actionable tasks.</div>
             <div class="finding-label">Solution</div>
-            <div class="finding-solution">Changed the render iframe body to <code>display:flex; align-items:center; justify-content:center</code>. Added auto-sizing: measure the component's bounding box, set canvas to content size + 32px padding. Changed card thumbnails to <code>max-height:100px; object-fit:cover; object-position:center</code>.</div>
-          </div>
-        </div>
-
-        <div class="finding-card" onclick="this.classList.toggle('open')">
-          <div class="finding-header">
-            <span class="finding-num">8</span>
-            <div class="finding-head-text">
-              <div class="finding-title">Header borders don't align across panels</div>
-              <div class="finding-summary">Toolbar, column headers, and transcript panel had competing border lines at different heights</div>
-            </div>
-            <span class="finding-tag layout">Layout</span>
-            <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-          </div>
-          <div class="finding-detail">
-            <div class="finding-label">Problem</div>
-            <div class="finding-problem">Three horizontal headers competed: the tasks toolbar (padding-based height), the kanban column headers (own border-bottom), and the transcript panel header (different padding). Each had slightly different heights, creating misaligned horizontal lines.</div>
-            <div class="finding-label">Solution</div>
-            <div class="finding-solution">Set all three headers to a fixed <code>height: 45px</code> with <code>padding: 0</code> vertical. Removed the column header <code>border-bottom</code> entirely — columns are separated by vertical borders only, with the single toolbar border serving as the horizontal divider.</div>
-          </div>
-        </div>
-
-        <div class="finding-card" onclick="this.classList.toggle('open')">
-          <div class="finding-header">
-            <span class="finding-num">9</span>
-            <div class="finding-head-text">
-              <div class="finding-title">In-iframe toolbar interferes with voice recording</div>
-              <div class="finding-summary">Edit/Delete buttons in the page iframe captured clicks intended for element selection</div>
-            </div>
-            <span class="finding-tag layout">Layout</span>
-            <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-          </div>
-          <div class="finding-detail">
-            <div class="finding-label">Problem</div>
-            <div class="finding-problem">A floating Edit/Delete toolbar appeared inside the page preview iframe when elements were selected. During voice recording, the user was selecting elements to reference them in speech — but the toolbar intercepted clicks and messed up selections.</div>
-            <div class="finding-label">Solution</div>
-            <div class="finding-solution">Removed the in-iframe toolbar entirely. Moved Edit Text and Delete Element buttons to the Token Editor drawer (right side panel), which opens on element selection. The iframe now only handles selection highlighting — editing actions happen in the drawer via <code>postMessage</code>.</div>
-          </div>
-        </div>
-
-        <div class="finding-card" onclick="this.classList.toggle('open')">
-          <div class="finding-header">
-            <span class="finding-num">10</span>
-            <div class="finding-head-text">
-              <div class="finding-title">Icon swap doesn't enable "Add Option"</div>
-              <div class="finding-summary">Changing an icon in the Token Editor doesn't register as a pending change</div>
-            </div>
-            <span class="finding-tag layout">Layout</span>
-            <svg class="finding-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-          </div>
-          <div class="finding-detail">
-            <div class="finding-label">Problem</div>
-            <div class="finding-problem">The "Add Option" button in the Token Editor was gated by <code>Object.keys(tePendingChanges).length > 0</code>. CSS changes (font-size, color, padding) populated <code>tePendingChanges</code>, but icon swaps via <code>stageIcon()</code> only sent a <code>postMessage</code> to the iframe — they didn't update the pending changes object.</div>
-            <div class="finding-label">Solution</div>
-            <div class="finding-solution">Added <code>tePendingChanges._icon = name</code> and <code>buildCreateActions()</code> call to <code>stageIcon()</code>. Now icon changes register as pending, enabling the Add Option button.</div>
+            <div class="finding-solution">Few-shot examples that mirror real spoken patterns, not clean typed instructions. Rules for variation count extraction ("if they say multiple/options/versions, set variationCount"). Buffered processing that waits for natural pauses before extracting, so multi-sentence instructions aren't split into fragments.</div>
+            <div class="finding-label">Takeaway</div>
+            <div class="finding-solution">Voice-to-UI is a fundamentally different input modality than text-to-UI. The extraction layer has to handle ambiguity, co-references ("that thing"), and implicit context that typed prompts make explicit. This is where the most interesting design problems live.</div>
           </div>
         </div>
 
@@ -1899,9 +1846,15 @@ if (rawW > maxW || rawH > maxH) {
       <span class="mcb-text" id="modalContextText"></span>
       <span class="mcb-tag">New Element</span>
     </div>
-    <div class="modal-variations" id="modalVariations"></div>
-    <div class="modal-body">
-      <iframe id="modalIframe" class="modal-iframe"></iframe>
+    <div class="modal-content">
+      <div class="modal-body">
+        <iframe id="modalIframe" class="modal-iframe"></iframe>
+      </div>
+      <div class="modal-sidebar" id="modalSidebar">
+        <div class="sidebar-head">Variations</div>
+        <button class="sidebar-add-btn" id="sidebarAddBtn" onclick="addOneVariation()">+ Add Variation</button>
+        <div class="sidebar-thumbs" id="sidebarThumbs"></div>
+      </div>
     </div>
     <div class="modal-foot">
       <div class="modal-foot-row">
@@ -2107,12 +2060,17 @@ Transcript: "I want a tooltip that shows status details when you hover the indic
 Output: [{"title": "Status Tooltip", "description": "Create a new tooltip component that appears on hover over the status indicator, showing last-checked time and system details.", "quote": "I want a tooltip that shows status details", "componentType": "tooltip", "actionType": "create", "targetElement": null, "variationCount": 1}]
 WHY: This is a genuinely new element that doesn't exist on the page yet.
 
+Transcript: "give me 5 different variations of the hero label"
+Output: [{"title": "Hero Label Variations", "description": "Generate 5 visually distinct variations of the Hero Label element. Vary typography size, weight, letter-spacing, layout, and color treatment while keeping the text content identical.", "quote": "give me 5 different variations of the hero label", "componentType": "label", "actionType": "modify", "targetElement": "Hero Label", "variationCount": 5}]
+WHY: The speaker explicitly asked for multiple variations. variationCount is 5. actionType is "modify" because the element exists.
+
 RULES:
 1. actionType is "modify" when: changing, fixing, adjusting, adding-to, or improving ANY existing page element. "Add X to Y" = modify Y.
 2. actionType is "create" ONLY when: the element is entirely new and has no existing page element to attach to.
 3. targetElement: Match to a [data-component] name from the page content below. Be specific.
 4. componentType: When ADDING a new element (badge, tooltip, tag, etc.) to an existing one, componentType = the NEW thing being added. "Add badge to button" → componentType is "badge". When MODIFYING properties of an existing element (size, color, spacing), componentType = the element being changed.
 5. description: Write as a developer instruction. Reference the specific element name. Be explicit about CSS properties when applicable.
+6. variationCount: Default is 1. If the speaker asks for multiple variations/options/versions (e.g. "give me 5 variations", "show me 3 options"), set variationCount to that number (max 5).
 
 EXISTING TASKS: ${cardTitles || 'none yet'}
 ${pageContent ? `\nPAGE ELEMENTS (from data-component attributes):\n${pageContent}` : ''}
@@ -2459,9 +2417,11 @@ let isRecording = false, recognition = null, speechSupported = false;
 let transcriptBuffer = '', lastSentBuffer = '';
 let cards = [], isProcessing = false, draggedCardId = null;
 let approvedSections = [];
+let pageReplacements = []; // {targetComponent, html, cardId} — modify actions replace elements in base page
 let currentView = 'page';
 let currentModalCardId = null;
 let transcriptChunks = []; // {time, text} for persistence
+let autoProcessInterval = null;
 
 // ── API Key (hidden but still functional) ──
 let currentApiKey = localStorage.getItem('dc_api_key') || localStorage.getItem('anthropic_api_key') || '';
@@ -2778,7 +2738,27 @@ function renderPage() {
   const sectionsHTML = approvedSections.map(s =>
     `<div style="animation:fadeIn 0.5s ease;">${s.html}</div>`
   ).join('\n');
-  const pageContent = SAMPLE_PAGE_BASE.replace('<div id="approved-sections"></div>', sectionsHTML);
+  let baseHtml = SAMPLE_PAGE_BASE;
+  // Apply element replacements (modify actions) using DOM parsing
+  if (pageReplacements.length > 0) {
+    const parser = new DOMParser();
+    const tmpDoc = parser.parseFromString(`<html><body>${baseHtml}</body></html>`, 'text/html');
+    pageReplacements.forEach(r => {
+      const target = r.targetComponent.toLowerCase();
+      const els = tmpDoc.querySelectorAll('[data-component]');
+      for (const el of els) {
+        const name = (el.getAttribute('data-component') || '').toLowerCase();
+        if (name === target || name.includes(target) || target.includes(name)) {
+          const wrapper = tmpDoc.createElement('div');
+          wrapper.innerHTML = r.html;
+          el.replaceWith(...wrapper.childNodes);
+          break;
+        }
+      }
+    });
+    baseHtml = tmpDoc.body.innerHTML;
+  }
+  const pageContent = baseHtml.replace('<div id="approved-sections"></div>', sectionsHTML);
   const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
     ${pageContent}
     ${INSPECT_SCRIPT}
@@ -2809,34 +2789,54 @@ function approveCard(cardId) {
 
   // Render "before" iframe — current page
   const beforeDoc = document.getElementById('approveBeforeIframe').contentDocument;
-  const currentSectionsHTML = approvedSections.map(s =>
-    `<div>${s.html}</div>`
-  ).join('\n');
+  // Build current page HTML (with existing replacements applied)
+  function buildPageHtml(extraReplacements, extraSections) {
+    let base = SAMPLE_PAGE_BASE;
+    const allReplacements = [...pageReplacements, ...(extraReplacements || [])];
+    if (allReplacements.length > 0) {
+      const parser = new DOMParser();
+      const tmpDoc = parser.parseFromString(`<html><body>${base}</body></html>`, 'text/html');
+      allReplacements.forEach(r => {
+        const target = r.targetComponent.toLowerCase();
+        const els = tmpDoc.querySelectorAll('[data-component]');
+        for (const el of els) {
+          const name = (el.getAttribute('data-component') || '').toLowerCase();
+          if (name === target || name.includes(target) || target.includes(name)) {
+            const wrapper = tmpDoc.createElement('div');
+            wrapper.innerHTML = r.html;
+            el.replaceWith(...wrapper.childNodes);
+            break;
+          }
+        }
+      });
+      base = tmpDoc.body.innerHTML;
+    }
+    const allSections = [...approvedSections, ...(extraSections || [])];
+    const sectionsHTML = allSections.map(s => `<div>${s.html}</div>`).join('\n');
+    return base.replace('<div id="approved-sections"></div>', sectionsHTML);
+  }
+
+  const beforeHtml = buildPageHtml();
   beforeDoc.open();
-  beforeDoc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
-    ${SAMPLE_PAGE_BASE.replace('<div id="approved-sections"></div>', currentSectionsHTML)}
-  </body></html>`);
+  beforeDoc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>${beforeHtml}</body></html>`);
   beforeDoc.close();
 
-  // Render "after" iframe — page with new section added
+  // Render "after" iframe — page with change applied
   const afterDoc = document.getElementById('approveAfterIframe').contentDocument;
-  const afterSectionsHTML = currentSectionsHTML + `\n<div style="position:relative;">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#8B9A6B;"></div>
-    ${html}
-    <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:#8B9A6B;"></div>
-  </div>`;
+  const matchedComp = card._matchedComponent || card.targetElement;
+  const isModify = matchedComp && card.actionType === 'modify';
+  const afterHtml = isModify
+    ? buildPageHtml([{ targetComponent: matchedComp, html, cardId: card.id }])
+    : buildPageHtml([], [{ title: card.title, html }]);
   afterDoc.open();
-  afterDoc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
-    ${SAMPLE_PAGE_BASE.replace('<div id="approved-sections"></div>', afterSectionsHTML)}
-    <style>@keyframes highlight-pulse { 0%,100%{box-shadow:none} 50%{box-shadow:inset 0 0 0 1px rgba(139,154,107,0.2)} }</style>
-  </body></html>`);
+  afterDoc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>${afterHtml}<style>@keyframes highlight-pulse { 0%,100%{box-shadow:none} 50%{box-shadow:inset 0 0 0 1px rgba(139,154,107,0.2)} }</style></body></html>`);
   afterDoc.close();
 
-  // Scroll after-iframe to show the new section
+  // Scroll after-iframe to show the changed area
   setTimeout(() => {
     try {
       const afterBody = document.getElementById('approveAfterIframe').contentDocument.body;
-      afterBody.scrollTop = afterBody.scrollHeight;
+      if (!isModify) afterBody.scrollTop = afterBody.scrollHeight;
     } catch(e) {}
   }, 200);
 
@@ -2870,19 +2870,66 @@ function confirmApprove() {
   if (!card) return;
   const html = getActiveHtml(card);
   if (!html) return;
-  approvedSections.push({ title: card.title, html });
+  card._undoSections = [...approvedSections];
+  card._undoReplacements = [...pageReplacements];
+  const matchedComponent = card._matchedComponent || card.targetElement;
+  if (matchedComponent && card.actionType === 'modify') {
+    // Modify action: replace the targeted element on the page
+    // Remove any previous replacement for the same target
+    pageReplacements = pageReplacements.filter(r => r.cardId !== card.id);
+    pageReplacements.push({ targetComponent: matchedComponent, html, cardId: card.id });
+  } else {
+    // New component: append as a new section
+    approvedSections.push({ title: card.title, html });
+  }
   card.column = 'done';
   const el = document.getElementById(pendingApproveCardId);
   if (el) {
     document.getElementById('colDone').appendChild(el);
     const btn = el.querySelector('.kb-card-approve');
     if (btn) btn.remove();
+    // Add undo button
+    const undoBtn = document.createElement('button');
+    undoBtn.className = 'kb-card-approve kb-card-undo';
+    undoBtn.style.cssText = 'border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text-muted)';
+    undoBtn.innerHTML = 'Undo';
+    undoBtn.onclick = (e) => { e.stopPropagation(); undoApprove(pendingApproveCardId); };
+    el.querySelector('.kb-card-body').appendChild(undoBtn);
   }
   updateCounts(); saveSession();
   closeApprove();
   renderPage();
   showToast(`"${card.title}" added to page — preview updated`);
   pendingApproveCardId = null;
+}
+
+function undoApprove(cardId) {
+  const card = cards.find(c => c.id === cardId);
+  if (!card) return;
+  if (card._undoSections) {
+    approvedSections = [...card._undoSections];
+    delete card._undoSections;
+  } else {
+    // Fallback: remove the last matching section
+    const idx = approvedSections.findIndex(s => s.title === card.title);
+    if (idx !== -1) approvedSections.splice(idx, 1);
+  }
+  if (card._undoReplacements) {
+    pageReplacements = [...card._undoReplacements];
+    delete card._undoReplacements;
+  } else {
+    // Fallback: remove replacement for this card
+    pageReplacements = pageReplacements.filter(r => r.cardId !== card.id);
+  }
+  card.column = 'review';
+  const el = document.getElementById(cardId);
+  if (el) {
+    document.getElementById('colReview').appendChild(el);
+  }
+  onCardMoved(cardId, 'review');
+  updateCounts(); saveSession();
+  renderPage();
+  showToast('Undone — component removed from page');
 }
 
 function closeApprove(e) {
@@ -2953,10 +3000,17 @@ function toggleRecording() {
     btn.classList.add('active'); lbl.textContent = 'Stop';
     document.getElementById('transcriptEmpty').style.display = 'none';
     recognition.start();
+    // Auto-process transcript every 10 seconds while recording
+    autoProcessInterval = setInterval(() => {
+      if (transcriptBuffer.trim().length > 0 && transcriptBuffer.trim() !== lastSentBuffer.trim() && !isProcessing) {
+        processBuffer();
+      }
+    }, 10000);
   } else {
     btn.classList.remove('active'); lbl.textContent = 'Record';
     recognition.stop();
-    // Process full transcript as one pass
+    if (autoProcessInterval) { clearInterval(autoProcessInterval); autoProcessInterval = null; }
+    // Process any remaining transcript
     if (transcriptBuffer.trim().length > 0 && transcriptBuffer.trim() !== lastSentBuffer.trim()) {
       processBuffer();
     }
@@ -3020,11 +3074,14 @@ async function processBuffer() {
         return existingTitle === normalizedTitle || levenshteinSimilar(existingTitle, normalizedTitle);
       });
       if (matchingCard && idea.actionType === 'modify') {
+        console.log('[processBuffer] Modify existing:', idea.title, '→', matchingCard.title);
         modifyIdeas.push({ idea, card: matchingCard });
       } else if (!matchingCard) {
+        console.log('[processBuffer] New card:', idea.title);
         createIdeas.push(idea);
+      } else {
+        console.log('[processBuffer] SKIPPED (duplicate):', idea.title, '≈', matchingCard.title);
       }
-      // else: create-type duplicate, silently skip
     }
     // Handle modifications — regenerate existing cards
     for (const { idea, card } of modifyIdeas) {
@@ -3071,22 +3128,26 @@ async function processBuffer() {
       if (detectNewDsElement(card)) card.isNewPattern = true;
       cards.push(card); renderCard(card); updateCounts();
 
-      // Auto-generate preview
+      // Auto-generate preview (with variation support)
       const cardGenId = 'gen-' + id;
       genQueue.push({ id: cardGenId, title: idea.title });
       genFloatUpdate();
       try {
-        const genPrompt = buildGenPrompt(idea);
-        const html = await callClaude(GENERATE_SYSTEM, genPrompt);
-        console.log('[processBuffer gen]', card.title, 'HTML length:', html.length, 'Preview:', html.slice(0, 300));
-        card.html = html;
-        const thumb = await renderAndCapture(html);
-        card.thumbnail = thumb;
-        updateCardThumb(id, thumb);
-        if (html.includes('<!-- NEW_PATTERN -->')) {
-          card.html = html.replace(/<!--\s*NEW_PATTERN\s*-->\s*\n?/, '');
-          card.isNewPattern = true;
-          applyNewPatternBadge(id);
+        if (card.variationCount > 1) {
+          await generateVariations(card, card.variationCount, idea.description);
+        } else {
+          const genPrompt = buildGenPrompt(idea);
+          const html = await callClaude(GENERATE_SYSTEM, genPrompt);
+          console.log('[processBuffer gen]', card.title, 'HTML length:', html.length, 'Preview:', html.slice(0, 300));
+          card.html = html;
+          const thumb = await renderAndCapture(html);
+          card.thumbnail = thumb;
+          updateCardThumb(id, thumb);
+          if (html.includes('<!-- NEW_PATTERN -->')) {
+            card.html = html.replace(/<!--\s*NEW_PATTERN\s*-->\s*\n?/, '');
+            card.isNewPattern = true;
+            applyNewPatternBadge(id);
+          }
         }
       } catch(e) { console.error('Gen:', e); }
       genQueue = genQueue.filter(g => g.id !== cardGenId);
@@ -3095,7 +3156,10 @@ async function processBuffer() {
     }
   } catch(e) { console.error(e); showToast('Error processing'); }
   finish();
-  function finish() { document.getElementById('processingBar').classList.remove('active'); isProcessing = false; genQueue = genQueue.filter(g => !g.id.startsWith('extract-')); genFloatUpdate(); }
+  function finish() { document.getElementById('processingBar').classList.remove('active'); isProcessing = false; genQueue = genQueue.filter(g => !g.id.startsWith('extract-')); genFloatUpdate();
+    // Re-process if new transcript arrived while we were busy
+    if (transcriptBuffer.trim() !== lastSentBuffer.trim()) processBuffer();
+  }
 }
 
 // ── Manual extract from transcript chunk ──
@@ -3163,7 +3227,8 @@ async function extractChunk(chunkIdx) {
         componentType: idea.componentType, column: 'not-started', timestamp: new Date(),
         thumbnail: null, html: null, variations: [], selectedVariation: 0,
         variationCount: Math.min(idea.variationCount || 1, 5),
-        targetElement: idea.targetElement || null
+        targetElement: idea.targetElement || null,
+        actionType: idea.actionType || (idea.targetElement ? 'modify' : 'create')
       };
       if (detectNewDsElement(card)) card.isNewPattern = true;
       cards.push(card); renderCard(card); updateCounts(); saveSession();
@@ -3200,8 +3265,8 @@ async function callClaude(system, user) {
   });
   if (!r.ok) throw new Error(`API ${r.status}`);
   let text = (await r.json()).content[0].text;
-  // Strip markdown code fences if Sonnet wraps the HTML
-  text = text.replace(/^```(?:html)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+  // Strip markdown code fences if Sonnet wraps the response
+  text = text.replace(/^```(?:html|json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
   return text;
 }
 
@@ -3264,7 +3329,7 @@ function renderCard(card, isRestore) {
         <span class="kb-card-type">${esc(card.componentType)}</span>
       </div>
       ${inReview ? `<button class="kb-card-approve" onclick="event.stopPropagation();approveCard('${card.id}')">Approve &amp; Add to Page</button>` : ''}
-      ${card.column === 'not-started' ? `<button class="kb-card-approve kb-card-start" style="border-color:rgba(244,181,111,0.2);background:rgba(244,181,111,0.06);color:var(--quote-accent)" onclick="event.stopPropagation();startAgent('${card.id}')">Start Agent →</button>` : ''}
+      ${card.column === 'not-started' ? `<button class="kb-card-approve kb-card-start" style="border-color:rgba(244,181,111,0.2);background:rgba(244,181,111,0.06);color:var(--quote-accent)" onclick="event.stopPropagation();startAgent('${card.id}')">Update</button>` : ''}
     </div>`;
   el.addEventListener('dragstart', e => { draggedCardId = card.id; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
   el.addEventListener('dragend', () => { el.classList.remove('dragging'); draggedCardId = null; document.querySelectorAll('.kb-col-body').forEach(c => c.classList.remove('drag-over')); });
@@ -3296,18 +3361,39 @@ function onCardMoved(cardId, toCol) {
   if (existingBtn) existingBtn.remove();
   const existingStart = el.querySelector('.kb-card-start');
   if (existingStart) existingStart.remove();
+  const existingUndo = el.querySelector('.kb-card-undo');
+  if (existingUndo) existingUndo.remove();
+  if (toCol === 'done') {
+    const undoBtn = document.createElement('button');
+    undoBtn.className = 'kb-card-approve kb-card-undo';
+    undoBtn.style.cssText = 'border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text-muted)';
+    undoBtn.innerHTML = 'Undo';
+    undoBtn.onclick = (e) => { e.stopPropagation(); undoApprove(cardId); };
+    el.querySelector('.kb-card-body').appendChild(undoBtn);
+  }
   if (toCol === 'not-started') {
     // Add "Start Agent" button
     const btn = document.createElement('button');
     btn.className = 'kb-card-approve kb-card-start';
     btn.style.cssText = 'border-color:rgba(244,181,111,0.2);background:rgba(244,181,111,0.06);color:var(--quote-accent)';
-    btn.innerHTML = 'Start Agent →';
+    btn.innerHTML = 'Update';
     btn.onclick = (e) => { e.stopPropagation(); startAgent(cardId); };
     el.querySelector('.kb-card-body').appendChild(btn);
   }
   if (toCol === 'in-progress') {
-    // Trigger generation
-    if (card && !card.html) generateForCard(card);
+    if (card && card.html) {
+      // Card already has HTML — skip generation, move straight to review
+      setTimeout(() => {
+        card.column = 'review';
+        if (el) document.getElementById('colReview').appendChild(el);
+        onCardMoved(card.id, 'review');
+        updateCounts();
+        saveSession();
+        showToast(`"${card.title}" ready for review`);
+      }, 100);
+    } else if (card) {
+      generateForCard(card);
+    }
   }
   if (toCol === 'review') {
     const btn = document.createElement('button');
@@ -3340,8 +3426,14 @@ function buildGenPrompt(idea) {
 
   if (matchEl && (idea.actionType === 'modify' || idea.targetElement)) {
     const elHtml = matchEl.outerHTML.slice(0, 3000);
+    // For section-level elements, use the full section as context (it IS the context)
+    const isSection = matchEl.tagName === 'SECTION' || matchEl.tagName === 'DIV' && matchEl.children.length > 2;
+    const sectionEl = isSection ? matchEl : matchEl.closest('section[data-component]') || matchEl.closest('div[data-component]');
+    const sectionHtml = sectionEl ? sectionEl.outerHTML.slice(0, 5000) : null;
     const { contextHtml } = getElementContext(matchEl);
     const targetName = matchEl.getAttribute('data-component') || matchEl.tagName;
+    // Store the matched data-component name on the card for accurate replacement later
+    if (idea._card) idea._card._matchedComponent = matchEl.getAttribute('data-component');
 
     if (isBadge) {
       return `TASK: Add a badge/dot to the "${targetName}" element. Show it IN CONTEXT of surrounding elements.
@@ -3409,22 +3501,27 @@ RULES:
 - Return raw HTML only`;
     }
 
-    return `TASK: Modify "${targetName}". Show it IN CONTEXT of surrounding elements.
+    // Use the full section as context for section-level modifications
+    const fullContext = sectionHtml || contextHtml || elHtml;
 
-TARGET ELEMENT:
+    return `TASK: Modify "${targetName}" within its parent section. Return the COMPLETE modified section.
+
+${sectionHtml ? `FULL SECTION (return this entire section with the modification applied):
+${sectionHtml}` : `TARGET ELEMENT:
 ${elHtml}
 
 SURROUNDING CONTEXT (return this HTML with only the requested change applied):
-${contextHtml || elHtml}
+${contextHtml || elHtml}`}
 
 REQUESTED CHANGE: ${idea.description}
 
 RULES:
-- Return ONLY the surrounding context HTML above with the change applied to the target element
+- Return the COMPLETE section/context HTML above with ONLY the requested change applied
+- The output must be a drop-in replacement for the existing section — same structure, same wrapper tags
 - Do NOT add ANY elements, sections, or content that is not in the provided HTML above
-- Do NOT add logos, icons, contact sections, footers, or decorative elements
+- Do NOT create a new section — modify the existing one
 - Keep ALL text content EXACTLY as provided — do not change, add, or remove any text
-- The output should contain ONLY the elements shown above, nothing else
+- Preserve all data-component attributes, data-tokens attributes, class names, and IDs
 - CRITICAL: Do NOT invent new text, headings, labels, or content. Use ONLY the exact text from the provided HTML
 - Return raw HTML only — no explanation, no markdown, no backticks`;
   }
@@ -3487,7 +3584,7 @@ function moveToInProgress(cardId) {
   if (el) document.getElementById('colInProgress').appendChild(el);
   onCardMoved(cardId, 'in-progress');
   updateCounts();
-  showToast(`"${card.title}" — agent started`);
+  showToast(`"${card.title}" — updating`);
 }
 
 // ── Floating generation indicator ──
@@ -3512,17 +3609,21 @@ async function generateForCard(card) {
   genQueue.push({ id: card.id, title: card.title });
   genFloatUpdate();
   try {
-    const idea = { componentType: card.componentType, description: card.description, actionType: card.targetElement ? 'modify' : 'create', targetElement: card.targetElement, title: card.title };
-    let html = await callClaude(GENERATE_SYSTEM, buildGenPrompt(idea));
-    console.log('[generateForCard]', card.title, 'HTML length:', html.length, 'Preview:', html.slice(0, 300));
-    const isNewPattern = html.includes('<!-- NEW_PATTERN -->');
-    if (isNewPattern) html = html.replace(/<!--\s*NEW_PATTERN\s*-->\s*\n?/, '');
-    card.html = html;
-    card.isNewPattern = isNewPattern;
-    const thumb = await renderAndCapture(html);
-    card.thumbnail = thumb;
-    updateCardThumb(card.id, thumb);
-    if (isNewPattern) applyNewPatternBadge(card.id);
+    if (card.variationCount > 1) {
+      await generateVariations(card, card.variationCount, card.description);
+    } else {
+      const idea = { componentType: card.componentType, description: card.description, actionType: card.actionType || (card.targetElement ? 'modify' : 'create'), targetElement: card.targetElement, title: card.title, _card: card };
+      let html = await callClaude(GENERATE_SYSTEM, buildGenPrompt(idea));
+      console.log('[generateForCard]', card.title, 'HTML length:', html.length, 'Preview:', html.slice(0, 300));
+      const isNewPattern = html.includes('<!-- NEW_PATTERN -->');
+      if (isNewPattern) html = html.replace(/<!--\s*NEW_PATTERN\s*-->\s*\n?/, '');
+      card.html = html;
+      card.isNewPattern = isNewPattern;
+      const thumb = await renderAndCapture(html);
+      card.thumbnail = thumb;
+      updateCardThumb(card.id, thumb);
+      if (isNewPattern) applyNewPatternBadge(card.id);
+    }
     // Move to review
     card.column = 'review';
     if (el) document.getElementById('colReview').appendChild(el);
@@ -3557,22 +3658,14 @@ function openPreview(id) {
   document.getElementById('refineBtn').disabled = false;
   document.getElementById('refineBtn').textContent = 'Regenerate';
 
-  // Variations strip
-  const varStrip = document.getElementById('modalVariations');
+  // Variations sidebar
   const varBadge = document.getElementById('modalVarBadge');
   if (card.variations && card.variations.length > 1) {
-    varStrip.classList.add('has-variations');
     varBadge.style.display = 'inline'; varBadge.textContent = `${card.variations.length} variations`;
-    varStrip.innerHTML = card.variations.map((v, i) => `
-      <div class="modal-var-thumb ${i === (card.selectedVariation||0) ? 'active' : ''}" onclick="selectVariation('${id}', ${i})">
-        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="">` : `<div class="no-thumb">V${i+1}</div>`}
-      </div>
-    `).join('');
   } else {
-    varStrip.classList.remove('has-variations');
-    varStrip.innerHTML = '';
     varBadge.style.display = 'none';
   }
+  refreshSidebarThumbs(id);
 
   // Context banner for new DS elements
   const banner = document.getElementById('modalContextBanner');
@@ -3622,8 +3715,11 @@ function renderModalMoveButtons(card) {
     let cls = 'modal-move-btn';
     if (col === 'archive') cls += ' move-archive';
     if (col === 'in-progress') cls += ' move-ready';
-    html += `<button class="${cls}" onclick="moveCardFromModal('${card.id}','${col}')">${col === 'in-progress' ? 'Start Agent →' : COL_LABELS[col]}</button>`;
+    html += `<button class="${cls}" onclick="moveCardFromModal('${card.id}','${col}')">${col === 'in-progress' ? 'Update' : COL_LABELS[col]}</button>`;
   });
+  if (card.column === 'done') {
+    html += `<button class="modal-move-btn" onclick="undoApprove('${card.id}');closeModal()">Undo</button>`;
+  }
   container.innerHTML = html;
 }
 
@@ -3662,11 +3758,73 @@ function selectVariation(cardId, idx) {
   card.thumbnail = card.variations[idx].thumbnail;
   // Update modal
   renderModalIframe(card.variations[idx].html);
-  // Update strip active state
-  document.querySelectorAll('.modal-var-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
   // Update card thumb on board
   updateCardThumb(cardId, card.thumbnail, card.variations.length);
   saveSession();
+}
+
+function refreshSidebarThumbs(cardId) {
+  const card = cards.find(c => c.id === cardId);
+  const container = document.getElementById('sidebarThumbs');
+  if (!card || !container) return;
+  // Ensure current HTML is wrapped as variation[0] if not already
+  if (card.html && (!card.variations || card.variations.length === 0)) {
+    card.variations = [{ html: card.html, thumbnail: card.thumbnail }];
+    card.selectedVariation = 0;
+  }
+  if (card.variations && card.variations.length > 0) {
+    container.innerHTML = card.variations.map((v, i) => `
+      <div class="sidebar-thumb ${i === (card.selectedVariation||0) ? 'active' : ''}" onclick="selectVariation('${cardId}', ${i})">
+        ${v.thumbnail ? `<img src="${v.thumbnail}" alt="">` : `<div class="no-thumb">V${i+1}</div>`}
+      </div>
+    `).join('');
+    const varBadge = document.getElementById('modalVarBadge');
+    if (card.variations.length > 1) {
+      varBadge.style.display = 'inline'; varBadge.textContent = `${card.variations.length} variations`;
+    }
+  } else {
+    container.innerHTML = '';
+  }
+}
+
+async function addOneVariation() {
+  if (!currentModalCardId) return;
+  const card = cards.find(c => c.id === currentModalCardId);
+  if (!card) return;
+  const btn = document.getElementById('sidebarAddBtn');
+  btn.disabled = true; btn.textContent = 'Generating...';
+  document.getElementById('processingBar').classList.add('active');
+  const genId = card.id + '-addvar';
+  genQueue.push({ id: genId, title: card.title + ' +1 variation' });
+  genFloatUpdate();
+  try {
+    const currentHtml = getActiveHtml(card);
+    let basePrompt;
+    if (currentHtml) {
+      basePrompt = `Here is the current HTML for a "${card.componentType}" component:\n\n${currentHtml}\n\nGenerate a variation of this component. The original task was: "${card.description}"\n\nCRITICAL RULES:\n- Only vary the SPECIFIC element that was requested ("${card.componentType}"). Do NOT change surrounding elements, layout structure, or unrelated components.\n- Keep ALL text content, copy, headlines, and button labels EXACTLY the same.\n- Only vary the targeted element's styling: font size, weight, letter-spacing, color, spacing, alignment, or arrangement.\n- Everything else in the HTML must remain identical.`;
+    } else {
+      // No generated HTML yet — use actual page element HTML for context
+      const idea = { title: card.title, description: card.description, componentType: card.componentType, actionType: card.actionType || 'modify', targetElement: card.targetElement };
+      basePrompt = buildGenPrompt(idea);
+    }
+    const varNum = (card.variations || []).length + 1;
+    const html = await callClaude(GENERATE_SYSTEM, `${basePrompt}\n\nThis is variation ${varNum}. Make the targeted element visually distinct from previous variations. Keep everything else identical.`);
+    const thumb = await renderAndCapture(html);
+    if (!card.variations) card.variations = [{ html: card.html, thumbnail: card.thumbnail }];
+    card.variations.push({ html, thumbnail: thumb });
+    updateCardThumb(card.id, card.thumbnail, card.variations.length);
+    refreshSidebarThumbs(card.id);
+    const varBadge = document.getElementById('modalVarBadge');
+    varBadge.style.display = 'inline'; varBadge.textContent = `${card.variations.length} variations`;
+    saveSession();
+    showToast('Variation added');
+  } catch(e) { console.error(e); showToast('Error adding variation'); }
+  genQueue = genQueue.filter(g => g.id !== genId);
+  genFloatUpdate();
+  btn.disabled = false; btn.textContent = '+ Add Variation';
+  document.getElementById('processingBar').classList.remove('active');
 }
 
 function closeModal(e) {
@@ -3723,8 +3881,8 @@ async function refineCard() {
       const thumb = await renderAndCapture(html);
       card.variations[idx].thumbnail = thumb;
       card.html = html; card.thumbnail = thumb;
-      // Refresh variation strip thumb
-      const thumbEl = document.querySelectorAll('.modal-var-thumb')[idx];
+      // Refresh sidebar thumb
+      const thumbEl = document.querySelectorAll('.sidebar-thumb')[idx];
       if (thumbEl && thumb) thumbEl.innerHTML = `<img src="${thumb}" alt="">`;
     } else {
       card.html = html;
@@ -3753,14 +3911,19 @@ async function generateVariations(card, count, instruction) {
   genFloatUpdate();
   try {
     const currentHtml = getActiveHtml(card);
-    const basePrompt = currentHtml
-      ? `Here is the current HTML for a "${card.componentType}" component:\n\n${currentHtml}\n\nGenerate a variation of this component. CRITICAL: Keep ALL text content, copy, headlines, and button labels EXACTLY the same. Only change layout, spacing, font sizes, alignment, element arrangement, and visual hierarchy.`
-      : `Build a ${card.componentType}: ${card.description}.`;
+    let basePrompt;
+    if (currentHtml) {
+      basePrompt = `Here is the current HTML for a "${card.componentType}" component:\n\n${currentHtml}\n\nGenerate a variation of this component. The original task was: "${card.description}"\n\nCRITICAL RULES:\n- Only vary the SPECIFIC element that was requested ("${card.componentType}"). Do NOT change surrounding elements, layout structure, or unrelated components.\n- Keep ALL text content, copy, headlines, and button labels EXACTLY the same.\n- Only vary the targeted element's styling: font size, weight, letter-spacing, color, spacing, alignment, or arrangement.\n- Everything else in the HTML must remain identical.`;
+    } else {
+      // No generated HTML yet — use actual page element HTML for context
+      const idea = { title: card.title, description: card.description, componentType: card.componentType, actionType: card.actionType || 'modify', targetElement: card.targetElement };
+      basePrompt = buildGenPrompt(idea);
+    }
 
     const promises = [];
     for (let v = 0; v < count; v++) {
       promises.push(
-        callClaude(GENERATE_SYSTEM, `${basePrompt}\n\nThis is variation ${v+1} of ${count}. Make it visually distinct — vary layout, sizing, spacing, or element arrangement. Keep all text/copy identical.`)
+        callClaude(GENERATE_SYSTEM, `${basePrompt}\n\nThis is variation ${v+1} of ${count}. Make it visually distinct from the other variations — but ONLY change the targeted "${card.componentType}" element. Keep everything else identical.`)
           .then(async html => {
             const thumb = await renderAndCapture(html);
             return { html, thumbnail: thumb };
@@ -3776,8 +3939,6 @@ async function generateVariations(card, count, instruction) {
       card.thumbnail = card.variations[0].thumbnail;
     }
     updateCardThumb(card.id, card.thumbnail, card.variations.length);
-    // Reopen preview with variations
-    openPreview(card.id);
     saveSession();
     showToast(`${card.variations.length} variations generated`);
   } catch(e) { console.error(e); showToast('Error generating variations'); }
@@ -4790,8 +4951,15 @@ async function runSingleTest(idx) {
     // Step 1: Extract
     const system = getExtractSystem();
     const res = await callClaude(system, `Extract UI ideas:\n\n"${t.transcript}"`);
+    console.log('[test extract]', t.name, 'raw response:', res);
     let ideas = [];
-    try { ideas = JSON.parse(res.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim()); } catch(e){}
+    try {
+      const cleaned = res.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      ideas = JSON.parse(cleaned);
+      if (!Array.isArray(ideas)) ideas = [ideas];
+    } catch(e){
+      console.error('[test extract] Parse error:', e, 'Response was:', res);
+    }
 
     if (ideas.length === 0) {
       statusEl.innerHTML = '<span style="color:#ff5f5f;font-family:var(--mono);font-size:9px">No ideas extracted</span>';
@@ -4832,6 +5000,13 @@ async function runSingleTest(idx) {
 async function runAllTests() {
   if (!currentApiKey) { showToast('Set API key first'); return; }
   if (testRunning) return;
+  // Clear existing cards so tests don't dedup against each other
+  cards = [];
+  ['colNotStarted','colInProgress','colReview','colDone','colArchive'].forEach(id => {
+    const col = document.getElementById(id);
+    if (col) col.innerHTML = '';
+  });
+  updateCounts();
   const btn = document.getElementById('testRunAllBtn');
   if (btn) { btn.textContent = 'Running...'; btn.disabled = true; }
   for (let i = 0; i < TEST_SCENARIOS.length; i++) {
