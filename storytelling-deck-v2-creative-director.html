@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal to Action — Adam Blair / Luxury Presence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   VIEWPORT BASE (NON-NEGOTIABLE)
+   ============================================ */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ============================================
+   CSS VARIABLES — DARK BOTANICAL
+   ============================================ */
+:root {
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #161614;
+    --text-primary: #e8e4df;
+    --text-secondary: #9a9590;
+    --accent-warm: #d4a574;
+    --accent-pink: #e8b4b8;
+    --accent-gold: #c9b896;
+    --accent-terracotta: #c4856c;
+    --slide-padding: clamp(32px, 6vw, 80px) clamp(24px, 8vw, 120px);
+    --font-display: 'Cormorant', Georgia, serif;
+    --font-body: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+h1 { font-size: clamp(42px, 7vw, 80px); }
+h2 { font-size: clamp(32px, 5vw, 56px); }
+h3 { font-size: clamp(22px, 3vw, 32px); }
+
+.display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+}
+
+.label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: clamp(10px, 1.2vw, 12px);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.body-lg {
+    font-size: clamp(16px, 1.8vw, 20px);
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+.body-sm {
+    font-size: clamp(13px, 1.4vw, 15px);
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--text-secondary);
+}
+
+.quote-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(26px, 4vw, 44px);
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+/* ============================================
+   SLIDE BACKGROUNDS & DECORATIVE ELEMENTS
+   ============================================ */
+.slide { background: var(--bg-primary); }
+.slide--dark { background: var(--bg-secondary); }
+
+/* Abstract soft gradient circles */
+.gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+}
+.gradient-orb--pink {
+    background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+}
+.gradient-orb--gold {
+    background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+}
+.gradient-orb--warm {
+    background: radial-gradient(circle, var(--accent-warm) 0%, transparent 70%);
+}
+.gradient-orb--terracotta {
+    background: radial-gradient(circle, var(--accent-terracotta) 0%, transparent 70%);
+}
+
+/* Thin vertical accent line */
+.accent-line {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
+    opacity: 0.3;
+    z-index: 0;
+}
+
+/* ============================================
+   SLIDE CONTENT LAYOUT
+   ============================================ */
+.slide-content { position: relative; z-index: 1; }
+
+.slide-content--center {
+    align-items: center;
+    text-align: center;
+}
+
+.slide-content--left {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 760px;
+}
+
+.slide-inner {
+    max-width: 900px;
+    width: 100%;
+}
+
+.slide-inner--narrow {
+    max-width: 680px;
+}
+
+/* Spacing */
+.mt-1 { margin-top: clamp(8px, 1.5vh, 16px); }
+.mt-2 { margin-top: clamp(16px, 2.5vh, 28px); }
+.mt-3 { margin-top: clamp(24px, 3.5vh, 40px); }
+.mt-4 { margin-top: clamp(32px, 5vh, 56px); }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    html { scroll-behavior: auto; }
+}
+
+/* ============================================
+   SPECIFIC COMPONENTS
+   ============================================ */
+
+/* Principle card */
+.principle-number {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 120px);
+    font-weight: 600;
+    color: var(--accent-gold);
+    opacity: 0.15;
+    line-height: 1;
+    position: absolute;
+    top: clamp(20px, 4vh, 60px);
+    right: clamp(24px, 6vw, 80px);
+}
+
+/* Signal mockup — rich contextual card */
+.signal-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: clamp(20px, 3vw, 28px);
+    max-width: 520px;
+    width: 100%;
+    text-align: left;
+}
+
+.signal-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: clamp(10px, 1.5vh, 16px);
+}
+
+.signal-card__title {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: clamp(14px, 1.5vw, 16px);
+    color: var(--text-primary);
+}
+
+.signal-card__priority {
+    font-size: clamp(9px, 0.9vw, 10px);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: rgba(201, 184, 150, 0.15);
+    color: var(--accent-gold);
+}
+
+.signal-card__agents {
+    display: flex;
+    gap: 6px;
+    margin-bottom: clamp(10px, 1.5vh, 14px);
+}
+
+.signal-card__agent-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: clamp(10px, 1vw, 11px);
+    font-weight: 400;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+.signal-card__agent-tag--nurture {
+    background: rgba(107, 196, 184, 0.12);
+    color: #6bc4b8;
+}
+.signal-card__agent-tag--seo {
+    background: rgba(107, 163, 232, 0.12);
+    color: #6ba3e8;
+}
+
+.signal-card__agent-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.signal-card__grounding {
+    font-size: clamp(12px, 1.2vw, 13px);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: clamp(8px, 1vh, 12px);
+    background: rgba(255, 255, 255, 0.025);
+    border-radius: 6px;
+    margin-bottom: clamp(10px, 1.5vh, 14px);
+}
+.signal-card__cite {
+    font-size: clamp(10px, 0.9vw, 11px);
+    color: rgba(154, 149, 144, 0.6);
+    margin-top: 4px;
+}
+
+.signal-card__assets {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(10px, 1.5vh, 14px);
+}
+.signal-card__asset {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: clamp(10px, 1vw, 11px);
+    color: var(--text-secondary);
+    padding: 3px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+}
+.signal-card__asset svg {
+    width: 10px;
+    height: 10px;
+    stroke: var(--text-secondary);
+    fill: none;
+    stroke-width: 1.5;
+}
+
+.signal-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: clamp(10px, 1.5vh, 14px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.signal-card__next {
+    font-size: clamp(12px, 1.2vw, 13px);
+    color: var(--text-primary);
+    font-weight: 400;
+}
+.signal-card__next span {
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-right: 3px;
+}
+.signal-card__value {
+    font-size: clamp(10px, 0.9vw, 11px);
+    color: var(--text-secondary);
+}
+.signal-card__value strong {
+    color: var(--accent-gold);
+    font-weight: 400;
+}
+
+.signal-card__actions {
+    display: flex;
+    gap: 6px;
+    margin-top: clamp(10px, 1.5vh, 14px);
+}
+.signal-card__btn {
+    font-family: var(--font-body);
+    font-size: clamp(10px, 1vw, 11px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    padding: clamp(6px, 0.8vh, 8px) clamp(10px, 1.2vw, 14px);
+    border-radius: 4px;
+    border: none;
+    cursor: default;
+}
+.signal-card__btn--primary {
+    background: var(--accent-warm);
+    color: #0f0f0f;
+}
+.signal-card__btn--ghost {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+/* AI Specialist Cards (LP-style gradient cards with orbs) */
+.specialist-grid {
+    display: flex;
+    gap: clamp(8px, 1.2vw, 14px);
+    justify-content: center;
+    margin-top: clamp(20px, 3vh, 36px);
+    flex-wrap: wrap;
+}
+
+.specialist-card {
+    flex: 0 1 clamp(120px, 15vw, 160px);
+    aspect-ratio: 3 / 4;
+    border-radius: clamp(10px, 1.2vw, 16px);
+    padding: clamp(12px, 1.5vw, 18px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.specialist-card:hover {
+    transform: translateY(-4px);
+}
+
+.specialist-card--seo {
+    background: linear-gradient(160deg, #5B9BD5 0%, #7AB8E0 40%, #A8D4EA 100%);
+}
+.specialist-card--ads {
+    background: linear-gradient(160deg, #6BAED6 0%, #8CC5B8 40%, #B8D8C8 100%);
+}
+.specialist-card--nurture {
+    background: linear-gradient(160deg, #A8C5A0 0%, #C8D8B8 40%, #E8D4C0 100%);
+}
+.specialist-card--blog {
+    background: linear-gradient(160deg, #E8B4A0 0%, #E8C8B0 40%, #E8D8C8 100%);
+}
+.specialist-card--social {
+    background: linear-gradient(160deg, #B8A0D8 0%, #C8B0E0 40%, #D8C8E8 100%);
+}
+
+.specialist-card__header {
+    font-size: clamp(8px, 0.9vw, 10px);
+    color: rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+}
+
+.specialist-card__orb {
+    width: clamp(40px, 5vw, 60px);
+    height: clamp(40px, 5vw, 60px);
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    flex-shrink: 0;
+}
+.specialist-card__orb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 40%, rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.15) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), inset 0 -2px 6px rgba(0,0,0,0.1), inset 0 2px 6px rgba(255,255,255,0.6);
+}
+.specialist-card__orb::after {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    top: 20%;
+    left: 25%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+}
+
+.specialist-card--seo .specialist-card__orb::before {
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(180,210,240,0.4) 40%, rgba(91,155,213,0.3) 70%, rgba(91,155,213,0.5) 100%);
+}
+.specialist-card--ads .specialist-card__orb::before {
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(200,230,220,0.4) 40%, rgba(107,174,214,0.3) 70%, rgba(107,174,214,0.5) 100%);
+}
+.specialist-card--nurture .specialist-card__orb::before {
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(210,220,200,0.4) 40%, rgba(140,180,130,0.3) 70%, rgba(100,150,90,0.5) 100%);
+}
+.specialist-card--blog .specialist-card__orb::before {
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(230,210,190,0.4) 40%, rgba(200,170,140,0.3) 70%, rgba(180,140,100,0.5) 100%);
+}
+.specialist-card--social .specialist-card__orb::before {
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, rgba(210,190,230,0.4) 40%, rgba(160,120,210,0.3) 70%, rgba(140,100,190,0.5) 100%);
+}
+
+.specialist-card__name {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 1.5vw, 17px);
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 1.2;
+}
+
+/* Metric row */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(12px, 2vw, 24px);
+    margin-top: clamp(20px, 3vh, 36px);
+    max-width: 560px;
+}
+
+.metric-item {
+    padding: clamp(14px, 2vh, 24px);
+    border-left: 1px solid var(--accent-gold);
+}
+
+.metric-item__value {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 600;
+    color: var(--accent-warm);
+    line-height: 1;
+}
+
+.metric-item__label {
+    font-size: clamp(11px, 1.1vw, 13px);
+    color: var(--text-secondary);
+    margin-top: clamp(4px, 0.5vh, 8px);
+    line-height: 1.4;
+}
+
+/* Flow diagram */
+.flow-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 0.8vw, 10px);
+    flex-wrap: wrap;
+    margin-top: clamp(16px, 2.5vh, 28px);
+    justify-content: center;
+}
+
+.flow-step {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: clamp(10px, 1.5vh, 16px) clamp(12px, 1.5vw, 18px);
+    font-size: clamp(11px, 1.2vw, 13px);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    position: relative;
+    text-align: center;
+}
+
+.flow-step--active {
+    border-color: var(--accent-warm);
+    color: var(--text-primary);
+    background: rgba(212, 165, 116, 0.08);
+}
+
+.flow-step__icon {
+    display: block;
+    width: clamp(24px, 3vw, 32px);
+    height: clamp(24px, 3vw, 32px);
+    margin: 0 auto clamp(6px, 0.8vh, 10px);
+    stroke: var(--accent-gold);
+    fill: none;
+    stroke-width: 1.2;
+    opacity: 0.6;
+}
+.flow-step--active .flow-step__icon { opacity: 1; }
+
+.flow-arrow {
+    color: var(--accent-gold);
+    opacity: 0.3;
+    font-size: clamp(12px, 1.3vw, 16px);
+}
+
+/* Divider */
+.divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-gold);
+    opacity: 0.4;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-warm), var(--accent-pink));
+    z-index: 1000;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* ============================================
+   NAV DOTS
+   ============================================ */
+.nav-dots {
+    position: fixed;
+    right: clamp(16px, 2vw, 28px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+}
+
+.nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    border: none;
+    padding: 0;
+}
+
+.nav-dot.active {
+    background: var(--accent-gold);
+    transform: scale(1.4);
+}
+
+/* ============================================
+   LOGO
+   ============================================ */
+.logo {
+    position: absolute;
+    top: clamp(20px, 3vh, 36px);
+    left: clamp(24px, 4vw, 48px);
+    z-index: 10;
+}
+.logo img {
+    height: clamp(16px, 2vh, 22px);
+    opacity: 0.5;
+    filter: invert(1) brightness(2);
+}
+
+/* Slide number */
+.slide-number {
+    position: absolute;
+    bottom: clamp(16px, 2.5vh, 28px);
+    right: clamp(24px, 4vw, 48px);
+    font-family: var(--font-body);
+    font-size: clamp(10px, 1vw, 11px);
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.2);
+    z-index: 10;
+}
+
+/* ============================================
+   RESPONSIVE HEIGHT BREAKPOINTS
+   ============================================ */
+@media (max-height: 700px) {
+    :root { --slide-padding: clamp(24px, 4vw, 48px) clamp(24px, 6vw, 80px); }
+    h1 { font-size: clamp(32px, 6vw, 56px); }
+    h2 { font-size: clamp(26px, 4.5vw, 42px); }
+    .quote-text { font-size: clamp(22px, 3.5vw, 34px); }
+    .principle-number { font-size: clamp(48px, 8vw, 80px); }
+}
+
+@media (max-height: 600px) {
+    :root { --slide-padding: clamp(16px, 3vw, 32px) clamp(20px, 5vw, 60px); }
+    h1 { font-size: clamp(28px, 5vw, 44px); }
+    h2 { font-size: clamp(22px, 4vw, 34px); }
+    .quote-text { font-size: clamp(20px, 3vw, 28px); }
+    .mt-3 { margin-top: clamp(12px, 2vh, 20px); }
+    .mt-4 { margin-top: clamp(16px, 3vh, 28px); }
+}
+
+@media (max-height: 500px) {
+    :root { --slide-padding: 16px clamp(20px, 5vw, 48px); }
+    h1 { font-size: clamp(24px, 4.5vw, 36px); }
+    h2 { font-size: clamp(20px, 3.5vw, 28px); }
+    .body-lg { font-size: clamp(13px, 1.5vw, 16px); }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .metric-grid { grid-template-columns: 1fr; }
+    .specialist-row { gap: 8px; }
+    .flow-row { gap: 6px; }
+    .nav-dots { right: 10px; gap: 8px; }
+    .nav-dot { width: 5px; height: 5px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back to Portal -->
+<a href="index.html" style="position:fixed;top:20px;left:20px;z-index:10000;width:36px;height:36px;border:1px solid rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em;transition:all 0.3s;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px)" onmouseover="this.style.borderColor='#C9A96E';this.style.color='#C9A96E'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='#fff'">AB</a>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Nav Dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- =============================================
+     SLIDE 1 — TITLE
+     ============================================= -->
+<section class="slide" id="slide-1" data-slide="1">
+    <div class="gradient-orb gradient-orb--pink" style="width: 500px; height: 500px; top: -15%; right: -10%;"></div>
+    <div class="gradient-orb gradient-orb--gold" style="width: 400px; height: 400px; bottom: -10%; left: -8%;"></div>
+    <div class="accent-line" style="height: 40vh; top: 30vh; left: 8%;"></div>
+
+    <div class="logo"><img src="assets/images/presence-logo.webp" alt="Presence"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">Portfolio Case Study</p>
+            <h1 class="reveal reveal-delay-1 mt-2" style="color: var(--text-primary);">Signal to Action</h1>
+            <div class="divider reveal reveal-delay-2 mt-3" style="margin-left: auto; margin-right: auto;"></div>
+            <p class="body-lg reveal reveal-delay-3 mt-2" style="color: var(--text-secondary); max-width: 480px; margin-left: auto; margin-right: auto;">How much AI reasoning should luxury agents see?</p>
+            <p class="body-sm reveal reveal-delay-4 mt-4">Adam Blair &mdash; Staff Product Designer</p>
+        </div>
+    </div>
+
+    <div class="slide-number">01 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 2 — THE TENSION (WHAT IS)
+     ============================================= -->
+<section class="slide slide--dark" id="slide-2" data-slide="2">
+    <div class="gradient-orb gradient-orb--terracotta" style="width: 450px; height: 450px; bottom: -15%; right: -12%;"></div>
+    <div class="accent-line" style="height: 50vh; top: 25vh; right: 12%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">The Tension</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Luxury agents close <span style="color: var(--accent-gold);">$50M+</span> a year.</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">Their AI assistant runs 24/7 in the background &mdash; optimizing listings, nurturing leads, writing content. Silently.</p>
+            <p class="body-lg reveal reveal-delay-3 mt-2" style="color: var(--accent-pink);">They have no idea if it's helping or hurting.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">02 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 3 — THE COST (WHAT IS)
+     ============================================= -->
+<section class="slide" id="slide-3" data-slide="3">
+    <div class="gradient-orb gradient-orb--gold" style="width: 380px; height: 380px; top: -10%; left: -8%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">The Cost</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Two failure modes.</h2>
+            <div class="mt-3" style="display: flex; gap: clamp(16px, 3vw, 40px); justify-content: center; flex-wrap: wrap;">
+                <div class="reveal reveal-delay-2" style="flex: 1; min-width: 220px; max-width: 280px; text-align: left; padding: clamp(16px, 2vh, 24px); border-left: 1px solid var(--accent-pink);">
+                    <p class="body-lg" style="color: var(--accent-pink);">Blind faith</p>
+                    <p class="body-sm mt-1">Agent trusts the AI completely. Doesn't catch errors. Reputation risk on every automated action.</p>
+                </div>
+                <div class="reveal reveal-delay-3" style="flex: 1; min-width: 220px; max-width: 280px; text-align: left; padding: clamp(16px, 2vh, 24px); border-left: 1px solid var(--accent-warm);">
+                    <p class="body-lg" style="color: var(--accent-warm);">Constant checking</p>
+                    <p class="body-sm mt-1">Agent second-guesses every move. Defeats the purpose of automation entirely.</p>
+                </div>
+            </div>
+            <!-- Transparency Spectrum -->
+            <div class="reveal reveal-delay-4 mt-3" style="max-width: 400px; margin: 0 auto; width: 100%;">
+                <div style="position: relative; margin: 0 0 10px;">
+                    <div style="height: 2px; background: linear-gradient(to right, var(--accent-pink), var(--accent-gold), var(--accent-warm)); opacity: 0.5;"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; border-radius: 50%; background: var(--accent-gold); box-shadow: 0 0 0 4px rgba(201, 184, 150, 0.2);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="font-size: clamp(9px, 1vw, 11px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); opacity: 0.6;">Black Box</span>
+                    <span style="font-size: clamp(9px, 1vw, 11px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); opacity: 0.6;">Information Overload</span>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-family: var(--font-display); font-style: italic; font-size: clamp(14px, 1.5vw, 17px); color: var(--accent-gold);">Signal to Action</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-number">03 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 4 — THE THESIS (WHAT COULD BE)
+     ============================================= -->
+<section class="slide slide--dark" id="slide-4" data-slide="4">
+    <div class="gradient-orb gradient-orb--pink" style="width: 500px; height: 500px; top: -20%; left: 30%;"></div>
+    <div class="gradient-orb gradient-orb--gold" style="width: 350px; height: 350px; bottom: -15%; right: -5%;"></div>
+    <div class="accent-line" style="height: 60vh; top: 20vh; left: 6%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">The Thesis</p>
+            <p class="quote-text reveal reveal-delay-1 mt-3" style="max-width: 640px; margin: 0 auto;">"Show just enough reasoning to earn the next action."</p>
+            <div class="divider reveal reveal-delay-2 mt-3" style="margin: 0 auto;"></div>
+            <p class="body-lg reveal reveal-delay-3 mt-2" style="color: var(--text-secondary); max-width: 500px; margin: 0 auto;">The sweet spot between black box and information overload. Not more data &mdash; the right data, at the right moment.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">04 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 5 — PRINCIPLE 1
+     ============================================= -->
+<section class="slide" id="slide-5" data-slide="5">
+    <div class="gradient-orb gradient-orb--warm" style="width: 300px; height: 300px; bottom: -10%; left: -5%;"></div>
+    <div class="principle-number">01</div>
+
+    <div class="slide-content slide-content--left" style="padding-left: clamp(48px, 10vw, 160px);">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">Design Principle</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Lead with the action,<br>not the data.</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">Agents don't want to interpret charts. They want to know: what should I do next, and why should I trust it?</p>
+            <p class="body-sm reveal reveal-delay-3 mt-2" style="color: var(--accent-warm);">Action first. Evidence on demand.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">05 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 6 — PRINCIPLE 2
+     ============================================= -->
+<section class="slide slide--dark" id="slide-6" data-slide="6">
+    <div class="gradient-orb gradient-orb--gold" style="width: 350px; height: 350px; top: -10%; right: -8%;"></div>
+    <div class="principle-number">02</div>
+
+    <div class="slide-content slide-content--left" style="padding-left: clamp(48px, 10vw, 160px);">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">Design Principle</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Build trust through<br>track record.</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">A confidence score means nothing on day one. Trust is earned by showing outcomes &mdash; "I suggested this last time, and here's what happened."</p>
+            <p class="body-sm reveal reveal-delay-3 mt-2" style="color: var(--accent-gold);">Past performance builds future confidence.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">06 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 7 — PRINCIPLE 3
+     ============================================= -->
+<section class="slide" id="slide-7" data-slide="7">
+    <div class="gradient-orb gradient-orb--pink" style="width: 400px; height: 400px; bottom: -15%; right: -10%;"></div>
+    <div class="accent-line" style="height: 45vh; top: 28vh; right: 10%;"></div>
+    <div class="principle-number">03</div>
+
+    <div class="slide-content slide-content--left" style="padding-left: clamp(48px, 10vw, 160px);">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">Design Principle</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Progressive disclosure.</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">Surface the summary. Let curious agents dig deeper. Most won't &mdash; and that's the point.</p>
+            <p class="body-sm reveal reveal-delay-3 mt-2" style="color: var(--accent-pink);">Respect attention. Reward curiosity.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">07 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 8 — THE RECOMMENDATION
+     ============================================= -->
+<section class="slide slide--dark" id="slide-8" data-slide="8">
+    <div class="gradient-orb gradient-orb--warm" style="width: 450px; height: 450px; top: -10%; left: -10%;"></div>
+    <div class="gradient-orb gradient-orb--pink" style="width: 300px; height: 300px; bottom: -10%; right: 5%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">The Recommendation</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Contextual Signal</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-2" style="color: var(--text-secondary); max-width: 480px; margin: 0 auto;">The right information, at the right depth, for the right moment.</p>
+
+            <!-- Signal Card Mockup — Rich Contextual -->
+            <div class="reveal reveal-delay-3 mt-2" style="display: flex; justify-content: center;">
+                <div class="signal-card">
+                    <div class="signal-card__header">
+                        <div class="signal-card__title">Follow up with Sarah Chen</div>
+                        <div class="signal-card__priority">High priority</div>
+                    </div>
+
+                    <div class="signal-card__agents">
+                        <span class="signal-card__agent-tag signal-card__agent-tag--nurture">
+                            <span class="signal-card__agent-dot"></span> Nurture
+                        </span>
+                        <span class="signal-card__agent-tag signal-card__agent-tag--seo">
+                            <span class="signal-card__agent-dot"></span> SEO
+                        </span>
+                    </div>
+
+                    <div class="signal-card__grounding">
+                        Viewed 1247 Sunset Plaza Dr 3 times this week. Last contacted 12 days ago.
+                        <div class="signal-card__cite">Based on MLS activity log + CRM contact history</div>
+                    </div>
+
+                    <div class="signal-card__assets">
+                        <span class="signal-card__asset">
+                            <svg viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1.5"/><line x1="4" y1="4" x2="8" y2="4"/><line x1="4" y1="6.5" x2="7" y2="6.5"/></svg>
+                            Draft email
+                        </span>
+                        <span class="signal-card__asset">
+                            <svg viewBox="0 0 12 12"><rect x="1" y="2" width="10" height="8" rx="1.5"/><polyline points="1,4 6,7 11,4"/></svg>
+                            Property brief
+                        </span>
+                        <span class="signal-card__asset">
+                            <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5"/><polyline points="6,3 6,6 8.5,7.5"/></svg>
+                            Showing slots
+                        </span>
+                    </div>
+
+                    <div class="signal-card__footer">
+                        <div class="signal-card__next"><span>Next:</span> Send follow-up referencing Sunset Plaza</div>
+                        <div class="signal-card__value"><strong>4 tasks</strong> saved ~25 min</div>
+                    </div>
+
+                    <div class="signal-card__actions">
+                        <span class="signal-card__btn signal-card__btn--primary">Send follow-up</span>
+                        <span class="signal-card__btn signal-card__btn--ghost">Review assets</span>
+                        <span class="signal-card__btn signal-card__btn--ghost">Dismiss</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-number">08 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 9 — AI TEAM ACTIVITY
+     ============================================= -->
+<section class="slide" id="slide-9" data-slide="9">
+    <div class="gradient-orb gradient-orb--gold" style="width: 400px; height: 400px; top: -15%; right: -8%;"></div>
+    <div class="accent-line" style="height: 50vh; top: 25vh; left: 5%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">Beyond Smart Tasks</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Your AI Team,<br><span class="display-italic" style="color: var(--accent-warm);">working visibly.</span></h2>
+            <p class="body-sm reveal reveal-delay-2 mt-1" style="color: var(--text-secondary); max-width: 420px; margin: 0 auto;">Five specialists. Always on. Each one shows what it's doing and why.</p>
+
+            <div class="specialist-grid reveal reveal-delay-3">
+                <div class="specialist-card specialist-card--seo">
+                    <div class="specialist-card__header">Luxury Presence<br>AI Marketing Specialists</div>
+                    <div class="specialist-card__orb"></div>
+                    <div class="specialist-card__name">AI SEO<br>Specialist</div>
+                </div>
+                <div class="specialist-card specialist-card--ads">
+                    <div class="specialist-card__header">Luxury Presence<br>AI Marketing Specialists</div>
+                    <div class="specialist-card__orb"></div>
+                    <div class="specialist-card__name">AI Ads<br>Specialist</div>
+                </div>
+                <div class="specialist-card specialist-card--nurture">
+                    <div class="specialist-card__header">Luxury Presence<br>AI Marketing Specialists</div>
+                    <div class="specialist-card__orb"></div>
+                    <div class="specialist-card__name">AI Lead Nurture<br>Specialist</div>
+                </div>
+                <div class="specialist-card specialist-card--blog">
+                    <div class="specialist-card__header">Luxury Presence<br>AI Marketing Specialists</div>
+                    <div class="specialist-card__orb"></div>
+                    <div class="specialist-card__name">AI Blog<br>Specialist</div>
+                </div>
+                <div class="specialist-card specialist-card--social">
+                    <div class="specialist-card__header">Luxury Presence<br>AI Marketing Specialists</div>
+                    <div class="specialist-card__orb"></div>
+                    <div class="specialist-card__name">AI Social Media<br>Specialist</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-number">09 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 10 — AUTO ASSET GENERATION
+     ============================================= -->
+<section class="slide slide--dark" id="slide-10" data-slide="10">
+    <div class="gradient-orb gradient-orb--terracotta" style="width: 400px; height: 400px; bottom: -12%; left: -8%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">Auto Asset Generation</p>
+            <h2 class="reveal reveal-delay-1 mt-2">New listing detected.</h2>
+            <p class="body-lg reveal reveal-delay-2 mt-2" style="color: var(--text-secondary); max-width: 440px; margin: 0 auto;">AI generates everything &mdash; automatically, transparently.</p>
+
+            <div class="flow-row reveal reveal-delay-3">
+                <div class="flow-step flow-step--active">
+                    <svg class="flow-step__icon" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/></svg>
+                    Listing detected
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <svg class="flow-step__icon" viewBox="0 0 24 24" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/></svg>
+                    SEO copy
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <svg class="flow-step__icon" viewBox="0 0 24 24" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M7 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
+                    Social posts
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">
+                    <svg class="flow-step__icon" viewBox="0 0 24 24" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    Ad campaigns
+                </div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step flow-step--active">
+                    <svg class="flow-step__icon" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                    Review &amp; approve
+                </div>
+            </div>
+
+            <p class="body-sm reveal reveal-delay-4 mt-3" style="color: var(--text-secondary); max-width: 400px; margin: 0 auto;">Every generated asset shows its reasoning. The agent reviews, adjusts, approves &mdash; never left guessing.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">10 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 11 — TRUST OVER TIME
+     ============================================= -->
+<section class="slide" id="slide-11" data-slide="11">
+    <div class="gradient-orb gradient-orb--pink" style="width: 450px; height: 450px; top: -20%; left: -10%;"></div>
+    <div class="gradient-orb gradient-orb--gold" style="width: 300px; height: 300px; bottom: -10%; right: -5%;"></div>
+    <div class="accent-line" style="height: 55vh; top: 22vh; right: 8%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="label reveal">Trust Over Time</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Confidence is<br><span class="display-italic" style="color: var(--accent-gold);">earned, not declared.</span></h2>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">Week one: the agent reviews everything. Month three: they approve most suggestions with a glance. The UI adapts &mdash; showing less as trust grows.</p>
+            <p class="body-sm reveal reveal-delay-3 mt-2" style="color: var(--accent-warm);">The system learns when to speak up and when to stay quiet.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">11 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 12 — MEASUREMENT
+     ============================================= -->
+<section class="slide slide--dark" id="slide-12" data-slide="12">
+    <div class="gradient-orb gradient-orb--warm" style="width: 380px; height: 380px; top: -15%; right: -10%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">How We Measure</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Four signals of trust.</h2>
+
+            <div class="metric-grid reveal reveal-delay-2" style="margin-left: auto; margin-right: auto;">
+                <div class="metric-item">
+                    <div class="metric-item__value">87%</div>
+                    <div class="metric-item__label">Task acceptance rate</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-item__value">&lt;4s</div>
+                    <div class="metric-item__label">Time to action</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-item__value">-62%</div>
+                    <div class="metric-item__label">Intervention frequency</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-item__value">4.6</div>
+                    <div class="metric-item__label">Trust score (1-5 scale)</div>
+                </div>
+            </div>
+
+            <p class="body-sm reveal reveal-delay-3 mt-3" style="color: var(--text-secondary); max-width: 420px; margin: 0 auto;">Projected targets based on comparable AI-transparency research. Validated against luxury CRM usage patterns.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">12 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 13 — WHAT'S NEXT: THE TRUST RAMP
+     ============================================= -->
+<section class="slide" id="slide-13" data-slide="13">
+    <div class="gradient-orb gradient-orb--gold" style="width: 400px; height: 400px; top: -12%; left: -8%;"></div>
+    <div class="accent-line" style="height: 50vh; top: 25vh; right: 7%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner">
+            <p class="label reveal">What's Next</p>
+            <h2 class="reveal reveal-delay-1 mt-2">Transparency is phase one.<br><span class="display-italic" style="color: var(--accent-gold);">Here's where it leads.</span></h2>
+
+            <div class="reveal reveal-delay-2 mt-3" style="display: flex; gap: clamp(10px, 1.5vw, 16px); justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto;">
+                <div style="flex: 1; min-width: 160px; max-width: 180px; text-align: left; padding: clamp(12px, 1.5vh, 18px); border-left: 1px solid var(--accent-gold); background: rgba(255,255,255,0.02); border-radius: 0 6px 6px 0;">
+                    <div style="font-size: clamp(9px, 0.9vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 6px;">Now</div>
+                    <div style="font-family: var(--font-display); font-size: clamp(14px, 1.4vw, 16px); color: var(--text-primary); margin-bottom: 4px;">Signal transparency</div>
+                    <div style="font-size: clamp(11px, 1vw, 12px); color: var(--text-secondary); line-height: 1.4;">Show which agents acted. Cite real data.</div>
+                </div>
+                <div style="flex: 1; min-width: 160px; max-width: 180px; text-align: left; padding: clamp(12px, 1.5vh, 18px); border-left: 1px solid rgba(201, 184, 150, 0.3); border-radius: 0 6px 6px 0;">
+                    <div style="font-size: clamp(9px, 0.9vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-warm); margin-bottom: 6px;">Next</div>
+                    <div style="font-family: var(--font-display); font-size: clamp(14px, 1.4vw, 16px); color: var(--text-primary); margin-bottom: 4px;">Progressive autonomy</div>
+                    <div style="font-size: clamp(11px, 1vw, 12px); color: var(--text-secondary); line-height: 1.4;">Agents set delegation rules. AI earns freedom.</div>
+                </div>
+                <div style="flex: 1; min-width: 160px; max-width: 180px; text-align: left; padding: clamp(12px, 1.5vh, 18px); border-left: 1px solid rgba(201, 184, 150, 0.3); border-radius: 0 6px 6px 0;">
+                    <div style="font-size: clamp(9px, 0.9vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-warm); margin-bottom: 6px;">Then</div>
+                    <div style="font-family: var(--font-display); font-size: clamp(14px, 1.4vw, 16px); color: var(--text-primary); margin-bottom: 4px;">Predictive orchestration</div>
+                    <div style="font-size: clamp(11px, 1vw, 12px); color: var(--text-secondary); line-height: 1.4;">AI pre-stages everything before you ask.</div>
+                </div>
+                <div style="flex: 1; min-width: 160px; max-width: 180px; text-align: left; padding: clamp(12px, 1.5vh, 18px); border-left: 1px solid rgba(201, 184, 150, 0.3); border-radius: 0 6px 6px 0;">
+                    <div style="font-size: clamp(9px, 0.9vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-warm); margin-bottom: 6px;">Future</div>
+                    <div style="font-family: var(--font-display); font-size: clamp(14px, 1.4vw, 16px); color: var(--text-primary); margin-bottom: 4px;">Network intelligence</div>
+                    <div style="font-size: clamp(11px, 1vw, 12px); color: var(--text-secondary); line-height: 1.4;">Cross-brokerage patterns no single agent sees.</div>
+                </div>
+            </div>
+
+            <p class="body-sm reveal reveal-delay-3 mt-3" style="color: var(--accent-gold); max-width: 480px; margin: 0 auto; font-style: italic; font-family: var(--font-display); font-size: clamp(14px, 1.5vw, 17px);">Transparency earns trust. Trust unlocks autonomy. Autonomy is the real product.</p>
+        </div>
+    </div>
+
+    <div class="slide-number">13 / 14</div>
+</section>
+
+<!-- =============================================
+     SLIDE 14 — CLOSING
+     ============================================= -->
+<section class="slide" id="slide-14" data-slide="14">
+    <div class="gradient-orb gradient-orb--pink" style="width: 500px; height: 500px; top: -15%; right: -10%;"></div>
+    <div class="gradient-orb gradient-orb--gold" style="width: 400px; height: 400px; bottom: -15%; left: -8%;"></div>
+    <div class="accent-line" style="height: 40vh; top: 30vh; left: 7%;"></div>
+    <div class="accent-line" style="height: 30vh; top: 35vh; right: 9%;"></div>
+
+    <div class="slide-content slide-content--center">
+        <div class="slide-inner slide-inner--narrow">
+            <p class="quote-text reveal" style="max-width: 580px; margin: 0 auto;">"The best AI doesn't demand attention. It earns trust."</p>
+            <div class="divider reveal reveal-delay-1 mt-3" style="margin: 0 auto;"></div>
+            <p class="body-lg reveal reveal-delay-2 mt-3" style="color: var(--text-secondary);">Adam Blair</p>
+            <p class="body-sm reveal reveal-delay-3 mt-1">Staff Product Designer &mdash; Luxury Presence</p>
+        </div>
+    </div>
+
+    <div class="slide-number">14 / 14</div>
+</section>
+
+<script>
+(function() {
+    'use strict';
+
+    // ==========================================
+    // Intersection Observer for reveal animations
+    // ==========================================
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ==========================================
+    // Slide tracking
+    // ==========================================
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    // ==========================================
+    // Nav dots
+    // ==========================================
+    const navDotsContainer = document.getElementById('navDots');
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', () => {
+            slides[i].scrollIntoView({ behavior: 'smooth' });
+        });
+        navDotsContainer.appendChild(dot);
+    });
+    const navDots = document.querySelectorAll('.nav-dot');
+
+    // ==========================================
+    // Progress bar & active slide tracking
+    // ==========================================
+    const progressBar = document.getElementById('progressBar');
+
+    const slideObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idx = parseInt(entry.target.dataset.slide) - 1;
+                currentSlide = idx;
+
+                // Update progress bar
+                const progress = ((idx + 1) / totalSlides) * 100;
+                progressBar.style.width = progress + '%';
+
+                // Update nav dots
+                navDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === idx);
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+
+    slides.forEach(slide => slideObserver.observe(slide));
+
+    // ==========================================
+    // Keyboard navigation
+    // ==========================================
+    document.addEventListener('keydown', (e) => {
+        let target = null;
+        if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            target = Math.min(currentSlide + 1, totalSlides - 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+            e.preventDefault();
+            target = Math.max(currentSlide - 1, 0);
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            target = 0;
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            target = totalSlides - 1;
+        }
+        if (target !== null && target !== currentSlide) {
+            slides[target].scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+
+    // ==========================================
+    // Touch / swipe support
+    // ==========================================
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+        const deltaY = touchStartY - e.changedTouches[0].clientY;
+        const deltaTime = Date.now() - touchStartTime;
+
+        if (Math.abs(deltaY) > 50 && deltaTime < 500) {
+            let target;
+            if (deltaY > 0) {
+                target = Math.min(currentSlide + 1, totalSlides - 1);
+            } else {
+                target = Math.max(currentSlide - 1, 0);
+            }
+            if (target !== currentSlide) {
+                slides[target].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, { passive: true });
+
+})();
+</script>
+
+</body>
+</html>

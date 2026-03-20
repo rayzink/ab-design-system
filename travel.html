@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Costa Rica 2026 — Blair Travel</title>
+<link rel="icon" href="/favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0e12;--bg-card:#1a1d24;--bg-elevated:#22252c;
+  --text:#ffffff;--text-dim:#9a9ca2;--text-muted:#6b6e76;
+  --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+  --accent:#e8461e;--gold:#F4B56F;--success:#8B9A6B;
+  --radius:4px;
+  --heading:'Outfit',sans-serif;--body:'Outfit',sans-serif;
+  --mono:'JetBrains Mono',monospace;--serif:'Lora',Georgia,serif;
+  --sidebar:220px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+
+/* Grain */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;opacity:0.4;
+}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
+  background:var(--bg-card);border-right:1px solid var(--border);
+  z-index:100;display:flex;flex-direction:column;
+  padding:24px 0;overflow-y:auto;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px;margin-bottom:24px;text-decoration:none;
+}
+.sidebar-mark{
+  width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--heading);font-size:12px;font-weight:700;
+  color:var(--text);letter-spacing:0.04em;transition:all 0.3s;
+}
+.sidebar-logo:hover .sidebar-mark{border-color:var(--accent);color:var(--accent)}
+.sidebar-title{
+  padding:0 20px;margin-bottom:4px;
+  font-family:var(--serif);font-size:20px;font-style:italic;color:var(--gold);
+}
+.sidebar-sub{
+  padding:0 20px;margin-bottom:24px;
+  font-family:var(--mono);font-size:9px;color:var(--text-muted);
+  letter-spacing:0.08em;text-transform:uppercase;
+}
+.sidebar-divider{
+  height:1px;background:var(--border);margin:0 20px 16px;
+}
+.sidebar-section{
+  font-family:var(--mono);font-size:8px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--text-muted);padding:0 20px;margin-bottom:8px;
+}
+.sidebar-nav{display:flex;flex-direction:column;gap:1px;margin-bottom:16px}
+.sidebar-link{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 20px;font-size:13px;color:var(--text-dim);
+  text-decoration:none;transition:all 0.2s;
+  border-left:2px solid transparent;
+}
+.sidebar-link:hover{color:var(--text);background:rgba(255,255,255,0.02)}
+.sidebar-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(244,181,111,0.04)}
+.sidebar-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+.sidebar-link .day-badge{
+  font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-left:auto;
+}
+
+.sidebar-stats{
+  margin-top:auto;padding:16px 20px;
+  border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:8px;
+}
+.sidebar-stat{display:flex;justify-content:space-between;align-items:center}
+.sidebar-stat-label{font-family:var(--mono);font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em}
+.sidebar-stat-val{font-family:var(--mono);font-size:11px;color:var(--text)}
+
+/* ═══ MAIN ═══ */
+.main{margin-left:var(--sidebar);min-height:100vh}
+
+/* ═══ HERO ═══ */
+.hero{
+  position:relative;padding:60px 48px 48px;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(232,70,30,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 70%, rgba(244,181,111,0.04) 0%, transparent 50%);
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+.hero-title{
+  font-family:var(--serif);font-size:clamp(40px,6vw,72px);
+  font-weight:400;font-style:italic;line-height:1.05;
+  color:var(--text);margin-bottom:12px;
+}
+.hero-title em{font-style:normal;color:var(--gold)}
+.hero-dates{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:0.04em;margin-bottom:24px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hero-stat{display:flex;flex-direction:column;gap:2px}
+.hero-stat-val{font-family:var(--serif);font-size:24px;color:var(--text)}
+.hero-stat-label{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted)}
+
+/* ═══ SECTION ═══ */
+.section{padding:48px;border-bottom:1px solid var(--border)}
+.section-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::before{content:'';width:12px;height:1px;background:var(--gold)}
+.section-title{
+  font-family:var(--serif);font-size:clamp(24px,3vw,32px);
+  font-weight:400;font-style:italic;margin-bottom:32px;color:var(--text);
+}
+
+/* ═══ MAP ═══ */
+.map-container{
+  border-radius:8px;overflow:hidden;border:1px solid var(--border);
+  margin-bottom:32px;position:relative;
+}
+.map-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:12px 16px;
+  background:linear-gradient(to top,rgba(12,14,18,0.95),transparent);
+  display:flex;align-items:center;gap:8px;
+}
+.map-overlay-text{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase}
+
+/* Route bar */
+.route-bar{
+  display:flex;align-items:center;gap:0;padding:24px 0 16px;
+  overflow-x:auto;margin-bottom:0;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+.route-bar::-webkit-scrollbar{display:none}
+.route-node{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;width:90px}
+.route-dot{width:12px;height:12px;border-radius:50%}
+.route-dot.travel{background:var(--accent)}
+.route-dot.adventure{background:var(--gold)}
+.route-dot.beach{background:var(--success)}
+.route-name{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text);text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap}
+.route-days{font-family:var(--mono);font-size:11px;color:var(--text-muted);white-space:nowrap}
+.route-line{height:1px;flex:1;min-width:40px;background:var(--border);position:relative}
+.route-drive-label{
+  position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10px;color:var(--text-dim);white-space:nowrap;
+}
+
+/* ═══ DAY SCROLLER ═══ */
+.days-scroll-wrap{position:relative}
+.days-scroll{
+  display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:var(--bg-elevated) transparent;
+}
+.days-scroll::-webkit-scrollbar{height:4px}
+.days-scroll::-webkit-scrollbar-track{background:transparent}
+.days-scroll::-webkit-scrollbar-thumb{background:var(--bg-elevated);border-radius:2px}
+
+.day-card{
+  flex-shrink:0;width:480px;scroll-snap-align:start;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;transition:all 0.3s;
+  display:flex;flex-direction:column;
+}
+.day-card:hover{border-color:var(--border-hover)}
+
+.day-photo{width:100%;height:180px;object-fit:cover;display:block}
+
+/* Day card header — City/Region prominent */
+.day-head{
+  padding:16px 20px 12px;display:flex;flex-direction:column;gap:4px;
+  border-bottom:1px solid var(--border);
+}
+.day-head-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.day-city{
+  font-family:var(--serif);font-size:22px;font-style:italic;color:var(--text);line-height:1.2;
+}
+.day-travel-badge{
+  font-family:var(--mono);font-size:8px;padding:2px 6px;
+  border-radius:var(--radius);background:rgba(232,70,30,0.1);
+  color:var(--accent);border:1px solid rgba(232,70,30,0.15);
+  flex-shrink:0;
+}
+.day-head-meta{
+  display:flex;align-items:center;gap:12px;
+}
+.day-num{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.08em;
+  text-transform:uppercase;font-weight:500;
+}
+.day-card.travel .day-num{color:var(--accent)}
+.day-card.adventure .day-num{color:var(--gold)}
+.day-card.beach .day-num{color:var(--success)}
+.day-date{font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:0.02em}
+
+/* Day card body */
+.day-body{padding:16px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+
+.day-field{display:flex;gap:12px}
+.day-label{
+  flex-shrink:0;width:72px;font-family:var(--mono);font-size:10px;
+  text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);
+  padding-top:2px;font-weight:500;
+}
+.day-value{font-size:14px;color:var(--text-dim);line-height:1.5;flex:1}
+.day-value strong{color:var(--text);font-weight:500}
+.day-value .conf{
+  font-family:var(--mono);font-size:10px;color:var(--text-muted);
+  background:var(--bg-elevated);padding:2px 6px;border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+.day-drive{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:10px;color:var(--gold);
+  background:rgba(244,181,111,0.06);padding:3px 8px;
+  border-radius:var(--radius);border:1px solid rgba(244,181,111,0.1);
+}
+
+/* Hotel highlight row */
+.day-hotel{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--bg-elevated);
+  border-radius:var(--radius);border:1px solid var(--border);
+}
+.day-hotel-icon{
+  width:28px;height:28px;border-radius:var(--radius);
+  background:rgba(244,181,111,0.06);border:1px solid rgba(244,181,111,0.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.day-hotel-icon svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.day-hotel-info{flex:1;display:flex;flex-direction:column;gap:1px}
+.day-hotel-name{font-size:14px;color:var(--text);font-weight:500}
+.day-hotel-detail{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.02em}
+
+/* Region info inside day card */
+.day-region-info{
+  margin-top:4px;padding:12px 16px;background:var(--bg-elevated);
+  border-radius:var(--radius);border:1px solid var(--border);
+}
+.day-region-info-label{
+  font-family:var(--mono);font-size:9px;text-transform:uppercase;
+  letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.day-region-info-label a{color:var(--gold);text-decoration:none;font-size:9px}
+.day-region-info-label a:hover{text-decoration:underline}
+.day-region-list{display:flex;flex-wrap:wrap;gap:4px 12px}
+.day-region-list span{font-size:12px;color:var(--text-dim)}
+
+/* Day footer links */
+.day-footer{
+  padding:12px 20px;border-top:1px solid var(--border);
+  display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;
+}
+.day-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.03em;
+  text-decoration:none;padding:5px 10px;border-radius:var(--radius);
+  transition:all 0.2s;white-space:nowrap;
+}
+.day-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5}
+.day-link.maps{color:var(--gold);background:rgba(244,181,111,0.06);border:1px solid rgba(244,181,111,0.12)}
+.day-link.maps:hover{background:rgba(244,181,111,0.12)}
+.day-link.viator{color:var(--success);background:rgba(139,154,107,0.06);border:1px solid rgba(139,154,107,0.12)}
+.day-link.viator:hover{background:rgba(139,154,107,0.12)}
+.day-link.guide{color:var(--accent);background:rgba(232,70,30,0.06);border:1px solid rgba(232,70,30,0.12)}
+.day-link.guide:hover{background:rgba(232,70,30,0.12)}
+
+/* ═══ ACCOMMODATIONS ═══ */
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.acc-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;transition:all 0.3s;
+}
+.acc-card:hover{border-color:var(--border-hover)}
+.acc-photo{width:100%;height:180px;object-fit:cover;display:block}
+.acc-body{padding:16px}
+.acc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+.acc-name{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--text)}
+.acc-price{font-family:var(--serif);font-size:20px;color:var(--gold);flex-shrink:0}
+.acc-dates{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:0.04em;margin-bottom:8px}
+.acc-details{
+  display:flex;gap:12px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:9px;color:var(--text-muted);
+  padding-top:8px;border-top:1px solid var(--border);
+}
+.acc-detail{display:flex;align-items:center;gap:3px}
+.acc-detail svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+/* ═══ REGIONS ═══ */
+.regions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.region-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;transition:all 0.3s;
+}
+.region-card:hover{border-color:var(--border-hover)}
+.region-head{
+  padding:16px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(244,181,111,0.04) 0%,transparent 60%);
+}
+.region-name{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--text);margin-bottom:2px}
+.region-sub{font-family:var(--mono);font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em}
+.region-body{padding:16px;display:flex;flex-direction:column;gap:14px}
+.region-group-label{
+  font-family:var(--mono);font-size:8px;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--gold);margin-bottom:4px;
+  display:flex;align-items:center;gap:8px;
+}
+.region-group-label a{color:var(--gold);text-decoration:none;font-size:8px}
+.region-group-label a:hover{text-decoration:underline}
+.region-list{display:flex;flex-direction:column;gap:3px}
+.region-item{
+  font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px;padding:2px 0;
+}
+.region-item::before{
+  content:'';width:3px;height:3px;border-radius:50%;
+  background:var(--text-muted);flex-shrink:0;
+}
+
+/* ═══ BEACHES ═══ */
+.beach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.beach-category{
+  grid-column:1/-1;font-family:var(--mono);font-size:9px;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--gold);margin-top:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.beach-category:first-child{margin-top:0}
+.beach-category::after{content:'';flex:1;height:1px;background:var(--border)}
+.beach-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;padding:14px 16px;transition:all 0.3s;
+}
+.beach-card:hover{border-color:var(--border-hover)}
+.beach-name{font-family:var(--serif);font-size:15px;font-style:italic;color:var(--text);margin-bottom:4px}
+.beach-desc{font-size:12px;color:var(--text-dim);line-height:1.5}
+
+/* ═══ NOTES ═══ */
+.notes-grid{display:flex;flex-direction:column;gap:8px}
+.note-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 14px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:8px;
+}
+.note-icon{
+  flex-shrink:0;width:24px;height:24px;border-radius:var(--radius);
+  background:rgba(244,181,111,0.06);border:1px solid rgba(244,181,111,0.1);
+  display:flex;align-items:center;justify-content:center;color:var(--gold);
+}
+.note-icon svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+.note-text{font-size:12px;color:var(--text-dim);line-height:1.5}
+.note-text strong{color:var(--text);font-weight:500}
+
+/* ═══ FOOTER ═══ */
+.footer{
+  padding:32px 48px;text-align:center;border-top:1px solid var(--border);
+}
+.footer-text{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:0.06em}
+.footer-text span{color:var(--gold)}
+
+/* ═══ MOBILE ═══ */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .mobile-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 16px;border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:100;
+    background:rgba(12,14,18,0.95);backdrop-filter:blur(12px);
+  }
+  .mobile-logo{
+    width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--heading);font-size:11px;font-weight:700;
+    color:var(--text);text-decoration:none;
+  }
+  .mobile-title{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--gold)}
+  .mobile-nav{
+    display:flex;gap:12px;overflow-x:auto;padding:0 16px;height:40px;align-items:center;
+    border-bottom:1px solid var(--border);
+    background:rgba(12,14,18,0.95);
+    position:sticky;top:57px;z-index:99;
+  }
+  .mobile-nav::-webkit-scrollbar{display:none}
+  .mobile-nav a{
+    font-family:var(--mono);font-size:9px;text-transform:uppercase;
+    letter-spacing:0.06em;color:var(--text-muted);text-decoration:none;
+    white-space:nowrap;flex-shrink:0;
+  }
+  .hero{padding:32px 16px 32px}
+  .section{padding:32px 16px}
+  .day-card{width:85vw;min-width:300px;max-width:480px}
+  .day-city{font-size:18px}
+  .acc-grid{grid-template-columns:1fr}
+  .regions-grid{grid-template-columns:1fr}
+  .beach-grid{grid-template-columns:1fr}
+  .footer{padding:24px 16px}
+  .route-bar{padding:12px 0}
+  .hero-stats{gap:20px}
+  .hero-stat-val{font-size:20px}
+}
+@media(min-width:769px){
+  .mobile-topbar,.mobile-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <a class="mobile-logo" href="index.html">AB</a>
+  <span class="mobile-title">Costa Rica 2026</span>
+</div>
+<div class="mobile-nav">
+  <a href="#itinerary">Itinerary</a>
+  <a href="#map">Map</a>
+  <a href="#stays">Stays</a>
+  <a href="#regions">Regions</a>
+  <a href="#beaches">Beaches</a>
+  <a href="#notes">Notes</a>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a class="sidebar-logo" href="index.html">
+    <div class="sidebar-mark">AB</div>
+  </a>
+  <div class="sidebar-title">Costa Rica</div>
+  <div class="sidebar-sub">Mar 20 — Apr 3, 2026</div>
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">Overview</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-link active" href="#itinerary">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+      Itinerary
+    </a>
+    <a class="sidebar-link" href="#map">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Route Map
+    </a>
+  </nav>
+
+  <div class="sidebar-section">Details</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-link" href="#stays">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg>
+      Stays
+      <span class="day-badge">8</span>
+    </a>
+    <a class="sidebar-link" href="#regions">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Regions
+      <span class="day-badge">3</span>
+    </a>
+    <a class="sidebar-link" href="#beaches">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/></svg>
+      Beaches
+      <span class="day-badge">8</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-section">Planning</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-link" href="#notes">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Notes
+    </a>
+  </nav>
+
+  <div class="sidebar-stats">
+    <div class="sidebar-stat">
+      <span class="sidebar-stat-label">Days</span>
+      <span class="sidebar-stat-val">15</span>
+    </div>
+    <div class="sidebar-stat">
+      <span class="sidebar-stat-label">Hotels</span>
+      <span class="sidebar-stat-val">8</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow reveal">Blair Family Travel</div>
+  <h1 class="hero-title reveal"><em>Costa Rica</em> 2026</h1>
+  <div class="hero-dates reveal">March 20 — April 3 &middot; 15 Days &middot; 4 Regions</div>
+  <div class="hero-stats reveal">
+    <div class="hero-stat"><span class="hero-stat-val">15</span><span class="hero-stat-label">Days</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">4</span><span class="hero-stat-label">Regions</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">8</span><span class="hero-stat-label">Hotels</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">9</span><span class="hero-stat-label">Excursions</span></div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section class="section" id="itinerary">
+  <div class="section-label reveal">Day by Day</div>
+  <h2 class="section-title reveal">The Itinerary</h2>
+
+  <!-- Day cards horizontal scroll -->
+  <div class="days-scroll-wrap">
+    <!-- Route bar (syncs with card scroll — 1 node per card) -->
+    <div class="route-bar reveal" id="routeBar">
+      <div class="route-node"><div class="route-dot travel"></div><span class="route-name">SJO</span><span class="route-days">Day 1</span></div>
+      <div class="route-line"><span class="route-drive-label">3h drive</span></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">La Fortuna</span><span class="route-days">Day 2</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">La Fortuna</span><span class="route-days">Day 3</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">La Fortuna</span><span class="route-days">Day 4</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">La Fortuna</span><span class="route-days">Day 5</span></div>
+      <div class="route-line"><span class="route-drive-label">5h drive</span></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">La Leona</span><span class="route-days">Day 6</span></div>
+      <div class="route-line"><span class="route-drive-label">3h drive</span></div>
+      <div class="route-node"><div class="route-dot beach"></div><span class="route-name">Tamarindo</span><span class="route-days">Day 7</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot beach"></div><span class="route-name">Tamarindo</span><span class="route-days">Day 8</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot beach"></div><span class="route-name">Tamarindo</span><span class="route-days">Day 9</span></div>
+      <div class="route-line"><span class="route-drive-label">4h + ferry</span></div>
+      <div class="route-node"><div class="route-dot beach"></div><span class="route-name">Santa Teresa</span><span class="route-days">Day 10</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot beach"></div><span class="route-name">Santa Teresa</span><span class="route-days">Day 11</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot adventure"></div><span class="route-name">Santa Teresa</span><span class="route-days">Day 12</span></div>
+      <div class="route-line"><span class="route-drive-label">1.5h</span></div>
+      <div class="route-node"><div class="route-dot travel"></div><span class="route-name">Paquera</span><span class="route-days">Day 13</span></div>
+      <div class="route-line"><span class="route-drive-label">3.5h + ferry</span></div>
+      <div class="route-node"><div class="route-dot travel"></div><span class="route-name">SJO</span><span class="route-days">Day 14</span></div>
+      <div class="route-line"></div>
+      <div class="route-node"><div class="route-dot travel"></div><span class="route-name">SJO</span><span class="route-days">Day 15</span></div>
+    </div>
+    <div class="days-scroll" id="daysScroll">
+
+      <!-- Day 1 -->
+      <div class="day-card travel">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=800&q=80" alt="San José Costa Rica"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">San Jos&eacute;</span>
+            <span class="day-travel-badge">Travel Day</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 1</span>
+            <span class="day-date">Fri, Mar 20</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Holiday Inn SJO</span>
+              <span class="day-hotel-detail">2 Queen &middot; Check-in evening</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Flight</span><div class="day-value"><strong>SLC &rarr; SJO</strong> &middot; Southwest<br/><span class="conf">CETAE2</span> <span class="conf">CESJ8P</span> <span class="conf">AH2X2V</span></div></div>
+          <div class="day-field"><span class="day-label">Rental</span><div class="day-value">Pick up car &middot; Adobe #1318719</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/e1fVwPxDnUwHg1kq9" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+        </div>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://image-tc.galaxy.tf/wijpeg-5xmccmodiov3cbayqgovgo6q5/3-hot-springs-paralax.jpg?width=800" alt="Tabacon Hot Springs"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">La Fortuna</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 2</span>
+            <span class="day-date">Sat, Mar 21</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Tabacon</span>
+              <span class="day-hotel-detail">1 King &middot; Check-in 3 PM &middot; Hot springs</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">3 hrs</span> SJO to La Fortuna</div></div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Coffee &amp; Chocolate Tour</strong> &middot; 2.5 hrs</div></div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">La Fortuna Activities</div>
+            <div class="day-region-list"><span>Mixology at Tabacon</span><span>Sloth trail at Noah's</span><span>Night tour</span><span>Springs day pass</span><span>River tubing</span></div>
+          </div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/97937/best-restaurants-in-la-fortuna-de-san-carlos" target="_blank" rel="noopener">&rarr; Guide</a></div>
+            <div class="day-region-list"><span>Travesia</span><span>Italianissimo</span><span>Jalapas</span><span>Acachete</span><span>Shiitake</span><span>L'naciente</span><span>Spectacular</span></div>
+          </div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/VZo5FbWSjRBcXPMq7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/La-Fortuna/Coffee-and-Chocolate-tour-Don-Juan/d5099-56889P2" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Tour</a>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://image-tc.galaxy.tf/wijpeg-bcnji53hn8a84flma0j8pap9m/6-volcano-paralax.jpg?width=800" alt="Arenal Volcano"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">La Fortuna</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 3</span>
+            <span class="day-date">Sun, Mar 22</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Tabacon</span>
+              <span class="day-hotel-detail">1 King &middot; Night 2</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>La Fortuna Waterfall</strong> &middot; 1.5 hrs</div></div>
+          <div class="day-field"><span class="day-label">Time</span><div class="day-value">7:00 AM start</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Hot springs afternoon &middot; Lunch in town</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/VZo5FbWSjRBcXPMq7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/La-Fortuna/La-Fortuna-Waterfall-Self-Guided-Tour/d5099-258966P3" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Waterfall</a>
+          <a class="day-link guide" href="https://wanderlog.com/list/geoCategory/97937/best-restaurants-in-la-fortuna-de-san-carlos" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Restaurants</a>
+        </div>
+      </div>
+
+      <!-- Day 4 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80" alt="Arenal Hanging Bridges"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">La Fortuna</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 4</span>
+            <span class="day-date">Mon, Mar 23</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Noah's</span>
+              <span class="day-hotel-detail">1 King &middot; Check-in 2 PM &middot; Night tour included</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Hanging Bridges</strong> &middot; Guided, 2 hrs</div></div>
+          <div class="day-field"><span class="day-label">Time</span><div class="day-value">10:00 AM</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Sloth Trail at Noah's</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/gzYYKQW7qjjb2osu7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/La-Fortuna/HANGING-BRIDGES-GUIDED-TOUR/d5099-254908P1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Bridges</a>
+        </div>
+      </div>
+
+      <!-- Day 5 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&q=80" alt="La Fortuna Waterfall"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">La Fortuna</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 5</span>
+            <span class="day-date">Tue, Mar 24</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Noah's</span>
+              <span class="day-hotel-detail">1 King &middot; Night 2</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Canyoning Adventure</strong> &middot; 5 hrs</div></div>
+          <div class="day-field"><span class="day-label">Time</span><div class="day-value">9:30 AM &middot; Rappelling waterfalls</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Noah's Night Tour evening</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/gzYYKQW7qjjb2osu7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/La-Fortuna/Arenal-Volcano-Canyoning-Adventure-near-La-Fortuna/d5099-11622P5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Canyoning</a>
+        </div>
+      </div>
+
+      <!-- Day 6 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=800&q=80" alt="Costa Rica Waterfall Jungle"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">La Leona</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 6</span>
+            <span class="day-date">Wed, Mar 25</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Hotel Hacienda</span>
+              <span class="day-hotel-detail">Check-in afternoon</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">5 hrs</span> La Fortuna to La Leona</div></div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>La Leona Waterfall</strong> &middot; 3 hrs</div></div>
+          <div class="day-field"><span class="day-label">Time</span><div class="day-value">2:00 PM &middot; Cafe &amp; Macadamia en route</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/cFWVRw8c2bGKyPkN8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link maps" href="https://maps.app.goo.gl/M16m3YqDVsz9VHWRA" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Waterfall</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/Puntarenas/La-Leona-Waterfall-Guided-Hike/d5554-284805P1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Waterfall</a>
+        </div>
+      </div>
+
+      <!-- Day 7 -->
+      <div class="day-card beach">
+        <img class="day-photo" src="https://bohotamarindo.com/wp-content/uploads/2023/11/BOHO-HEADER.jpg" alt="BOHO Tamarindo"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Tamarindo</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 7</span>
+            <span class="day-date">Thu, Mar 26</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">BOHO Tamarindo</span>
+              <span class="day-hotel-detail">1 King &middot; Check-in 3 PM</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">3 hrs</span> La Leona to Tamarindo</div></div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Langosta Beach Club</strong> &middot; All day</div></div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">Tamarindo Activities</div>
+            <div class="day-region-list"><span>Diamante Sanctuary</span><span>Playa Conchal beach club</span><span>Langosta Beach Club</span><span>Intro scuba (via BOHO)</span><span>Beer Tour</span><span>ATVs / Golf Carts</span><span>Bar crawl</span></div>
+          </div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/155756/best-restaurants-in-tamarindo" target="_blank" rel="noopener">&rarr; Guide</a></div>
+            <div class="day-region-list"><span>Monkey Bar</span><span>Tabu on the Beach</span><span>Waffle Monkey</span><span>Food trucks</span><span>El Mercadito</span><span>Ors</span><span>Pengas</span><span>Dragonfly</span></div>
+          </div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/5a7dCx11bYiJRW5M6" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link guide" href="https://wanderlog.com/list/geoCategory/155756/best-restaurants-in-tamarindo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Restaurants</a>
+        </div>
+      </div>
+
+      <!-- Day 8 -->
+      <div class="day-card beach">
+        <img class="day-photo" src="https://bohotamarindo.com/wp-content/uploads/2023/11/REY06845-copy.jpg" alt="Tamarindo Beach"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Tamarindo</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 8</span>
+            <span class="day-date">Fri, Mar 27</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">BOHO Tamarindo</span>
+              <span class="day-hotel-detail">1 King &middot; Night 2</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Playa Conchal</strong> &middot; Beach day</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Crushed-shell sand, turquoise water &middot; Reserva Conchal access</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/DNhRQeSNL2xvnCgs5" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+        </div>
+      </div>
+
+      <!-- Day 9 -->
+      <div class="day-card beach">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1565073182887-6bcefbe225b1?w=800&q=80" alt="Tamarindo Sunset"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Tamarindo</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 9</span>
+            <span class="day-date">Sat, Mar 28</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">BOHO Tamarindo</span>
+              <span class="day-hotel-detail">1 King &middot; Night 3</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Craft Beer Tour</strong></div></div>
+          <div class="day-field"><span class="day-label">Time</span><div class="day-value">12:30 PM &middot; Meet at Sharky's</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Playa Conchal morning</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/5a7dCx11bYiJRW5M6" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/Tamarindo/Craft-Beer-Tour-in-Tamarindo-Costa-Rica/d24044-299949P1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book Beer Tour</a>
+        </div>
+      </div>
+
+      <!-- Day 10 -->
+      <div class="day-card beach">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1500316124030-4cffa46f10f0?w=800&q=80" alt="Santa Teresa Beach"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Santa Teresa</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 10</span>
+            <span class="day-date">Sun, Mar 29</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Selva Villa</span>
+              <span class="day-hotel-detail">3BR private villa &middot; Check-in 3 PM</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">4 hrs</span> includes ferry</div></div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">Santa Teresa Activities</div>
+            <div class="day-region-list"><span>ATV Rental</span><span>Montezuma Waterfall</span><span>Bioluminescence tour</span><span>Surf lessons</span></div>
+          </div>
+          <div class="day-region-info">
+            <div class="day-region-info-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/148203/best-restaurants-in-santa-teresa" target="_blank" rel="noopener">&rarr; Guide</a></div>
+            <div class="day-region-list"><span>Banana Beach</span><span>Brukas</span><span>Rica Mar</span></div>
+          </div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/nnJGHzNjkQAU7VNR8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link guide" href="https://wanderlog.com/list/geoCategory/148203/best-restaurants-in-santa-teresa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Restaurants</a>
+        </div>
+      </div>
+
+      <!-- Day 11 -->
+      <div class="day-card beach">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="Tropical Beach Surf"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Santa Teresa</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 11</span>
+            <span class="day-date">Mon, Mar 30</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Selva Villa</span>
+              <span class="day-hotel-detail">3BR &middot; Night 2</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Free Day</strong></div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Optional 24hr ATV rental &middot; Banana Beach cocktails &middot; Surf lessons</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/nnJGHzNjkQAU7VNR8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+        </div>
+      </div>
+
+      <!-- Day 12 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80" alt="ATV Jungle Trail"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Santa Teresa</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 12</span>
+            <span class="day-date">Tue, Mar 31</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Selva Villa</span>
+              <span class="day-hotel-detail">3BR &middot; Night 3</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Montezuma ATV Tour</strong> &middot; Jungle trails</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/nnJGHzNjkQAU7VNR8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link viator" href="https://www.viator.com/tours/Montezuma/Montezuma-ATV-Tour/d24074-260558P1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Book ATV</a>
+        </div>
+      </div>
+
+      <!-- Day 13 -->
+      <div class="day-card adventure">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=800&q=80" alt="Bioluminescence Ocean Night"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">Paquera</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 13</span>
+            <span class="day-date">Wed, Apr 1</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Casa de Koa</span>
+              <span class="day-hotel-detail">Multiple rooms &middot; Check-in afternoon</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Activity</span><div class="day-value"><strong>Bioluminescence Tour</strong> &middot; Eddy's Reserve</div></div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">1.5 hrs</span> Santa Teresa to Paquera</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/8eRe4XLiCkU5kVyp7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+          <a class="day-link maps" href="https://maps.app.goo.gl/Pn9QfqiAWm1sZnbKA" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Bio Tour</a>
+        </div>
+      </div>
+
+      <!-- Day 14 -->
+      <div class="day-card travel">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80" alt="Costa Rica Travel"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">San Jos&eacute;</span>
+            <span class="day-travel-badge">Travel Day</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 14</span>
+            <span class="day-date">Thu, Apr 2</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-hotel">
+            <div class="day-hotel-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 7v14m18-14v14M6 11h4m-4 4h4m6-4h4m-4 4h4"/></svg></div>
+            <div class="day-hotel-info">
+              <span class="day-hotel-name">Holiday Inn SJO</span>
+              <span class="day-hotel-detail">2 Queen &middot; Check-in evening</span>
+            </div>
+          </div>
+          <div class="day-field"><span class="day-label">Drive</span><div class="day-value"><span class="day-drive">3.5–4 hrs</span> ferry crossing</div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Book ferry via QuickPayCR before departure</div></div>
+        </div>
+        <div class="day-footer">
+          <a class="day-link maps" href="https://maps.app.goo.gl/e1fVwPxDnUwHg1kq9" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> View Route</a>
+        </div>
+      </div>
+
+      <!-- Day 15 -->
+      <div class="day-card travel">
+        <img class="day-photo" src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800&q=80" alt="Airport Departure"/>
+        <div class="day-head">
+          <div class="day-head-top">
+            <span class="day-city">San Jos&eacute;</span>
+            <span class="day-travel-badge">Departure</span>
+          </div>
+          <div class="day-head-meta">
+            <span class="day-num">Day 15</span>
+            <span class="day-date">Fri, Apr 3</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-field"><span class="day-label">Flight</span><div class="day-value"><strong>SJO &rarr; SLC</strong> &middot; American Airlines 12:26 PM<br/><span class="conf">ENEQQU</span> <span class="conf">EGNJTS</span></div></div>
+          <div class="day-field"><span class="day-label">Other</span><div class="day-value">Return rental car to Adobe</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- MAP -->
+<section class="section" id="map">
+  <div class="section-label reveal">Navigation</div>
+  <h2 class="section-title reveal">Route Map</h2>
+  <div class="map-container reveal">
+    <div style="width:100%;height:400px;background:var(--bg-elevated);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden">
+      <!-- SVG Costa Rica route map -->
+      <svg viewBox="0 0 600 400" style="width:100%;height:100%;position:absolute;inset:0" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Costa Rica outline simplified -->
+        <path d="M80,120 Q120,80 200,90 Q280,70 340,100 Q400,80 460,110 Q500,130 520,170 Q540,220 500,260 Q460,300 400,320 Q340,340 280,330 Q220,350 160,310 Q100,280 80,230 Q60,180 80,120Z" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <!-- Route line -->
+        <path d="M320,160 L240,120 L200,200 L280,180 L220,260 L260,290 L320,160" fill="none" stroke="rgba(244,181,111,0.2)" stroke-width="2" stroke-dasharray="6,4" filter="url(#glow)"/>
+        <!-- SJO -->
+        <circle cx="320" cy="160" r="6" fill="#e8461e"/><text x="335" y="155" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">SJO</text>
+        <!-- La Fortuna -->
+        <circle cx="240" cy="120" r="6" fill="#F4B56F"/><text x="255" y="115" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">La Fortuna</text>
+        <!-- La Leona -->
+        <circle cx="200" cy="200" r="5" fill="#F4B56F"/><text x="140" y="197" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">La Leona</text>
+        <!-- Tamarindo -->
+        <circle cx="280" cy="180" r="6" fill="#8B9A6B"/><text x="290" y="197" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">Tamarindo</text>
+        <!-- Santa Teresa -->
+        <circle cx="220" cy="260" r="6" fill="#8B9A6B"/><text x="130" y="260" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">Santa Teresa</text>
+        <!-- Paquera -->
+        <circle cx="260" cy="290" r="5" fill="#e8461e"/><text x="275" y="290" fill="#9a9ca2" font-family="'JetBrains Mono',monospace" font-size="10">Paquera</text>
+        <!-- Labels -->
+        <text x="400" y="200" fill="rgba(255,255,255,0.03)" font-family="'Lora',serif" font-size="48" font-style="italic">Costa Rica</text>
+      </svg>
+    </div>
+    <div class="map-overlay">
+      <span class="map-overlay-text">SJO &rarr; La Fortuna &rarr; La Leona &rarr; Tamarindo &rarr; Santa Teresa &rarr; Paquera &rarr; SJO</span>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOMMODATIONS -->
+<section class="section" id="stays">
+  <div class="section-label reveal">Where You'll Stay</div>
+  <h2 class="section-title reveal">Accommodations</h2>
+  <div class="acc-grid">
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Holiday Inn SJO</div><div class="acc-price">$211</div></div>
+        <div class="acc-dates">Mar 20–21 &middot; 2 Queen</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/12</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <img class="acc-photo" src="https://image-tc.galaxy.tf/wijpeg-5xmccmodiov3cbayqgovgo6q5/3-hot-springs-paralax.jpg?width=800" alt="Tabacon"/>
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Tabacon</div><div class="acc-price">$1,536</div></div>
+        <div class="acc-dates">Mar 21–23 &middot; 1 King &middot; La Fortuna</div>
+        <div class="acc-details">
+          <span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/1</span>
+          <span class="acc-detail"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Hot springs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Noah's</div><div class="acc-price">$1,186</div></div>
+        <div class="acc-dates">Mar 23–25 &middot; 1 King &middot; La Fortuna</div>
+        <div class="acc-details">
+          <span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/1</span>
+          <span class="acc-detail"><svg viewBox="0 0 24 24"><path d="M12 2L9.5 8.5 2 12l7.5 3.5L12 22l2.5-6.5L22 12l-7.5-3.5z"/></svg> Night tour</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Hotel Hacienda</div><div class="acc-price">$265</div></div>
+        <div class="acc-dates">Mar 25–26 &middot; La Leona</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/10</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <img class="acc-photo" src="https://bohotamarindo.com/wp-content/uploads/2023/11/BOHO-HEADER.jpg" alt="BOHO Tamarindo"/>
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">BOHO Tamarindo</div><div class="acc-price">$915</div></div>
+        <div class="acc-dates">Mar 26–29 &middot; 1 King &middot; Tamarindo</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/10</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Selva Villa</div><div class="acc-price">$1,797</div></div>
+        <div class="acc-dates">Mar 29–Apr 1 &middot; 3BR &middot; Santa Teresa</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 2/17</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Casa de Koa</div><div class="acc-price">$164</div></div>
+        <div class="acc-dates">Apr 1–2 &middot; Multiple rooms &middot; Paquera</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/15</span></div>
+      </div>
+    </div>
+
+    <div class="acc-card reveal">
+      <div class="acc-body">
+        <div class="acc-top"><div class="acc-name">Holiday Inn SJO</div><div class="acc-price">$137</div></div>
+        <div class="acc-dates">Apr 2–3 &middot; 2 Queen</div>
+        <div class="acc-details"><span class="acc-detail"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Cancel by 3/25</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section class="section" id="regions">
+  <div class="section-label reveal">Explore</div>
+  <h2 class="section-title reveal">Regions</h2>
+  <div class="regions-grid">
+
+    <div class="region-card reveal">
+      <div class="region-head">
+        <div class="region-name">La Fortuna</div>
+        <div class="region-sub">Days 2–6 &middot; Volcano &amp; Rainforest</div>
+      </div>
+      <div class="region-body">
+        <div><div class="region-group-label">Activities</div>
+        <div class="region-list">
+          <div class="region-item">Mixology lessons at Tabacon</div>
+          <div class="region-item">Sloth trail at Noah's</div>
+          <div class="region-item">Night tour through Noah's</div>
+          <div class="region-item">The Springs day pass</div>
+          <div class="region-item">River tubing</div>
+        </div></div>
+        <div><div class="region-group-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/97937/best-restaurants-in-la-fortuna-de-san-carlos" target="_blank" rel="noopener">&rarr; Guide</a></div>
+        <div class="region-list">
+          <div class="region-item">Restaurante Travesia</div>
+          <div class="region-item">Italianissimo</div>
+          <div class="region-item">Jalapas</div>
+          <div class="region-item">Acachete — good and cheap</div>
+          <div class="region-item">Shiitake</div>
+          <div class="region-item">L'naciente</div>
+          <div class="region-item">Spectacular</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="region-card reveal">
+      <div class="region-head">
+        <div class="region-name">Tamarindo</div>
+        <div class="region-sub">Days 7–10 &middot; Beach &amp; Surf</div>
+      </div>
+      <div class="region-body">
+        <div><div class="region-group-label">Activities</div>
+        <div class="region-list">
+          <div class="region-item">Diamante Sanctuary</div>
+          <div class="region-item">Playa Conchal beach club</div>
+          <div class="region-item">Langosta Beach Club</div>
+          <div class="region-item">Intro scuba (book through BOHO)</div>
+          <div class="region-item">Beer Tour</div>
+          <div class="region-item">ATVs / Golf Carts</div>
+          <div class="region-item">Bar crawl</div>
+        </div></div>
+        <div><div class="region-group-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/155756/best-restaurants-in-tamarindo" target="_blank" rel="noopener">&rarr; Guide</a></div>
+        <div class="region-list">
+          <div class="region-item">Monkey Bar — good food</div>
+          <div class="region-item">Tabu on the Beach</div>
+          <div class="region-item">Waffle Monkey</div>
+          <div class="region-item">Food trucks</div>
+          <div class="region-item">El Mercadito — food &amp; cocktail court</div>
+          <div class="region-item">Ors</div>
+          <div class="region-item">Pengas</div>
+          <div class="region-item">Dragonfly</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="region-card reveal">
+      <div class="region-head">
+        <div class="region-name">Santa Teresa</div>
+        <div class="region-sub">Days 10–13 &middot; Jungle &amp; Coast</div>
+      </div>
+      <div class="region-body">
+        <div><div class="region-group-label">Activities</div>
+        <div class="region-list">
+          <div class="region-item">ATV Rental — explore beaches &amp; trails</div>
+          <div class="region-item">Montezuma Waterfall</div>
+          <div class="region-item">Bioluminescence tour</div>
+        </div></div>
+        <div><div class="region-group-label">Restaurants <a href="https://wanderlog.com/list/geoCategory/148203/best-restaurants-in-santa-teresa" target="_blank" rel="noopener">&rarr; Guide</a></div>
+        <div class="region-list">
+          <div class="region-item">Banana Beach</div>
+          <div class="region-item">Brukas — nice view</div>
+          <div class="region-item">Rica Mar</div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BEACHES -->
+<section class="section" id="beaches">
+  <div class="section-label reveal">Sun &amp; Surf</div>
+  <h2 class="section-title reveal">Beach Guide</h2>
+  <div class="beach-grid">
+    <div class="beach-category">Stunning Scenery &amp; Calm Waters</div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Conchal</div><div class="beach-desc">Famous for its sand made of crushed shells, clear turquoise water ideal for swimming and snorkeling.</div></div>
+    <div class="beach-card reveal"><div class="beach-name">Playa San Juanillo</div><div class="beach-desc">A secluded gem where two white sand beaches meet, offering calm, clear waters for relaxing.</div></div>
+
+    <div class="beach-category">Surfing &amp; Lively Atmosphere</div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Tamarindo</div><div class="beach-desc">Bustling surf town with consistent waves perfect for learning, plus restaurants, shops, and nightlife.</div></div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Grande</div><div class="beach-desc">Rugged, expansive beach known for surfing and as a nesting site for leatherback turtles.</div></div>
+
+    <div class="beach-category">Families &amp; Relaxed Luxury</div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Flamingo</div><div class="beach-desc">Powdery white sand, calm waters, and upscale marina with dining and tours.</div></div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Hermosa</div><div class="beach-desc">Gentle waves, excellent for swimming, kayaking, and watersports with great diving nearby.</div></div>
+
+    <div class="beach-category">Other Favorites</div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Avellanas</div><div class="beach-desc">Rustic vibe with excellent surf breaks.</div></div>
+    <div class="beach-card reveal"><div class="beach-name">Playa Samara</div><div class="beach-desc">Beautiful crescent-shaped bay with calm waters, popular with families.</div></div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+  <div class="section-label reveal">Good to Know</div>
+  <h2 class="section-title reveal">Travel Notes</h2>
+  <div class="notes-grid">
+    <div class="note-item reveal"><div class="note-icon"><svg viewBox="0 0 24 24"><path d="M12 2L4.5 20.3l.7.7L12 18l6.8 3 .7-.7z"/></svg></div><div class="note-text"><strong>Use Waze for all navigation.</strong> Google Maps is less reliable in Costa Rica.</div></div>
+    <div class="note-item reveal"><div class="note-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/></svg></div><div class="note-text"><strong>Car rental: Adobe</strong> — ref #1318719 under Ashley. Free 2nd driver and free cooler.</div></div>
+    <div class="note-item reveal"><div class="note-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div><div class="note-text"><strong>Try chili guaro shots</strong> — local specialty. "kai-pee-REEN-yah" for the adventurous.</div></div>
+    <div class="note-item reveal"><div class="note-icon"><svg viewBox="0 0 24 24"><path d="M22 2L2 11l7 2 2 7z"/></svg></div><div class="note-text"><strong>Ferry: Paquera &rarr; Puntarenas</strong> — book through QuickPayCR before departure day.</div></div>
+    <div class="note-item reveal"><div class="note-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="note-text"><strong>TSA PreCheck expires 9/8/2028.</strong></div></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-text">Built with the <span>AB Design System</span> &middot; Data from Ashley's spreadsheet &middot; Pura Vida</div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Active sidebar link on scroll
+const sections = document.querySelectorAll('.section[id]');
+const sideLinks = document.querySelectorAll('.sidebar-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  sideLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+
+// Sync route bar with day cards
+const daysScroll = document.getElementById('daysScroll');
+const routeBar = document.getElementById('routeBar');
+if (daysScroll && routeBar) {
+  function sizeRouteBar() {
+    const cards = daysScroll.querySelectorAll('.day-card');
+    if (!cards.length) return;
+    const cardW = cards[0].offsetWidth;
+    const gap = 16;
+    const nodes = routeBar.querySelectorAll('.route-node');
+    const lines = routeBar.querySelectorAll('.route-line');
+    // Line width = card width minus node content widths, distributed
+    // Simple: total width = n*cardW + (n-1)*gap, nodes get auto width, lines fill rest
+    const totalW = cards.length * cardW + (cards.length - 1) * gap;
+    // Set route bar to exact same total width via a wrapper approach
+    // Each line stretches evenly to fill
+    const nodeW = 90; // compact node width
+    nodes.forEach(n => { n.style.width = nodeW + 'px'; n.style.minWidth = nodeW + 'px'; });
+    const totalNodeW = nodes.length * nodeW;
+    const totalLineW = totalW - totalNodeW;
+    const lineW = totalLineW / lines.length;
+    lines.forEach(l => { l.style.width = lineW + 'px'; l.style.flex = 'none'; l.style.minWidth = lineW + 'px'; });
+  }
+  sizeRouteBar();
+  window.addEventListener('resize', sizeRouteBar);
+  daysScroll.addEventListener('scroll', () => {
+    const maxScroll = daysScroll.scrollWidth - daysScroll.clientWidth;
+    const maxRoute = routeBar.scrollWidth - routeBar.clientWidth;
+    if (maxScroll > 0) routeBar.scrollLeft = (daysScroll.scrollLeft / maxScroll) * maxRoute;
+  }, { passive: true });
+}
+</script>
+</body>
+</html>

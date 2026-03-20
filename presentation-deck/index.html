@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adam Blair - Staff Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: 'Avantt'; font-weight: 400; font-style: normal; src: url('assets/fonts/avantt-regular.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Avantt'; font-weight: 700; font-style: normal; src: url('assets/fonts/avantt-bold.woff2') format('woff2'); font-display: swap; }
+  @font-face { font-family: 'Avantt'; font-weight: 800; font-style: normal; src: url('assets/fonts/avantt-extrabold.woff2') format('woff2'); font-display: swap; }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0F1013;
+    --bg-card: #1F2127;
+    --bg-elevated: #1F2127;
+    --white: #1F2127;
+    --black: #ffffff;
+    --text: #ffffff;
+    --text-dim: #9a9ca2;
+    --text-muted: #6b6e76;
+    --border: rgba(255,255,255,0.06);
+    --page-bg: #0F1013;
+    --cream: #0F1013;
+    --nav-active: rgba(255,255,255,0.04);
+    --red: #ff5f5f;
+    --red-light: rgba(255,95,95,0.08);
+    --quote-accent: #F4B56F;
+    --quote-accent-bg: rgba(244,181,111,0.06);
+    --purple: #a78bfa;
+    --purple-light: rgba(167,139,250,0.08);
+    --blue: #5b8def;
+    --blue-light: rgba(91,141,239,0.08);
+    --teal: #5eadad;
+    --teal-dark: #1a2e2e;
+    --green: #8B9A6B;
+    --green-light: rgba(139,154,107,0.08);
+    --coral: #ff8a65;
+    --coral-light: rgba(255,138,101,0.08);
+    --accent: #e8461e;
+    --accent-light: rgba(232,70,30,0.08);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,0.4);
+    --radius: 4px; --radius-sm: 6px; --radius-xs: 4px;
+    --label: clamp(0.65rem, 0.8vw, 0.8rem);
+    --body-size: clamp(0.875rem, 1.1vw, 1.1rem);
+    --h3: clamp(1.1rem, 1.4vw, 1.5rem);
+    --h2: clamp(1.5rem, 2.2vw, 2.4rem);
+    --h1: clamp(2rem, 3.5vw, 4rem);
+    --hero: clamp(3rem, 6vw, 7rem);
+    --stat: clamp(2.5rem, 5vw, 5.5rem);
+  }
+
+  html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; }
+  body { font-family: 'Avantt', 'Outfit', sans-serif; font-weight: 400; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+
+  /* ── Noise overlay ── */
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.015; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+  /* ── Section nav (hover menu) ── */
+  .section-nav {
+    position: fixed;
+    top: 1.25rem; left: 1.25rem;
+    z-index: 200;
+  }
+
+  .section-nav-trigger {
+    width: 36px; height: 36px;
+    background: none;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .section-nav-trigger svg { width: 18px; height: 18px; stroke: var(--text-dim); fill: none; stroke-width: 1.5; transition: opacity 0.15s; }
+  .section-nav-trigger:hover svg { opacity: 0.7; }
+
+  .section-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding-top: 6px;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .section-nav-menu-inner {
+    background: rgba(15,16,19,0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px;
+    min-width: 180px;
+  }
+
+  .section-nav:hover .section-nav-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .section-nav-item {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .section-nav-item:hover { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+
+  .section-nav-item.active { color: var(--accent); }
+
+  /* ── Reveal animations ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+  .reveal-delay-4 { transition-delay: 0.48s; }
+  .reveal-delay-5 { transition-delay: 0.6s; }
+  .reveal-delay-6 { transition-delay: 0.72s; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ── Slides ── */
+  .slide { min-height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always; display: flex; align-items: center; justify-content: center; padding: clamp(2rem, 4vw, 5rem) clamp(2rem, 4vw, 5rem) clamp(2rem, 4vw, 5rem) clamp(3rem, 6vw, 7rem); position: relative; overflow: hidden; }
+  .slide-inner { width: 100%; max-width: 1320px; margin: 0 auto; position: relative; z-index: 1; }
+  .label { font-family: 'JetBrains Mono', monospace; font-size: var(--label); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--quote-accent); margin-bottom: 0.5rem; }
+  .slide h1 { font-size: var(--h1); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .slide h2 { font-size: var(--h2); font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
+  .slide h3 { font-size: var(--h3); font-weight: 600; line-height: 1.3; margin-bottom: 0.5rem; }
+  .slide p { font-size: var(--body-size); line-height: 1.65; color: var(--text-dim); }
+  .slide p strong { color: var(--text); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4vw, 5rem); align-items: center; }
+  .placeholder { border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: var(--label); text-align: center; padding: 1.5rem; background: var(--bg-elevated); position: relative; overflow: hidden; border: 1px solid var(--border); }
+  .placeholder img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; border-radius: var(--radius); }
+  .placeholder:has(img) { border: none; }
+
+  /* ── Image showcase (elevated card for screenshots) ── */
+  .img-showcase { background: var(--bg-elevated); border-radius: 12px; padding: clamp(24px, 3vw, 40px); display: flex; justify-content: center; align-items: center; }
+  .img-showcase img { width: 100%; border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+  .img-showcase--dark { background: var(--bg-card); }
+  .img-showcase--flush { padding: 0; overflow: hidden; }
+  .img-showcase--flush img { border-radius: 12px; box-shadow: none; }
+
+  /* ── Cover ── */
+  .slide--cover { background: var(--bg); flex-direction: column; text-align: left; }
+  .slide--cover .cover-content { position: relative; z-index: 2; }
+  .slide--cover h1 { font-size: clamp(4rem, 9vw, 10rem); font-weight: 800; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em; }
+  .slide--cover .subtitle { font-size: clamp(1.25rem, 2vw, 2rem); color: var(--text-muted); font-weight: 300; }
+
+  /* ── White slides ── */
+  .slide--white { background: #ffffff; color: #1a1d24; }
+  .slide--white h1, .slide--white h2, .slide--white h3 { color: #1a1d24; }
+  .slide--white p { color: #6b6e76; }
+  .slide--white p strong { color: #1a1d24; }
+  .slide--white .label { color: var(--accent); }
+  .slide--white span { color: #1a1d24; }
+  .slide--gray { background: #E8EBEE; color: #1a1d24; }
+  .slide--gray h1, .slide--gray h2, .slide--gray h3 { color: #1a1d24; }
+  .slide--gray p { color: #6b6e76; }
+  .slide--gray p strong { color: #1a1d24; }
+  .slide--gray .label { color: var(--accent); }
+  .slide--gray span { color: #1a1d24; }
+  .slide--white svg { stroke: var(--accent); }
+
+  /* ── Accent slides (was dark/teal, now accent differentiation) ── */
+  .slide--accent { background: #0F1013; }
+  .slide--accent .label { color: var(--quote-accent); }
+  .slide--accent p { color: var(--text-dim); }
+  .slide--accent h1 { font-size: var(--h1); font-weight: 700; line-height: 1.15; max-width: 100%; letter-spacing: -0.01em; }
+
+  /* ── DC Cover ── */
+  .slide--dc-cover { background: #0F1013; color: var(--text); text-align: left; }
+  .slide--dc-cover::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(232,70,30,0.06) 0%, transparent 60%), radial-gradient(ellipse at 70% 70%, rgba(244,181,111,0.04) 0%, transparent 50%); }
+  .slide--dc-cover .cover-content { position: relative; z-index: 2; }
+  .slide--dc-cover h1 { font-size: clamp(4rem, 9vw, 10rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+  .slide--dc-cover .subtitle { font-size: clamp(1.1rem, 1.5vw, 1.6rem); color: var(--text-muted); font-weight: 300; margin-top: 0.75rem; }
+  .dc-logo { display: flex; align-items: center; gap: 0.5rem; margin-bottom: clamp(1.5rem, 3vw, 3rem); }
+  .dc-logo-icon { width: clamp(32px, 3.5vw, 48px); height: clamp(32px, 3.5vw, 48px); border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .dc-logo-icon svg { width: 60%; height: 60%; fill: white; stroke: none; }
+  .dc-logo span { font-size: clamp(1rem, 1.4vw, 1.5rem); color: var(--text-muted); font-weight: 400; }
+  .dc-logo span strong { color: var(--text); font-weight: 700; }
+
+  /* ── DC Demo Animation ── */
+  @keyframes dcFadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes dcThumbGen { 0% { background:#1a1d24; } 40% { background:#22252c; } 100% { background:linear-gradient(135deg,#1a1d24,#2a2d34); } }
+  @keyframes dcPreviewPop { 0% { opacity:0; transform:scale(0.96); } 100% { opacity:1; transform:scale(1); } }
+  .dc-seq { opacity: 0; animation: dcFadeUp 0.4s ease forwards; }
+  .dc-seq-1 { animation-delay: 0.5s; }
+  .dc-seq-2 { animation-delay: 1.5s; }
+  .dc-seq-3 { animation-delay: 2.5s; }
+  .dc-seq-4 { animation-delay: 4s; }
+  .dc-seq-5 { animation-delay: 4.3s; }
+  .dc-seq-6 { animation-delay: 4.6s; }
+  .dc-seq-7 { animation-delay: 6s; }
+  .dc-seq-8 { animation-delay: 6.3s; }
+  .dc-seq-9 { animation-delay: 6.6s; }
+  .dc-seq-10 { animation-delay: 6.9s; }
+  .dc-seq-preview { opacity:0; animation: dcPreviewPop 0.6s ease forwards; animation-delay: 8s; }
+  .dc-thumb-block { height:20px; border-radius:3px; animation: dcThumbGen 0.8s ease forwards; }
+
+  /* ── Meme ── */
+  /* ── Pain slide ── */
+  .pain-panel { display: none; opacity: 0; transition: opacity 0.3s ease; }
+  .pain-panel.active { display: block; opacity: 1; }
+
+  .slide--meme { background: var(--bg); }
+  .meme-card { width: clamp(400px, 50vw, 720px); aspect-ratio: 16/10; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+  .meme-card .placeholder { width: 100%; height: 100%; border-radius: 12px; background: var(--bg-elevated); border: none; }
+  .meme-card .placeholder img { border-radius: 12px; }
+
+  /* ── Phone mock (iPhone 15/16 Pro style) ── */
+  .phone-wrap { background: var(--bg-elevated); border-radius: 12px; padding: clamp(24px, 3vw, 40px); display: flex; justify-content: center; }
+  .phone-mock { position: relative; width: clamp(200px, 18vw, 260px); aspect-ratio: 393/852; background: #1F2127; border-radius: clamp(32px, 4vw, 48px); padding: clamp(4px, 0.5vw, 6px); box-shadow: 0 20px 60px rgba(0,0,0,0.35), inset 0 0 0 1px #333; overflow: hidden; }
+  /* Dynamic island */
+  .phone-mock::before { content: ''; position: absolute; top: clamp(6px, 0.8vw, 10px); left: 50%; transform: translateX(-50%); width: clamp(60px, 7vw, 90px); height: clamp(16px, 2vw, 24px); background: #000; border-radius: 100px; z-index: 3; }
+  /* Side button (power) */
+  .phone-mock::after { content: ''; position: absolute; right: -2px; top: 22%; width: 2px; height: 10%; background: #333; border-radius: 2px; z-index: 4; }
+  .phone-mock .phone-screen { width: 100%; height: 100%; object-fit: cover; border-radius: clamp(28px, 3.5vw, 44px); display: block; position: relative; z-index: 1; }
+  .phone-mock .phone-screen--placeholder { background: var(--bg-card); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: clamp(0.6rem, 0.7vw, 0.7rem); text-align: center; padding: 1rem; border-radius: clamp(28px, 3.5vw, 44px); width: 100%; height: 100%; }
+
+  /* ── Cards (generic dark cards) ── */
+  .issue-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .issues-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.75rem, 1.2vw, 1.25rem); margin-top: clamp(1rem, 2vw, 2rem); }
+  .issue-card .placeholder { height: clamp(100px, 12vw, 160px); border-radius: 0; border: none; border-bottom: 1px solid var(--border); }
+  .issue-card-body { padding: clamp(0.75rem, 1.2vw, 1.25rem); }
+  .issue-card h3 { font-size: clamp(0.8rem, 1vw, 1rem); line-height: 1.35; margin-bottom: 0.4rem; }
+  .issue-card p { font-size: clamp(0.7rem, 0.85vw, 0.85rem); line-height: 1.5; }
+
+  .persona-card { background: #E8EBEE; border-radius: var(--radius); padding: clamp(1.25rem, 1.8vw, 2rem); border: none; }
+  .personas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 1.5vw, 1.5rem); margin-top: clamp(1rem, 2vw, 2rem); }
+  .persona-card h3 { margin-bottom: 0.75rem; color: #1a1d24; }
+  .persona-card p { color: #4a4d54; }
+  .persona-card .devices { margin-top: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6e76; }
+  .persona-card .devices span { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.3rem; font-family: 'Outfit', sans-serif; font-size: var(--body-size); color: #1a1d24; text-transform: none; letter-spacing: 0; }
+
+  /* ── Donut chart ── */
+  .donut-chart { width: clamp(200px, 18vw, 280px); height: clamp(200px, 18vw, 280px); border-radius: 50%; background: conic-gradient(#5b8def 0deg 108deg, #4178d4 108deg 165.6deg, #3068b8 165.6deg 214.2deg, #6b9cf0 214.2deg 244.8deg, #2a3a5c 244.8deg 360deg); position: relative; margin: 0 auto; }
+  .donut-chart::after { content: ''; position: absolute; inset: 25%; background: var(--bg); border-radius: 50%; }
+  .donut-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 2; }
+  .donut-label strong { font-size: var(--h3); font-weight: 700; color: var(--text); }
+  .donut-label span { font-size: var(--label); color: var(--text-muted); }
+  .donut-legend { margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; font-size: clamp(0.75rem, 0.9vw, 0.9rem); color: var(--text-dim); }
+  .donut-legend-item { display: flex; align-items: center; gap: 0.5rem; }
+  .donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Before/After ── */
+  .before-after { display: grid; grid-template-columns: 1fr 2fr; gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
+  .before-after .column-label { font-size: var(--h3); font-weight: 700; text-align: center; margin-bottom: 1rem; }
+  .after-phones { display: flex; gap: clamp(0.75rem, 1.5vw, 1.5rem); justify-content: center; }
+  .after-phones .phone-wrap { padding: clamp(16px, 2vw, 24px); }
+  .phone-annotation { margin-top: 0.75rem; font-size: clamp(0.7rem, 0.85vw, 0.85rem); line-height: 1.5; color: var(--text-dim); }
+  .phone-annotation li { margin-bottom: 0.25rem; list-style: disc; margin-left: 1rem; }
+
+  /* ── Calendar mock ── */
+  .calendar-mock { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+  .calendar-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-size: var(--body-size); font-weight: 400; }
+  .calendar-header .nav-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; background: var(--bg-elevated); cursor: pointer; font-size: 0.8rem; color: var(--text-dim); }
+  .calendar-header .today-btn { padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid var(--border); font-size: var(--label); background: var(--bg-elevated); color: var(--text-dim); }
+  .calendar-grid { display: grid; grid-template-columns: 60px repeat(4, 1fr); font-size: clamp(0.65rem, 0.8vw, 0.8rem); }
+  .calendar-grid .rep-col { border-right: 1px solid var(--border); min-height: clamp(180px, 20vw, 280px); position: relative; padding: 0.25rem; }
+  .calendar-grid .rep-col:last-child { border-right: none; }
+  .rep-header { text-align: center; padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 400; font-size: clamp(0.7rem, 0.85vw, 0.85rem); color: var(--text-dim); }
+  .cal-event { border-radius: 4px; padding: 0.35rem 0.5rem; margin: 0.25rem; font-size: clamp(0.6rem, 0.7vw, 0.7rem); line-height: 1.3; border-left: 3px solid; color: var(--text); }
+  .cal-event--red { background: var(--red-light); border-color: var(--red); }
+  .cal-event--green { background: var(--green-light); border-color: var(--green); }
+  .cal-event--purple { background: var(--purple-light); border-color: var(--purple); }
+  .cal-event--blue { background: var(--blue-light); border-color: var(--blue); }
+
+  /* ── Findings split ── */
+  .findings-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 70dvh; overflow: hidden; }
+  .findings-left { padding: clamp(2rem, 3vw, 4rem); display: flex; flex-direction: column; justify-content: center; background: var(--bg-card); }
+  .findings-right { background: #0F1013; padding: clamp(2rem, 3vw, 4rem); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: clamp(1.5rem, 2.5vw, 3rem); }
+  .finding-item { display: flex; gap: 0.75rem; margin-bottom: clamp(1rem, 1.5vw, 1.5rem); align-items: flex-start; }
+  .finding-icon { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .finding-icon--green { background: var(--green); }
+  .finding-icon--red { background: var(--red); }
+  .finding-icon--gray { background: var(--text-muted); }
+  .finding-icon svg { width: 14px; height: 14px; }
+  .stat-block { text-align: center; }
+  .stat-block .stat-number { font-size: var(--stat); font-weight: 800; color: var(--quote-accent); line-height: 1; }
+  .stat-block .stat-label { font-size: var(--body-size); color: var(--text-muted); margin-top: 0.25rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; margin-bottom: 1.5rem; }
+  .badge--green { background: var(--green-light); color: var(--green); border: 1px solid rgba(139,154,107,0.15); }
+
+  /* ── Next steps ── */
+  .next-step-item { margin-bottom: clamp(1.25rem, 2vw, 2rem); }
+  .next-step-item h3 { font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+  .next-step-item p { font-size: clamp(0.8rem, 0.95vw, 0.95rem); }
+  .flow-diagram { background: var(--bg-card); border-radius: var(--radius); padding: clamp(1rem, 1.5vw, 1.5rem); border: 1px solid var(--border); margin-bottom: 1rem; }
+  .flow-diagram .flow-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+  .flow-steps { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .flow-step { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center; font-size: clamp(0.65rem, 0.8vw, 0.8rem); color: var(--text-dim); flex: 1; min-width: 80px; }
+  .flow-step-icon { width: 48px; height: 48px; border-radius: var(--radius); background: var(--purple-light); display: flex; align-items: center; justify-content: center; }
+  .flow-step-icon svg { width: 24px; height: 24px; color: var(--purple); }
+  .flow-arrow { font-size: 1.2rem; color: var(--text-muted); flex-shrink: 0; }
+
+  /* ── AI cards ── */
+  .ai-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: clamp(0.5rem, 1.5vw, 1.5rem); align-items: center; margin: clamp(1.5rem, 3vw, 3rem) 0; }
+  .ai-flow-step { text-align: center; }
+  .ai-flow-step .step-visual { height: clamp(160px, 18vw, 240px); border-radius: var(--radius); margin-bottom: 0.75rem; overflow: hidden; }
+  .ai-flow-arrow { font-size: clamp(1.5rem, 2vw, 2rem); color: var(--text-muted); }
+  .notification-card { background: var(--bg-card); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid var(--border); text-align: left; max-width: 280px; margin: 0 auto; }
+  .notification-card .notif-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+  .notification-card .notif-icon { width: 28px; height: 28px; background: var(--red); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .notification-card .notif-text { font-size: clamp(0.75rem, 0.9vw, 0.9rem); font-weight: 500; }
+  .notification-card .notif-time { font-size: clamp(0.65rem, 0.75vw, 0.75rem); color: var(--text-muted); }
+  .notif-btn { display: block; width: 100%; padding: 0.6rem; text-align: center; font-size: var(--body-size); font-weight: 500; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.4rem; color: var(--text-dim); }
+  .reassigned-cards { display: flex; flex-direction: column; gap: 0.5rem; max-width: 260px; margin: 0 auto; }
+  .reassigned-card { padding: 0.6rem 0.75rem; border-radius: 6px; border-left: 3px solid; font-size: clamp(0.7rem, 0.85vw, 0.85rem); display: flex; align-items: center; gap: 0.75rem; justify-content: space-between; }
+  .reassigned-card--purple { background: var(--purple-light); border-color: var(--purple); }
+  .reassigned-card--green { background: var(--green-light); border-color: var(--green); }
+  .avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-elevated); flex-shrink: 0; }
+  .callout-bar { margin-top: 2rem; font-size: var(--body-size); text-align: center; color: var(--text-dim); }
+  .btn-outline { display: inline-block; padding: 0.6rem 1.5rem; border: 1px solid var(--accent); border-radius: 4px; color: var(--accent); font-size: var(--body-size); font-weight: 500; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s; margin-top: 1.5rem; }
+  .btn-outline:hover { background: var(--accent); color: white; }
+
+  /* ── DC: Workflow grid ── */
+  .workflow-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(0.5rem, 1vw, 1rem); margin-top: clamp(1.5rem, 3vw, 3rem); }
+  .workflow-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(0.75rem, 1.2vw, 1.25rem); text-align: center; position: relative; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .workflow-step:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: clamp(0.6rem, 0.7vw, 0.7rem); font-weight: 500; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .step-icon { width: clamp(40px, 4vw, 56px); height: clamp(40px, 4vw, 56px); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; }
+  .step-icon svg { width: 24px; height: 24px; fill: none; stroke-width: 1.5; }
+  .step-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: clamp(0.55rem, 0.65vw, 0.65rem); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.04); color: var(--text-muted); margin-top: 0.5rem; }
+  .workflow-step h3 { font-size: clamp(0.8rem, 0.95vw, 0.95rem); margin-bottom: 0.25rem; }
+  .workflow-step p { font-size: clamp(0.65rem, 0.8vw, 0.8rem); color: var(--text-muted); line-height: 1.4; }
+
+  /* ── DC: App mockup ── */
+  .app-mockup { background: #1F2127; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .app-topbar { display: flex; align-items: center; gap: 1rem; padding: 8px 12px; border-bottom: 1px solid var(--border); background: #0F1013; }
+  .app-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
+  .app-name span { font-weight: 400; color: rgba(255,255,255,0.5); }
+  .rec-indicator { display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; color: var(--accent); letter-spacing: 0.08em; }
+  .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .view-tabs { display: flex; gap: 2px; margin-left: auto; }
+  .view-tab { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 4px; color: var(--text-muted); cursor: pointer; }
+  .view-tab.active { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+  .app-body { display: grid; grid-template-columns: 1fr 200px; min-height: 180px; }
+  .app-kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 8px; }
+  .kb-col { min-width: 0; }
+  .kb-col-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 500; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 4px 6px; display: flex; align-items: center; gap: 4px; }
+  .kb-col-dot { width: 4px; height: 4px; border-radius: 50%; }
+  .kb-card-mini { background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 4px; overflow: hidden; }
+  .kb-card-mini .thumb { height: 32px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); border-bottom: 1px solid var(--border); }
+  .kb-card-mini .card-text { padding: 4px 6px; font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.7); line-height: 1.2; }
+  .kb-card-mini .card-tag { font-size: 6px; color: var(--accent); opacity: 0.7; margin-top: 1px; }
+  .app-transcript { border-left: 1px solid var(--border); padding: 6px 8px; }
+  .transcript-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+  .transcript-line { font-size: 8px; color: rgba(255,255,255,0.5); line-height: 1.5; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+  .transcript-line .t-time { font-family: 'JetBrains Mono', monospace; font-size: 6px; color: rgba(255,255,255,0.2); margin-right: 3px; }
+  .transcript-line.active { color: rgba(255,255,255,0.8); }
+
+  /* ── DC: Waveform ── */
+  .waveform-bar { width: 3px; border-radius: 2px; background: var(--accent); animation: wave-bar 1.2s ease-in-out infinite; }
+  @keyframes wave-bar { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+  .waveform-bar-xl { width: 6px; border-radius: 3px; background: var(--accent); flex-shrink: 0; }
+  .waveform-bar-xl:nth-child(3n+1) { animation: talk-a 1.6s ease-in-out infinite; }
+  .waveform-bar-xl:nth-child(3n+2) { animation: talk-b 1.2s ease-in-out infinite; }
+  .waveform-bar-xl:nth-child(3n) { animation: talk-c 2s ease-in-out infinite; }
+  @keyframes talk-a { 0%,100%{transform:scaleY(0.55);} 30%{transform:scaleY(1);} 60%{transform:scaleY(0.4);} }
+  @keyframes talk-b { 0%,100%{transform:scaleY(0.4);} 45%{transform:scaleY(1);} 75%{transform:scaleY(0.6);} }
+  @keyframes talk-c { 0%,100%{transform:scaleY(0.6);} 40%{transform:scaleY(0.9);} 70%{transform:scaleY(0.3);} }
+
+  /* ── DC: Finding cards ── */
+  .findings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(0.75rem, 1.2vw, 1.25rem); margin-top: clamp(1.5rem, 2.5vw, 2.5rem); }
+  .finding-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1rem, 1.5vw, 1.5rem); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .finding-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .finding-num { font-family: 'JetBrains Mono', monospace; font-size: clamp(0.6rem, 0.7vw, 0.7rem); font-weight: 500; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .finding-card h3 { font-size: clamp(0.85rem, 1vw, 1.05rem); margin-bottom: 0.35rem; }
+  .finding-card p { font-size: clamp(0.75rem, 0.9vw, 0.9rem); color: var(--text-muted); line-height: 1.5; }
+  .finding-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: clamp(0.55rem, 0.65vw, 0.65rem); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 4px; margin-top: 0.5rem; }
+
+  /* ── DC: Callout bar (gold) ── */
+  .callout-bar--gold { background: var(--quote-accent-bg); border-left: 2px solid var(--quote-accent); border-radius: 0 4px 4px 0; padding: clamp(0.75rem, 1.2vw, 1.25rem) clamp(1rem, 1.5vw, 1.75rem); margin-top: clamp(1.5rem, 2.5vw, 2.5rem); font-size: var(--body-size); color: var(--text-dim); text-align: left; }
+
+  /* ── DC: Pipeline ── */
+  .pipeline-flow { display: flex; align-items: center; gap: clamp(0.25rem, 0.5vw, 0.5rem); justify-content: center; margin-top: clamp(1.5rem, 3vw, 3rem); flex-wrap: wrap; }
+  .pipeline-node { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(0.75rem, 1.2vw, 1.25rem) clamp(1rem, 1.5vw, 1.5rem); text-align: center; min-width: clamp(100px, 12vw, 140px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  .pipeline-node:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .pipeline-node h3 { font-size: clamp(0.75rem, 0.9vw, 0.9rem); margin-bottom: 0.15rem; }
+  .pipeline-node p { font-size: clamp(0.6rem, 0.75vw, 0.75rem); color: var(--text-muted); line-height: 1.4; }
+  .pipeline-arrow { color: var(--quote-accent); flex-shrink: 0; }
+  .pipeline-arrow svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+  /* ── DC: Impact ── */
+  .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); margin-top: clamp(2rem, 4vw, 4rem); }
+  .impact-stat { text-align: center; }
+  .impact-stat .stat-value { font-size: var(--stat); font-weight: 800; color: var(--quote-accent); line-height: 1; margin-bottom: 0.5rem; }
+  .impact-stat .stat-label { font-size: clamp(0.8rem, 1vw, 1rem); color: var(--text-muted); line-height: 1.45; }
+
+  /* ── Breadth cards ── */
+  .breadth-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(0.75rem, 1.2vw, 1.25rem); margin-top: clamp(1.5rem, 2.5vw, 2.5rem); }
+  .breadth-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1rem, 1.5vw, 1.5rem); border-top: 2px solid var(--border); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .breadth-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .breadth-card h3 { font-size: clamp(0.85rem, 1vw, 1.05rem); margin-bottom: 0.35rem; }
+  .breadth-card p { font-size: clamp(0.75rem, 0.9vw, 0.9rem); color: var(--text-muted); line-height: 1.5; }
+  .breadth-card .breadth-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+  /* ── Approach cards ── */
+  .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 1.5vw, 1.5rem); margin-top: clamp(1.5rem, 2.5vw, 2.5rem); }
+  .approach-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.25rem, 1.8vw, 2rem); border-top: 2px solid var(--border); }
+  .approach-card .phase-num { font-size: var(--stat); font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
+  .approach-card h3 { margin-bottom: 0.5rem; }
+  .approach-card p { font-size: clamp(0.8rem, 0.95vw, 0.95rem); color: var(--text-muted); line-height: 1.5; }
+
+  /* ── Nav dots + counter ── */
+  .slide-nav-wrap { position: fixed; bottom: 1.5rem; left: 2rem; z-index: 100; display: flex; flex-direction: column; align-items: flex-start; }
+  .nav-dots { display: flex; flex-direction: column; gap: 6px; padding: 0 2px 10px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s ease, opacity 0.3s ease; }
+  .slide-nav-wrap:hover .nav-dots { max-height: 400px; opacity: 1; }
+  .nav-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; cursor: pointer; transition: opacity 0.2s, transform 0.2s, background 0.2s; }
+  .nav-dot:hover { opacity: 0.8; transform: scale(1.4); }
+  .nav-dot.active { opacity: 1; transform: scale(1.6); background: var(--accent); }
+
+  /* ── Slide counter ── */
+  .slide-counter { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.05em; cursor: default; }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+    .issues-grid { grid-template-columns: repeat(2, 1fr); }
+    .before-after { grid-template-columns: 1fr; }
+    .findings-split { grid-template-columns: 1fr; }
+    .ai-flow { grid-template-columns: 1fr; }
+    .ai-flow-arrow { transform: rotate(90deg); }
+    .workflow-grid { grid-template-columns: repeat(3, 1fr); }
+    .findings-grid { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .pipeline-flow { flex-direction: column; }
+    .pipeline-arrow svg { transform: rotate(90deg); }
+    .breadth-grid { grid-template-columns: repeat(2, 1fr); }
+    .approach-grid { grid-template-columns: 1fr; }
+    .calendar-grid { grid-template-columns: 50px repeat(4, 1fr); }
+    .app-body { grid-template-columns: 1fr; }
+    .app-transcript { display: none; }
+    .section-nav { top: 0.75rem; left: 0.75rem; }
+  }
+  @media (max-width: 600px) {
+    .issues-grid { grid-template-columns: 1fr; }
+    .personas-grid { grid-template-columns: 1fr; }
+    .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+    .breadth-grid { grid-template-columns: 1fr; }
+    .nav-dots { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Section nav (hover menu) -->
+<nav class="section-nav" id="sectionNav">
+  <div class="section-nav-trigger">
+    <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  </div>
+  <div class="section-nav-menu">
+    <div class="section-nav-menu-inner">
+      <a class="section-nav-item active" href="#" data-section="intro" onclick="event.preventDefault();jumpToSlide(0)">Intro</a>
+      <a class="section-nav-item" href="#" data-section="cs1" onclick="event.preventDefault();jumpToSlide(4)">CS1: Appointments</a>
+      <a class="section-nav-item" href="#" data-section="cs2" onclick="event.preventDefault();jumpToSlide(23)">CS2: Design Capture</a>
+      <a class="section-nav-item" href="#" data-section="summary" onclick="event.preventDefault();jumpToSlide(29)">Summary</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Nav dots + counter -->
+<div class="slide-nav-wrap">
+  <div class="nav-dots" id="navDots"></div>
+  <div class="slide-counter" id="slideCounter">1 / 27</div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 1: Intro -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="1" data-section="intro" style="background:#0F1013;padding:0;">
+  <div style="display:grid;grid-template-columns:auto auto;gap:80px;width:100%;min-height:100dvh;align-items:center;justify-content:center;">
+    <div class="reveal" style="display:flex;align-items:center;">
+      <img src="assets/portfolio/family-utah.png" alt="Adam Blair and family" style="width:clamp(300px,35vw,500px);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+    </div>
+    <div>
+      <div class="label reveal" style="margin-bottom:2rem;">Product Designer &middot; AI Engineer &middot; Salt Lake City</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(3rem,6vw,6rem);font-weight:800;color:#f5e6d0;line-height:1.05;">Hey! I'm&nbsp;Adam.</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);color:var(--text-dim);margin-top:1.5rem;">I can name most 80s songs or Robert Miles' Children in just a&nbsp;few&nbsp;notes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 2: Breadth of Work (1 of 2) -->
+<!-- ════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 2: Breadth of Work (1 of 2) -->
+<!-- ════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 2: Breadth (E-commerce + Digital-to-Physical) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="2" data-section="intro">
+  <div class="slide-inner" style="max-width:none;">
+    <div class="label reveal">Breadth of Work</div>
+    <h1 class="reveal reveal-delay-1" style="margin-bottom:0.5rem;">15 years of range.</h1>
+    <p class="reveal reveal-delay-2" style="max-width:680px;margin-bottom:clamp(2rem,3vw,3rem);color:var(--text-dim);">Two case studies follow, but here's the breadth behind&nbsp;them.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,5rem);align-items:end;">
+      <div class="reveal reveal-delay-2">
+        <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:clamp(0.75rem,1.2vw,1.25rem);">
+          <img src="assets/portfolio/breadth-ecomm.png" alt="E-commerce screens" style="width:100%;display:block;border-radius:var(--radius);">
+        </div>
+        <h3 style="font-size:clamp(1rem,1.2vw,1.2rem);margin-bottom:0.35rem;">E-commerce</h3>
+        <p style="font-size:clamp(0.9rem,1.05vw,1.05rem);color:var(--text-dim);line-height:1.5;">From landing to PDP, cart to checkout. Post-purchase tracking. Improving purchase size and&nbsp;engagement.</p>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div style="display:flex;gap:clamp(0.75rem,1.2vw,1.25rem);justify-content:center;margin-bottom:clamp(0.75rem,1.2vw,1.25rem);">
+          <div style="flex:0 0 30%;aspect-ratio:393/852;background:#2a2b30;border-radius:clamp(12px,1.5vw,18px);padding:2px;box-shadow:0 4px 20px rgba(0,0,0,0.3);overflow:hidden;"><img src="assets/portfolio/breadth-mobile-map.png" alt="Map view" style="width:100%;height:100%;object-fit:cover;border-radius:clamp(10px,1.3vw,16px);display:block;"></div>
+          <div style="flex:0 0 30%;aspect-ratio:393/852;background:#2a2b30;border-radius:clamp(12px,1.5vw,18px);padding:2px;box-shadow:0 4px 20px rgba(0,0,0,0.3);overflow:hidden;"><img src="assets/portfolio/breadth-mobile-lead.png" alt="Lead detail" style="width:100%;height:100%;object-fit:cover;border-radius:clamp(10px,1.3vw,16px);display:block;"></div>
+          <div style="flex:0 0 30%;aspect-ratio:393/852;background:#2a2b30;border-radius:clamp(12px,1.5vw,18px);padding:2px;box-shadow:0 4px 20px rgba(0,0,0,0.3);overflow:hidden;"><img src="assets/portfolio/breadth-mobile-list.png" alt="List view" style="width:100%;height:100%;object-fit:cover;border-radius:clamp(10px,1.3vw,16px);display:block;"></div>
+        </div>
+        <h3 style="font-size:clamp(1rem,1.2vw,1.2rem);margin-bottom:0.35rem;">Mobile-first &amp; Cross-platform</h3>
+        <p style="font-size:clamp(0.9rem,1.05vw,1.05rem);color:var(--text-dim);line-height:1.5;">Full rewrite unifying web and mobile (Flutter) into one cohesive product. iOS + Android merged into a single&nbsp;experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 2.1: Breadth (Subscriptions + Hardware) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="2.1" data-section="intro">
+  <div class="slide-inner" style="max-width:none;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,5rem);align-items:end;">
+      <div class="reveal">
+        <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:clamp(0.75rem,1.2vw,1.25rem);">
+          <img src="assets/portfolio/breadth-subscription.png" alt="Cricut Access subscription screens" style="width:100%;display:block;border-radius:var(--radius);">
+        </div>
+        <h3 style="font-size:clamp(1rem,1.2vw,1.2rem);margin-bottom:0.35rem;">Subscription Models</h3>
+        <p style="font-size:clamp(0.9rem,1.05vw,1.05rem);color:var(--text-dim);line-height:1.5;">Growing Club O &amp; Cricut Access. Purchase flows, communicating benefits, A/B testing offers, and international&nbsp;currency.</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:clamp(0.75rem,1.2vw,1.25rem);">
+          <img src="assets/portfolio/breadth-digital-physical.png" alt="Cricut Joy and app" style="width:100%;display:block;border-radius:var(--radius);">
+        </div>
+        <h3 style="font-size:clamp(1rem,1.2vw,1.2rem);margin-bottom:0.35rem;">Digital-to-Physical</h3>
+        <p style="font-size:clamp(0.9rem,1.05vw,1.05rem);color:var(--text-dim);line-height:1.5;">Collaborating with mechanical &amp; industrial engineers to communicate user needs from screen to cutting&nbsp;machine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 2.5: Conversation Prompt -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="2.5" data-section="intro">
+  <div class="slide-inner" style="max-width:900px;">
+    <div class="label reveal" style="margin-bottom:2rem;">Before we dive in</div>
+    <h1 class="reveal reveal-delay-1" style="font-size:clamp(2rem,4vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1.5rem;">You've seen my background.<br>What are you most curious to learn about&nbsp;today?</h1>
+    <p class="reveal reveal-delay-2" style="font-size:var(--body-size);color:var(--text-dim);max-width:600px;margin-bottom:1.5rem;">I'd love to tailor our time to what matters most to&nbsp;you.</p>
+    <div class="reveal reveal-delay-3" style="font-size:var(--body-size);max-width:600px;">
+      <p>1. SalesRabbit Appointments</p>
+      <p>2. Design System That Listens</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 3: CS1 Cover -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--cover" data-slide-number="3" data-section="cs1" style="padding:0;">
+  <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="assets/portfolio/slide1.mp4" type="video/mp4">
+  </video>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.25) 100%);z-index:1;"></div>
+  <div class="cover-content" style="z-index:2;width:100%;padding-left:clamp(3rem,6vw,7rem);">
+    <img src="assets/portfolio/slide1_logo.png" alt="SalesRabbit" style="height:clamp(40px, 5vw, 64px);margin-bottom:clamp(1.5rem, 3vw, 3rem);">
+    <h1 style="margin-bottom:1rem;">Appointments</h1>
+    <p class="subtitle" style="color:rgba(255,255,255,0.7);">How I'm helping SalesRabbit onboard closers & reduce customer churn</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 4: What is SalesRabbit -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="4" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:none;align-items:stretch;min-height:100dvh;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,4vw,5rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);max-width:700px;display:flex;flex-direction:column;justify-content:center;">
+      <div class="label reveal">SalesRabbit Appointments</div>
+      <h1 class="reveal reveal-delay-1">What is SalesRabbit?</h1>
+      <p class="reveal reveal-delay-2" style="margin-bottom:1.5rem;font-size:clamp(1.05rem,1.4vw,1.35rem);">SalesRabbit is a <strong>sales management platform</strong> focused on amplifying sales teams' performance.</p>
+      <p class="reveal reveal-delay-2" style="margin-bottom:1rem;font-size:clamp(1.05rem,1.4vw,1.35rem);"><strong>Multiple industries</strong> use SalesRabbit to canvas <strong>door&nbsp;to&nbsp;door.</strong></p>
+      <div class="reveal reveal-delay-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem 1.5rem;margin-bottom:1.5rem;font-size:clamp(1rem,1.2vw,1.2rem);">
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 27 25" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M2.39062 0.0822506C3 0.316626 3.28125 0.972876 3.04688 1.53538C2.53125 2.89475 2.25 4.44163 2.25 5.9885C2.25 7.58225 2.53125 9.08225 3.04688 10.4885C3.28125 11.051 3 11.7073 2.39062 11.9416C1.82812 12.176 1.17188 11.8479 0.9375 11.2854C0.328125 9.64475 0 7.8635 0 5.9885C0 4.16038 0.328125 2.37913 0.9375 0.738501C1.17188 0.129126 1.82812-0.152124 2.39062 0.0822506ZM24.5625 0.0822506C25.125-0.152124 25.7812 0.129126 26.0156 0.738501C26.625 2.37913 27 4.16038 27 5.9885C27 7.8635 26.625 9.64475 26.0156 11.2854C25.7812 11.8479 25.125 12.176 24.5625 11.9416C23.9531 11.7073 23.6719 11.051 23.9062 10.4885C24.4219 9.08225 24.75 7.58225 24.75 5.9885C24.75 4.44163 24.4219 2.89475 23.9062 1.53538C23.6719 0.972876 23.9531 0.316626 24.5625 0.0822506ZM13.6406 8.9885C13.5938 8.9885 13.5469 8.9885 13.5 8.9885C13.4062 8.9885 13.3594 8.9885 13.3125 8.9885L11.2031 13.4885H15.75L13.6406 8.9885ZM9.14062 17.9885H17.8594L16.7812 15.7385H10.1719L9.14062 17.9885ZM8.0625 20.2385L6.60938 23.3791C6.375 23.9416 5.67188 24.176 5.10938 23.8948C4.54688 23.6604 4.3125 22.9573 4.59375 22.3948L11.2969 8.051C10.7812 7.53538 10.5 6.78538 10.5 5.9885C10.5 4.34788 11.8125 2.9885 13.5 2.9885C15.1406 2.9885 16.5 4.34788 16.5 5.9885C16.5 6.78538 16.1719 7.53538 15.6562 8.051L22.3594 22.3948C22.6406 22.9573 22.4062 23.6604 21.8438 23.8948C21.2812 24.176 20.5781 23.9416 20.3438 23.3791L18.8906 20.2385H8.0625ZM7.64062 3.45725C7.3125 4.25413 7.125 5.09788 7.125 5.9885C7.125 6.926 7.3125 7.76975 7.64062 8.56663C7.875 9.12913 7.64062 9.78538 7.03125 10.0198C6.46875 10.301 5.8125 10.0198 5.57812 9.45725C5.10938 8.37913 4.875 7.25413 4.875 5.9885C4.875 4.76975 5.10938 3.59788 5.57812 2.56663C5.8125 2.00413 6.46875 1.72288 7.03125 1.95725C7.64062 2.2385 7.875 2.89475 7.64062 3.45725ZM21.375 2.56663C21.8438 3.59788 22.125 4.76975 22.125 5.9885C22.125 7.25413 21.8438 8.37913 21.375 9.45725C21.1406 10.0198 20.4844 10.301 19.9219 10.0198C19.3594 9.78538 19.0781 9.12913 19.3125 8.56663C19.6875 7.76975 19.875 6.926 19.875 5.9885C19.875 5.09788 19.6875 4.25413 19.3125 3.45725C19.0781 2.89475 19.3125 2.2385 19.9219 1.95725C20.4844 1.72288 21.1406 2.00413 21.375 2.56663Z"/></svg>
+          Telco
+        </span>
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 24 25" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 5.625C5.25 5.76562 5.25 5.90625 5.25 6C5.29688 6.5625 4.92188 7.07812 4.40625 7.21875C3.14062 7.5 2.25 8.625 2.25 9.9375C2.25 11.4844 3.42188 12.7031 4.92188 12.75C4.92188 12.75 4.92188 12.75 4.96875 12.75H5.01562H18.7031C20.3906 12.75 21.7031 11.4375 21.7031 9.75C21.7031 8.10938 20.3906 6.75 18.7031 6.75C18.1406 6.75 17.625 6.32812 17.5781 5.76562C17.4375 4.40625 16.3594 3.375 15 3.375C14.2969 3.375 13.6406 3.65625 13.1719 4.07812C12.9375 4.3125 12.6094 4.40625 12.2812 4.40625C11.9531 4.35938 11.6719 4.17188 11.4844 3.84375C10.875 2.90625 9.79688 2.25 8.625 2.25C6.75 2.25 5.25 3.79688 5.25 5.625ZM8.625 0C10.1719 0 11.625 0.703125 12.6562 1.73438C13.3594 1.35938 14.1562 1.125 15 1.125C17.1562 1.125 19.0312 2.57812 19.6406 4.59375C22.125 5.01562 24 7.17188 24 9.75C24 12.6562 21.6094 15 18.75 15H5.0625H4.875C4.78125 15 4.73438 15 4.6875 15C2.0625 14.8125 0 12.6562 0 9.9375C0 7.875 1.21875 6.14062 3 5.34375C3.14062 2.39062 5.625 0 8.625 0ZM3.79688 16.5938C4.35938 16.875 4.64062 17.5312 4.40625 18.0938L3.89062 19.2188C3.65625 19.7812 3 20.0625 2.4375 19.7812C1.875 19.5469 1.59375 18.8906 1.82812 18.3281L2.34375 17.2031C2.57812 16.6406 3.23438 16.3594 3.79688 16.5938ZM9.42188 16.5938C9.98438 16.875 10.2656 17.5312 10.0312 18.0938L7.78125 23.3438C7.5 23.9062 6.84375 24.1875 6.28125 23.9062C5.71875 23.6719 5.4375 23.0156 5.71875 22.4531L7.96875 17.2031C8.20312 16.6406 8.85938 16.3594 9.42188 16.5938ZM20.2969 16.5938C20.8594 16.875 21.1406 17.5312 20.9062 18.0938L18.6562 23.3438C18.375 23.9062 17.7188 24.1875 17.1562 23.9062C16.5938 23.6719 16.3125 23.0156 16.5938 22.4531L18.8438 17.2031C19.0781 16.6406 19.7344 16.3594 20.2969 16.5938ZM15.2812 18.0938L14.7656 19.2188C14.5312 19.7812 13.875 20.0625 13.3125 19.8281C12.75 19.5469 12.4688 18.8906 12.7031 18.3281L13.2188 17.2031C13.4531 16.6406 14.1094 16.3594 14.6719 16.5938C15.2344 16.875 15.5156 17.5312 15.2812 18.0938ZM1.5 24C0.65625 24 0 23.3438 0 22.5C0 21.7031 0.65625 21 1.5 21C2.29688 21 3 21.7031 3 22.5C3 23.3438 2.29688 24 1.5 24ZM13.5 22.5C13.5 23.3438 12.7969 24 12 24C11.1562 24 10.5 23.3438 10.5 22.5C10.5 21.7031 11.1562 21 12 21C12.7969 21 13.5 21.7031 13.5 22.5Z"/></svg>
+          Roofing
+        </span>
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 24 25" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C14.4844 0 16.5 2.01562 16.5 4.5V4.6875C16.5 5.4375 15.8906 6 15.1406 6H8.8125C8.0625 6 7.5 5.4375 7.5 4.6875V4.5C7.5 2.01562 9.51562 0 12 0ZM1.82812 4.82812C2.25 4.40625 2.95312 4.40625 3.375 4.82812L6.79688 8.25C7.54688 7.78125 8.4375 7.5 9.375 7.5H14.625C15.5625 7.5 16.4062 7.78125 17.1562 8.25L20.5781 4.82812C21 4.40625 21.7031 4.40625 22.125 4.82812C22.5938 5.29688 22.5938 6 22.125 6.42188L18.75 9.84375C19.2188 10.5938 19.5 11.4375 19.5 12.375H22.875C23.4844 12.375 24 12.8906 24 13.5C24 14.1562 23.4844 14.625 22.875 14.625H19.5V15C19.5 16.3125 19.1719 17.4844 18.6094 18.5625L22.1719 22.0781C22.5938 22.5469 22.5938 23.25 22.1719 23.6719C21.7031 24.1406 21 24.1406 20.5781 23.6719L17.25 20.3438C15.8906 21.7031 14.0156 22.5 12 22.5C9.9375 22.5 8.0625 21.7031 6.70312 20.3906L3.42188 23.6719C2.95312 24.1406 2.25 24.1406 1.82812 23.6719C1.35938 23.25 1.35938 22.5469 1.82812 22.125L5.34375 18.5625C4.78125 17.4844 4.5 16.3125 4.5 15V14.625H1.125C0.46875 14.625 0 14.1562 0 13.5C0 12.8906 0.46875 12.375 1.125 12.375H4.5C4.5 11.4375 4.73438 10.5938 5.20312 9.84375L1.82812 6.42188C1.35938 6 1.35938 5.29688 1.82812 4.875V4.82812ZM6.75 12.375V15C6.75 17.5312 8.48438 19.6406 10.875 20.1562V13.125C10.875 12.5156 11.3438 12 12 12C12.6094 12 13.125 12.5156 13.125 13.125V20.1562C15.4688 19.6406 17.25 17.5312 17.25 15V12.375C17.25 10.9688 16.0312 9.75 14.625 9.75H9.375C7.92188 9.75 6.75 10.9688 6.75 12.375Z"/></svg>
+          Pest
+        </span>
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 30 24" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M5.05611 2.25C4.86861 2.25 4.72799 2.39062 4.68111 2.57812L3.74361 7.5H9.22799L9.74361 2.25H5.05611ZM8.99361 9.75H3.32174L2.24361 15.3281C2.19674 15.5625 2.38424 15.75 2.61861 15.75H8.38424L8.99361 9.75ZM11.2436 9.75L10.6342 15.75H18.7436L18.1342 9.75H11.2436ZM17.8999 7.5L17.3842 2.25H11.9936L11.478 7.5H17.8999ZM20.3842 9.75L20.9936 15.75H26.7592C26.9936 15.75 27.1811 15.5625 27.1342 15.3281L26.0561 9.75H20.3842ZM25.6342 7.5L24.6967 2.57812C24.6499 2.39062 24.5092 2.25 24.3217 2.25H19.6342L20.1499 7.5H25.6342ZM2.47799 2.15625C2.71236 0.9375 3.79049 0 5.05611 0H24.3217C25.5874 0 26.6655 0.9375 26.8999 2.15625L29.3374 14.9062C29.6186 16.5 28.3999 18 26.7592 18H15.8374V21.75H19.5874C20.1967 21.75 20.7124 22.2656 20.7124 22.875C20.7124 23.5312 20.1967 24 19.5874 24H9.83736C9.18111 24 8.71236 23.5312 8.71236 22.875C8.71236 22.2656 9.18111 21.75 9.83736 21.75H13.5874V18H2.61861C0.977987 18 -0.240763 16.5 0.0404873 14.9062L2.47799 2.15625Z"/></svg>
+          Solar
+        </span>
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 27 24" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M14.2188 0.246094L26.5938 10.7461C27.0625 11.168 27.1094 11.8711 26.7344 12.3398C26.3125 12.8086 25.6094 12.8555 25.1406 12.4805L24.0156 11.4961V20.2148C24.0156 22.3242 22.3281 23.9648 20.2656 23.9648H6.76562C4.65625 23.9648 3.01562 22.3242 3.01562 20.2148V11.4961L1.84375 12.4805C1.375 12.8555 0.671875 12.8086 0.25 12.3398C-0.125 11.8711-0.078125 11.168 0.390625 10.7461L12.7656 0.246094C13.1875-0.0820312 13.7969-0.0820312 14.2188 0.246094ZM5.26562 20.2148C5.26562 21.0586 5.92188 21.7148 6.76562 21.7148H9.01562V14.5898C9.01562 13.5586 9.8125 12.7148 10.8906 12.7148H16.1406C17.1719 12.7148 18.0156 13.5586 18.0156 14.5898V21.7148H20.2656C21.0625 21.7148 21.7656 21.0586 21.7656 20.2148V9.57422L13.5156 2.58984L5.26562 9.57422V20.2148ZM11.2656 21.7148H15.7656V14.9648H11.2656V21.7148Z"/></svg>
+          Home
+        </span>
+        <span style="display:flex;align-items:center;gap:0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 21 24" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg"><path d="M14.25 5.96484C14.25 4.65234 13.5 3.43359 12.375 2.73047C11.2031 2.07422 9.75 2.07422 8.625 2.73047C7.45312 3.43359 6.75 4.65234 6.75 5.96484C6.75 7.32422 7.45312 8.54297 8.625 9.24609C9.75 9.90234 11.2031 9.90234 12.375 9.24609C13.5 8.54297 14.25 7.32422 14.25 5.96484ZM4.5 5.96484C4.5 3.85547 5.625 1.88672 7.5 0.808594C9.32812-0.269531 11.625-0.269531 13.5 0.808594C15.3281 1.88672 16.5 3.85547 16.5 5.96484C16.5 8.12109 15.3281 10.0898 13.5 11.168C11.625 12.2461 9.32812 12.2461 7.5 11.168C5.625 10.0898 4.5 8.12109 4.5 5.96484ZM2.29688 21.7148H18.6562C18.2344 18.7617 15.7031 16.4648 12.6094 16.4648H8.34375C5.25 16.4648 2.71875 18.7617 2.29688 21.7148ZM0 22.6055C0 17.9648 3.70312 14.2148 8.34375 14.2148H12.6094C17.25 14.2148 21 17.9648 21 22.6055C21 23.3555 20.3438 23.9648 19.5938 23.9648H1.35938C0.609375 23.9648 0 23.3555 0 22.6055Z"/></svg>
+          Other
+        </span>
+      </div>
+      <div class="reveal reveal-delay-4" style="background:rgba(0,0,0,0.04);border-radius:var(--radius);padding:1.25rem;">
+        <p style="font-size:clamp(0.95rem,1.1vw,1.1rem);margin-bottom:0.75rem;">App includes tools for <strong>improving efficiency & conversion rates</strong></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 2rem;font-size:clamp(0.85rem,1vw,1rem);">
+          <ul style="list-style:disc;padding-left:1.25rem;margin:0;">
+            <li>Lead Tracking</li>
+            <li>Sales Territory Management</li>
+            <li>Realtime Communication</li>
+          </ul>
+          <ul style="list-style:disc;padding-left:1.25rem;margin:0;">
+            <li>Performance Monitoring</li>
+            <li>Integrations</li>
+            <li>Weather & more</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-3" style="display:flex;align-items:flex-end;justify-content:flex-end;overflow:hidden;">
+      <img src="assets/portfolio/slide2.png" alt="SalesRabbit app" style="max-width:100%;max-height:100%;object-fit:contain;object-position:right bottom;">
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 5: The Core Problem -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="5" data-section="cs1">
+  <div class="slide-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,6rem);align-items:center;max-width:none;">
+    <div style="max-width:640px;">
+      <div class="label reveal" style="margin-bottom:1.5rem;">Problem</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(2.2rem,4.5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:clamp(1.25rem,2vw,1.75rem);">No reason for closers to be on the&nbsp;platform.</h1>
+      <p class="reveal reveal-delay-2" style="font-size:clamp(1rem,1.2vw,1.2rem);color:var(--text-dim);line-height:1.65;margin-bottom:clamp(1.5rem,2.5vw,2rem);">68% of SalesRabbit's revenue comes from roofing, solar, home improvement, and security. These industries run on setter-closer teams. But closers had no reason to pay for a seat. Between no Round Robin, limited calendar integration, and broken lead access, the scheduling system just wasn't built for how these teams work. Every team we onboarded either churned or switched to third-party&nbsp;tools.</p>
+      <!-- Metadata row -->
+      <div class="reveal reveal-delay-3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--border);padding-top:clamp(0.75rem,1.2vw,1rem);">
+        <div>
+          <div style="font-size:clamp(0.6rem,0.7vw,0.7rem);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Role</div>
+          <div style="font-size:clamp(0.9rem,1vw,1rem);font-weight:600;">Lead Product Designer</div>
+        </div>
+        <div style="border-left:1px solid var(--border);padding-left:clamp(1rem,1.5vw,1.5rem);">
+          <div style="font-size:clamp(0.6rem,0.7vw,0.7rem);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Timeline</div>
+          <div style="font-size:clamp(0.9rem,1vw,1rem);font-weight:600;">Q1&ndash;Q3 2025</div>
+        </div>
+        <div style="border-left:1px solid var(--border);padding-left:clamp(1rem,1.5vw,1.5rem);">
+          <div style="font-size:clamp(0.6rem,0.7vw,0.7rem);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.25rem;">Team</div>
+          <div style="font-size:clamp(0.9rem,1vw,1rem);font-weight:600;">Cross-functional</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div style="text-align:center;margin-bottom:0.75rem;font-size:12px;font-weight:600;color:var(--quote-accent);letter-spacing:0.1em;text-transform:uppercase;">Before</div>
+      <div class="phone-mock" style="width:clamp(200px,18vw,260px);">
+        <img src="assets/portfolio/slide4.gif" alt="Before: old scheduling flow" class="phone-screen">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 5.5: But Why -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--meme" data-slide-number="5.5" data-section="cs1">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="meme-card reveal" style="margin:0 auto;width:clamp(500px,60vw,860px);">
+      <div class="placeholder">
+        <img src="assets/portfolio/slide5_HD.gif" alt="But why gif">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 6: Pain Points (scroll-in-place) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide pain-slide" data-slide-number="6" data-section="cs1" id="painSlide">
+  <div style="display:grid;grid-template-columns:280px 1px 1fr;align-items:center;max-width:1100px;margin:0 auto;">
+    <div style="padding-right:2rem;">
+      <div class="label" style="margin-bottom:1.5rem;">Pain Points</div>
+      <div class="pain-nav" style="display:flex;flex-direction:column;gap:1.25rem;">
+        <div class="pain-nav-item active" data-pain-idx="0" style="border-left:3px solid var(--accent);padding-left:1rem;cursor:pointer;transition:all 0.3s;">
+          <p style="font-weight:700;color:var(--text);transition:all 0.3s;">Nylas dependency</p>
+        </div>
+        <div class="pain-nav-item" data-pain-idx="1" style="border-left:3px solid transparent;padding-left:1rem;cursor:pointer;transition:all 0.3s;">
+          <p style="font-weight:500;color:var(--text-muted);transition:all 0.3s;">Lead model</p>
+        </div>
+        <div class="pain-nav-item" data-pain-idx="2" style="border-left:3px solid transparent;padding-left:1rem;cursor:pointer;transition:all 0.3s;">
+          <p style="font-weight:500;color:var(--text-muted);transition:all 0.3s;">Internal trust</p>
+        </div>
+        <div class="pain-nav-item" data-pain-idx="3" style="border-left:3px solid transparent;padding-left:1rem;cursor:pointer;transition:all 0.3s;">
+          <p style="font-weight:500;color:var(--text-muted);transition:all 0.3s;">Closer opportunity</p>
+        </div>
+      </div>
+    </div>
+    <div style="width:1px;height:60%;background:var(--border);"></div>
+    <div style="padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,5rem);position:relative;min-height:300px;display:flex;flex-direction:column;justify-content:center;">
+      <div class="pain-panel active" data-pain-panel="0">
+        <h1 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:0.5rem;">Nylas dependency</h1>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:var(--label);color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem;">THIRD-PARTY RISK</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;">All scheduling logic ran through Nylas. When they went down, the feature went with them. Bugs were filed but rarely fixed in a timely manner. We were building on a foundation we didn't&nbsp;control.</p>
+        <!-- Workflow: dependency chain -->
+        <div style="display:flex;align-items:center;gap:0;margin-top:2rem;max-width:580px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1.25rem;text-align:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5" style="margin-bottom:4px;display:block;margin:0 auto 4px;"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span style="font-size:11px;font-weight:600;color:var(--text);">SalesRabbit</span>
+          </div>
+          <div style="flex:0 0 40px;display:flex;align-items:center;justify-content:center;">
+            <svg width="40" height="12" viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/></svg>
+          </div>
+          <div style="background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius);padding:0.75rem 1.25rem;text-align:center;flex-shrink:0;position:relative;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="display:block;margin:0 auto 4px;"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            <span style="font-size:11px;font-weight:600;color:var(--accent);">Nylas API</span>
+            <span style="position:absolute;top:-8px;right:-8px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;">SPOF</span>
+          </div>
+          <div style="flex:0 0 40px;display:flex;align-items:center;justify-content:center;">
+            <svg width="40" height="12" viewBox="0 0 40 12"><path d="M0 6h32M28 1l6 5-6 5" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/></svg>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1.25rem;text-align:center;flex-shrink:0;opacity:0.4;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="display:block;margin:0 auto 4px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span style="font-size:11px;font-weight:600;color:var(--text-muted);">Scheduling</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:0.75rem;font-family:'JetBrains Mono',monospace;">Nylas outage = feature outage. No fallback.</p>
+      </div>
+      <div class="pain-panel" data-pain-panel="1">
+        <h1 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:0.5rem;">Single-assignee lead model</h1>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:var(--label);color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem;">WORKFLOW CONSTRAINT</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;">Leads could only have one assignee. Roles & permissions allowed shared leads, but that let reps claim leads that weren't theirs. We explored adding setter and closer assignee slots, but engineering flagged it as a significant&nbsp;rewrite.</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;margin-top:1rem;">With the current setup, scheduling an appointment reassigned the lead entirely, locking the original rep out of adding any further details. All lead context had to be captured before the appointment was&nbsp;booked.</p>
+        <!-- Workflow: reassignment flow -->
+        <div style="margin-top:2rem;max-width:580px;">
+          <div style="display:flex;align-items:stretch;gap:0;">
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1rem;text-align:center;flex:1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" style="display:block;margin:0 auto 4px;"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span style="font-size:11px;font-weight:600;color:var(--text);">Setter owns lead</span>
+            </div>
+            <div style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;">
+              <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h24M20 1l6 5-6 5" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/></svg>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1rem;text-align:center;flex:1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--quote-accent)" stroke-width="1.5" style="display:block;margin:0 auto 4px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span style="font-size:11px;font-weight:600;color:var(--text);">Schedules appt</span>
+            </div>
+            <div style="flex:0 0 32px;display:flex;align-items:center;justify-content:center;">
+              <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h24M20 1l6 5-6 5" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>
+            </div>
+            <div style="background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius);padding:0.75rem 1rem;text-align:center;flex:1;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="display:block;margin:0 auto 4px;"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              <span style="font-size:11px;font-weight:600;color:var(--accent);">Lead reassigned</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:0.5rem;">
+            <div style="background:var(--bg-card);border:1px dashed var(--text-muted);border-radius:var(--radius);padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+              <span style="font-size:13px;color:var(--text-dim);">Setter locked out of lead details</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pain-panel" data-pain-panel="2">
+        <h1 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:0.5rem;">Low internal trust</h1>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:var(--label);color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem;">ORGANIZATIONAL</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;">CX and Sales had stopped recommending the scheduler, directing customers to purchase Calendly and integrate with that instead. Trust in v2 features was also low. A previous year-plus investment into Leaderboards had been a disaster, making stakeholders skeptical of another large&nbsp;rebuild.</p>
+        <!-- Workflow: trust erosion -->
+        <div style="margin-top:2rem;display:flex;flex-direction:column;gap:0.75rem;max-width:480px;">
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <div style="flex:0 0 40px;height:40px;border-radius:var(--radius);background:var(--red-light);display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:700;color:var(--text);">Leaderboards disaster</p>
+              <p style="font-size:13px;color:var(--text-dim);">1yr+ investment, poor outcome. Stakeholders burned.</p>
+            </div>
+          </div>
+          <svg width="2" height="16" style="margin-left:19px;"><line x1="1" y1="0" x2="1" y2="16" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="3 3"/></svg>
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <div style="flex:0 0 40px;height:40px;border-radius:var(--radius);background:var(--accent-light);display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:700;color:var(--text);">CX/Sales bypass scheduler</p>
+              <p style="font-size:13px;color:var(--text-dim);">"Just buy Calendly and integrate with that."</p>
+            </div>
+          </div>
+          <svg width="2" height="16" style="margin-left:19px;"><line x1="1" y1="0" x2="1" y2="16" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="3 3"/></svg>
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <div style="flex:0 0 40px;height:40px;border-radius:var(--radius);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-13h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17"/></svg>
+            </div>
+            <div>
+              <p style="font-size:14px;font-weight:700;color:var(--text);">Skepticism toward v2 rebuilds</p>
+              <p style="font-size:13px;color:var(--text-dim);">Any large initiative met with doubt before it started.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pain-panel" data-pain-panel="3">
+        <h1 style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:0.5rem;">Closer opportunity</h1>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:var(--label);color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem;">REVENUE GAP</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;">68% of SalesRabbit's revenue comes from roofing, solar, home improvement, and security. These industries rely on setter-closer teams, but closers had no reason to pay for a seat because all their scheduling happened in Google Calendar or&nbsp;Outlook.</p>
+        <p style="font-size:clamp(1rem,1.3vw,1.25rem);color:var(--text-dim);max-width:640px;margin-top:1rem;">That's a $10M revenue gap sitting in plain sight. The opportunity: give closers a reason to be on the&nbsp;platform.</p>
+        <!-- Workflow: revenue gap -->
+        <div style="margin-top:2rem;display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;max-width:520px;">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;">
+            <div style="font-size:clamp(1.5rem,2.5vw,2.5rem);font-weight:800;color:var(--quote-accent);line-height:1;">68%</div>
+            <p style="font-size:13px;color:var(--text-dim);margin-top:0.35rem;">of revenue from setter-closer industries</p>
+          </div>
+          <div style="padding:0 0.5rem;display:flex;align-items:center;">
+            <svg width="32" height="12" viewBox="0 0 32 12"><path d="M0 6h24M20 1l6 5-6 5" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/></svg>
+          </div>
+          <div style="background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius);padding:1rem;text-align:center;">
+            <div style="font-size:clamp(1.5rem,2.5vw,2.5rem);font-weight:800;color:var(--accent);line-height:1;">0</div>
+            <p style="font-size:13px;color:var(--text-dim);margin-top:0.35rem;">closers paying for a seat</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 7: User Personas -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="7" data-section="cs1">
+  <div class="slide-inner" style="max-width:none;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:clamp(2rem,4vw,4rem);align-items:center;margin-bottom:clamp(1.5rem,2.5vw,2.5rem);">
+      <div>
+        <div class="label reveal">Users</div>
+        <h1 class="reveal reveal-delay-1">Three roles,<br>three workflows</h1>
+        <p class="reveal reveal-delay-2" style="max-width:680px;">Each role has fundamentally different scheduling needs. The existing system served none of&nbsp;them&nbsp;well.</p>
+      </div>
+      <div class="reveal reveal-delay-2" style="width:clamp(300px,30vw,480px);">
+        <img src="assets/portfolio/the-office.gif" alt="Three roles" style="width:100%;border-radius:var(--radius);">
+      </div>
+    </div>
+    <div class="personas-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="persona-card reveal reveal-delay-2">
+        <h3 style="color:var(--accent);">Manager</h3>
+        <p style="font-size:clamp(0.8rem,0.95vw,0.95rem);color:var(--text-dim);">Oversees 10-30 reps across a region. Needs visibility into team capacity and the ability to redistribute appointments when reps call&nbsp;out.</p>
+        <div class="devices">Primary Device
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Desktop</span>
+        </div>
+      </div>
+      <div class="persona-card reveal reveal-delay-3">
+        <h3 style="color:var(--purple);">Rep</h3>
+        <p style="font-size:clamp(0.8rem,0.95vw,0.95rem);color:var(--text-dim);">Knocks 40-60 doors/day. Needs to book closers quickly from the field without leaving the canvassing&nbsp;flow.</p>
+        <div class="devices">Primary Device
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg> Mobile</span>
+        </div>
+      </div>
+      <div class="persona-card reveal reveal-delay-4">
+        <h3 style="color:var(--blue);">Closer</h3>
+        <p style="font-size:clamp(0.8rem,0.95vw,0.95rem);color:var(--text-dim);">Runs 4-6 appointments/day across the region. Needs control over their availability and travel&nbsp;radius.</p>
+        <div class="devices">Primary Device
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg> Mobile + Desktop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 8: Sales Funnel - Rep Focus -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="8" data-section="cs1">
+  <div class="slide-inner">
+    <div class="label reveal">Sales Funnel</div>
+    <h1 class="reveal reveal-delay-1">Where appointments live in the funnel</h1>
+    <div class="reveal reveal-delay-2" style="margin-top:1.5rem;">
+      <img src="assets/portfolio/sales-funnel.png" alt="Sales funnel showing Manager, Rep, and Closer workflows across Prospect, Contact, Set Appointment, Pitch, and Close stages" style="width:100%;display:block;">
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 9: Closer Opportunity -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="9" data-section="cs1">
+  <div class="slide-inner two-col">
+    <div>
+      <div class="label reveal">SalesRabbit Appointments</div>
+      <h1 class="reveal reveal-delay-1">Closer opportunity</h1>
+      <p class="reveal reveal-delay-2" style="margin-bottom:1rem;"><strong>68% of SalesRabbit's revenue</strong> can be attached to Solar, Roofing, Home Improvement & Security.</p>
+      <p class="reveal reveal-delay-2" style="margin-bottom:1rem;">The <strong>setter closer model</strong> is common in these industries that involve more complex&nbsp;sales.</p>
+      <p class="reveal reveal-delay-3">There's a <strong>$10M annual revenue</strong> opportunity with the addition of closers into the SalesRabbit app from these&nbsp;industries.</p>
+    </div>
+    <div class="reveal reveal-delay-3" style="display:flex;align-items:center;justify-content:center;position:relative;">
+      <div style="position:relative;width:clamp(280px,24vw,380px);height:clamp(280px,24vw,380px);">
+        <div class="donut-chart" style="width:100%;height:100%;background:conic-gradient(#3b6abf 0deg 108deg, #5b8def 108deg 165.6deg, #7eadf5 165.6deg 214.2deg, #4178d4 214.2deg 244.8deg, #d0dff5 244.8deg 360deg);">
+          <div class="donut-label">
+            <strong style="font-size:clamp(1.2rem,1.8vw,1.8rem);">Revenue</strong>
+            <span>by Industry</span>
+          </div>
+        </div>
+        <!-- Labels positioned at midpoint of each segment -->
+        <!-- Roofing 30%: 0-108deg, mid=54deg (upper right) -->
+        <div style="position:absolute;top:8%;right:-8%;transform:translateX(100%);font-size:clamp(0.7rem,0.85vw,0.85rem);color:var(--text-dim);white-space:nowrap;"><strong style="color:#3b6abf;">Roofing</strong> 30%</div>
+        <!-- Solar 16%: 108-165.6deg, mid=137deg (right, slightly below center) -->
+        <div style="position:absolute;top:52%;right:-8%;transform:translateX(100%);font-size:clamp(0.7rem,0.85vw,0.85rem);color:var(--text-dim);white-space:nowrap;"><strong style="color:#5b8def;">Solar</strong> 16%</div>
+        <!-- Home Imp 13.5%: 165.6-214.2deg, mid=190deg (bottom, slightly left) -->
+        <div style="position:absolute;bottom:12%;right:5%;transform:translateX(100%);font-size:clamp(0.7rem,0.85vw,0.85rem);color:var(--text-dim);white-space:nowrap;"><strong style="color:#7eadf5;">Home Imp.</strong> 13.5%</div>
+        <!-- Security 8.5%: 214.2-244.8deg, mid=230deg (lower left) -->
+        <div style="position:absolute;bottom:18%;left:-8%;transform:translateX(-100%);font-size:clamp(0.7rem,0.85vw,0.85rem);color:var(--text-dim);white-space:nowrap;"><strong style="color:#4178d4;">Security</strong> 8.5%</div>
+        <!-- Other 32%: 244.8-360deg, mid=302deg (upper left) -->
+        <div style="position:absolute;top:22%;left:-8%;transform:translateX(-100%);font-size:clamp(0.7rem,0.85vw,0.85rem);color:var(--text-dim);white-space:nowrap;"><strong style="color:#d0dff5;">Other</strong> 32%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 9.5: The Messy Middle -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="9.5" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1.2fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Process</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:1rem;">The messy middle</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);color:var(--text-dim);margin-bottom:1.5rem;">Before any pixels, I spent weeks understanding the system. Audited every scheduler touchpoint across mobile and web. Mapped org structures, lead permissions, and scheduling conflicts. Explored where the feature could live and how it interacted with existing&nbsp;architecture.</p>
+      <div class="reveal reveal-delay-3" style="display:flex;flex-direction:column;gap:0.5rem;font-size:clamp(0.85rem,0.95vw,0.95rem);">
+        <div style="display:flex;align-items:center;gap:0.75rem;color:var(--text-dim);">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+          Scheduler audit (mobile + web)
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;color:var(--text-dim);">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--quote-accent);flex-shrink:0;"></div>
+          Org structure + permissions mapping
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;color:var(--text-dim);">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>
+          Feature exploration (Universal Calendar, Two-Way Sync)
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;color:var(--text-dim);">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;"></div>
+          Edge case mapping (40+ scenarios)
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;background:#1F2127;overflow:hidden;padding:clamp(0.5rem,1vw,1rem);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;">
+      <div style="border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.06);grid-column:1/-1;">
+        <img src="assets/portfolio/feature_exploration.png" alt="Feature exploration board" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
+      </div>
+      <div style="border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <img src="assets/portfolio/audit.png" alt="Scheduler audit" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <img src="assets/portfolio/org_logic.png" alt="Org structure mapping" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 9.6: Iteration -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="9.6" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1.2fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Iteration</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:1rem;">Rejected, then refined</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);color:var(--text-dim);margin-bottom:1.5rem;">Early concepts restructured the Set Appointment flow with a new layout. Internal users rejected it. The UI looked too different from the existing lead detail, so users weren't sure if the fields were capturing the same information or something&nbsp;separate.</p>
+      <div class="reveal reveal-delay-3" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;">
+        <div class="label" style="margin-bottom:0.75rem;">The learning</div>
+        <p style="font-size:var(--body-size);color:var(--text-dim);">Familiarity builds trust. The final design maintained the lead detail's structure and patterns while adding scheduling-specific sections. Users immediately understood what each field did.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;background:#1F2127;display:flex;align-items:center;justify-content:center;padding:clamp(1.5rem,2.5vw,3rem);gap:12px;">
+      <div style="flex:1;max-width:200px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <img src="assets/portfolio/concept1-review.png" alt="Review & Confirm screen" style="width:100%;display:block;">
+      </div>
+      <div style="flex:1;max-width:200px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <img src="assets/portfolio/concept1-confirm.png" alt="Appointment Set screen" style="width:100%;display:block;">
+      </div>
+      <div style="flex:1;max-width:200px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <img src="assets/portfolio/concept1-set.png" alt="Set Appointment screen" style="width:100%;display:block;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 10: My Approach -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="10" data-section="cs1">
+  <div class="slide-inner">
+    <div class="label reveal">My Approach</div>
+    <h1 class="reveal reveal-delay-1">Two-phase redesign</h1>
+    <p class="reveal reveal-delay-2" style="max-width:680px;">Rather than redesigning everything at once, I structured the work in phases that could ship independently and build on each&nbsp;other.</p>
+    <div class="approach-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="approach-card reveal reveal-delay-2" style="border-top-color:transparent;">
+        <div class="phase-num" style="color:#fff;">1</div>
+        <h3>Mobile: <span style="color:var(--purple);">Rep</span> &amp; <span style="color:var(--blue);">Closer</span></h3>
+        <p>Updated Set Appointment flow, Round Robin, closer onboarding with calendar sync, and reassignment warnings. Giving closers a reason to be on the&nbsp;platform.</p>
+      </div>
+      <div class="approach-card reveal reveal-delay-3" style="border-top-color:transparent;">
+        <div class="phase-num" style="color:#fff;">2</div>
+        <h3>Web: <span style="color:var(--accent);">Manager</span> Calendar</h3>
+        <p>Multi-rep calendar view with real-time availability, conflict detection, and team-level scheduling. The visibility layer managers were&nbsp;missing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 11a: Phase 1 - Rep (Before/After) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="11" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Phase 1 - Rep</div>
+      <h1 class="reveal reveal-delay-1" style="margin-bottom:1.5rem;">Set Appointment</h1>
+      <ul class="reveal reveal-delay-2" style="font-size:clamp(1rem,1.2vw,1.15rem);line-height:1.7;list-style:disc;padding-left:1.25rem;">
+        <li>Prominent "Set Appointment" CTA</li>
+        <li>Round Robin functionality</li>
+        <li>Summary & warning of reassignment</li>
+        <li>Updated Set Appointment UI</li>
+      </ul>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;background:#1F2127;display:flex;align-items:center;justify-content:center;padding:clamp(1.5rem,3vw,3rem);gap:clamp(1rem,2vw,2rem);">
+      <div style="flex:0 0 auto;width:clamp(200px,16vw,240px);">
+        <div style="text-align:center;margin-bottom:0.75rem;font-size:12px;font-weight:600;color:var(--quote-accent);letter-spacing:0.1em;text-transform:uppercase;">Before</div>
+        <div class="phone-mock">
+          <img src="assets/portfolio/slide4.gif" alt="Before: old booking flow" class="phone-screen">
+        </div>
+      </div>
+      <div style="flex:0 0 auto;width:clamp(200px,16vw,240px);">
+        <div style="text-align:center;margin-bottom:0.75rem;font-size:12px;font-weight:600;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;">After</div>
+        <div class="phone-mock">
+          <video autoplay muted loop playsinline class="phone-screen">
+            <source src="https://www.adamblair.design/videos/salesrabbit-appointments/Create_Appt_Mobile.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 11b: Phase 1 - Closer (Before/After) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="11.5" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Phase 1 - Closer</div>
+      <h1 class="reveal reveal-delay-1" style="margin-bottom:1.5rem;">Closer onboarding</h1>
+      <ul class="reveal reveal-delay-2" style="font-size:clamp(1rem,1.2vw,1.15rem);line-height:1.7;list-style:disc;padding-left:1.25rem;">
+        <li>Sync Calendar prompt on first login</li>
+        <li>Quick Route to daily appointments</li>
+        <li>Greater emphasis on time vs lead name and address</li>
+        <li>Created ChatGPT agent for consistent copy</li>
+      </ul>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;background:#1F2127;display:flex;align-items:center;justify-content:center;padding:clamp(1.5rem,2.5vw,2.5rem);gap:clamp(0.75rem,1.5vw,1.5rem);">
+      <div style="flex:0 0 auto;max-width:180px;">
+        <div style="text-align:center;margin-bottom:0.75rem;font-size:12px;font-weight:600;color:var(--quote-accent);letter-spacing:0.1em;text-transform:uppercase;">Before</div>
+        <div style="border:3px solid #333;border-radius:28px;padding:8px;background:#000;">
+          <div style="border-radius:20px;overflow:hidden;"><img src="assets/portfolio/closer_before.png" alt="Before: old closer home" style="width:100%;display:block;"></div>
+        </div>
+      </div>
+      <div style="flex:0 0 auto;max-width:180px;">
+        <div style="text-align:center;margin-bottom:0.75rem;font-size:12px;font-weight:600;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;">After</div>
+        <div style="border:3px solid #333;border-radius:28px;padding:8px;background:#000;">
+          <div style="border-radius:20px;overflow:hidden;"><img src="assets/portfolio/closer_after1.png" alt="After: sync prompt" style="width:100%;display:block;"></div>
+        </div>
+      </div>
+      <div style="flex:0 0 auto;max-width:180px;">
+        <div style="border:3px solid #333;border-radius:28px;padding:8px;background:#000;margin-top:2rem;">
+          <div style="border-radius:20px;overflow:hidden;"><img src="assets/portfolio/closer_after2.png" alt="After: quick route" style="width:100%;display:block;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 12: Phase 2 - Manager (Internal Testing) -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="12" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:380px 1fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Phase 2 - Manager</div>
+      <h1 class="reveal reveal-delay-1" style="margin-bottom:1rem;">Team&nbsp;Calendar</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);margin-bottom:1rem;">Built a calendar prototype in v0 for research and to give engineering a head start instead of relying on&nbsp;a&nbsp;library.</p>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);">Annotated with open questions from internal&nbsp;testing&nbsp;sessions.</p>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;overflow:hidden;display:flex;align-items:center;padding:clamp(1rem,2vw,2rem);">
+      <img src="assets/portfolio/internal-testing.png" alt="Internal testing - Team Calendar" style="width:90%;display:block;margin:auto;">
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 12.5: Round Robin -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="12.5" data-section="cs1" style="padding:0;">
+  <div style="display:grid;grid-template-columns:380px 1fr;width:100%;min-height:100dvh;align-items:center;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,3rem) clamp(2rem,4vw,5rem) clamp(3rem,6vw,7rem);">
+      <div class="label reveal">Internal Assets</div>
+      <h1 class="reveal reveal-delay-1" style="margin-bottom:1rem;">Round Robin</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--body-size);">Distributes appointments evenly among reps. Created internal documentation showing the logic for each scenario: multiple reps available, single rep, and tie&#8209;breaking.</p>
+    </div>
+    <div class="reveal reveal-delay-2" style="align-self:stretch;overflow:hidden;display:flex;align-items:center;">
+      <img src="assets/portfolio/round-robin.png" alt="Round Robin logic diagram" style="width:100%;display:block;">
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 13.5: Early Access Results -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="13.5" data-section="cs1">
+  <div class="slide-inner" style="max-width:none;">
+    <div>
+      <div class="label reveal" style="margin-bottom:2rem;">Early Access</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(2rem,3.5vw,3rem);font-weight:800;margin-bottom:clamp(2rem,3vw,3rem);">De-risking with an early access&nbsp;program.</h1>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(2rem,3vw,3rem);align-items:start;">
+      <div class="reveal reveal-delay-2" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;">
+        <div class="label" style="margin-bottom:1rem;">Key Findings</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:var(--body-size);">
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;border-radius:50%;background:var(--green);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <span style="color:var(--text-dim);">Users found scheduling and calendar easy to follow once they were&nbsp;onboarded.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;border-radius:50%;background:var(--accent);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;"><span style="color:#fff;font-weight:700;font-size:12px;">!</span></div>
+            <span style="color:var(--text-dim);">Setup was difficult and required help from product or implementation&nbsp;teams.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;border-radius:50%;background:var(--text-muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;"><span style="color:#fff;font-size:14px;line-height:1;">&#8211;</span></div>
+            <span style="color:var(--text-dim);">Dispatch model more prevalent than initially expected, more flexibility with time frames&nbsp;required.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;border-radius:50%;background:var(--text-muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;"><span style="color:#fff;font-size:14px;line-height:1;">&#8211;</span></div>
+            <span style="color:var(--text-dim);">More details at a glance on calendar view such as notes and who scheduled the&nbsp;appointment.</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-3" style="display:flex;flex-direction:column;gap:clamp(1.5rem,2.5vw,2.5rem);">
+        <div>
+          <div style="font-size:var(--stat);font-weight:800;color:var(--quote-accent);line-height:1;">5</div>
+          <div style="font-size:var(--body-size);color:var(--text-dim);margin-top:0.35rem;">Accounts&nbsp;onboarded</div>
+        </div>
+        <div>
+          <div style="font-size:var(--stat);font-weight:800;color:var(--quote-accent);line-height:1;">3</div>
+          <div style="font-size:var(--body-size);color:var(--text-dim);margin-top:0.35rem;">Industries: Home Improvement, Roofing,&nbsp;Windows</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-4" style="display:flex;flex-direction:column;gap:clamp(1.5rem,2.5vw,2.5rem);">
+        <div>
+          <div style="font-size:var(--stat);font-weight:800;color:var(--quote-accent);line-height:1;">20%</div>
+          <div style="font-size:var(--body-size);color:var(--text-dim);margin-top:0.35rem;">Closers per account actively&nbsp;using</div>
+        </div>
+        <div>
+          <div style="font-size:var(--stat);font-weight:800;color:var(--quote-accent);line-height:1;">783</div>
+          <div style="font-size:var(--body-size);color:var(--text-dim);margin-top:0.35rem;">Appointments&nbsp;created</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 14: What Comes Next -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="14" data-section="cs1">
+  <div class="slide-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,5rem);align-items:center;max-width:none;">
+    <div>
+      <div class="label reveal">Next Steps</div>
+      <h1 class="reveal reveal-delay-1" style="margin-bottom:1.5rem;">What comes&nbsp;next.</h1>
+      <div class="reveal reveal-delay-2" style="margin-bottom:1.5rem;">
+        <span style="display:inline-block;background:var(--accent-light);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:clamp(0.6rem,0.7vw,0.7rem);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.75rem;border-radius:2px;">In Progress</span>
+      </div>
+      <h2 class="reveal reveal-delay-2" style="font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;margin-bottom:0.75rem;">Onboarding flow</h2>
+      <p class="reveal reveal-delay-3" style="font-size:var(--body-size);color:var(--text-dim);">Early access showed that setup difficulty was the biggest barrier. Currently recording usability sessions and designing a guided onboarding experience that gets teams to their first appointment&nbsp;faster.</p>
+    </div>
+    <div class="reveal reveal-delay-3" style="background:#1F2127;border-radius:var(--radius);overflow:hidden;padding:clamp(1.5rem,2.5vw,2.5rem);">
+      <video autoplay muted loop playsinline style="width:100%;display:block;border-radius:var(--radius);box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+        <source src="https://www.adamblair.design/videos/salesrabbit-appointments/Onboarding.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 14.5: Future Vision -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="14.5" data-section="cs1" style="background:#0c0e12;">
+  <div class="slide-inner" style="max-width:none;">
+    <div class="reveal">
+      <span style="display:inline-block;background:var(--quote-accent-bg);color:var(--quote-accent);font-family:'JetBrains Mono',monospace;font-size:clamp(0.6rem,0.7vw,0.7rem);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.75rem;border-radius:2px;">Future Vision</span>
+    </div>
+    <h1 class="reveal reveal-delay-1" style="margin-top:1rem;margin-bottom:1rem;">Future vision: AI without&nbsp;dictation.</h1>
+    <p class="reveal reveal-delay-2" style="font-size:var(--body-size);color:var(--text-dim);max-width:750px;margin-bottom:clamp(2rem,4vw,3rem);">What if a rep could tap 'Reschedule' from a push notification and AI handles the rest, reassigning appointments, notifying the right closers and managers, no manual coordination&nbsp;required.</p>
+    <div class="reveal reveal-delay-3" style="background:#1a1d24;border-radius:var(--radius);padding:clamp(2rem,3vw,3rem);">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(1rem,2vw,2rem);align-items:center;">
+        <div style="text-align:center;">
+          <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:0.75rem;max-width:200px;margin-left:auto;margin-right:auto;">
+            <img src="https://www.adamblair.design/images/salesrabbit-appointments/sick-rep.gif" alt="Rep is sick" style="width:100%;display:block;">
+          </div>
+          <p style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">Rep is&nbsp;sick</p>
+        </div>
+        <div style="color:var(--text-muted);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="max-width:220px;margin:0 auto 0.75rem;">
+            <img src="https://www.adamblair.design/images/salesrabbit-appointments/ai-notification.png" alt="AI notification" style="width:100%;display:block;border-radius:var(--radius);">
+          </div>
+          <p style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">Rep receives daily notification and selects&nbsp;Reschedule</p>
+        </div>
+        <div style="color:var(--text-muted);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="max-width:220px;margin:0 auto 0.75rem;">
+            <img src="https://www.adamblair.design/images/salesrabbit-appointments/ai-results.png" alt="AI reassignment results" style="width:100%;display:block;border-radius:var(--radius);">
+          </div>
+          <p style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">AI reschedules all appointments, notifying closers &amp;&nbsp;managers</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 16: CS1 Reflection -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="16" data-section="cs1">
+  <div class="slide-inner" style="max-width:none;">
+    <div class="label reveal">Reflection</div>
+    <h1 class="reveal reveal-delay-1">What this project taught me</h1>
+    <div style="margin-top:clamp(1.5rem,3vw,3rem);display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(3rem,5vw,5rem);">
+      <div class="reveal reveal-delay-2">
+        <p style="font-weight:600;margin-bottom:0.5rem;">Setup is a design problem, not an implementation&nbsp;detail.</p>
+        <p style="font-size:clamp(0.85rem,0.95vw,0.95rem);line-height:1.6;">The scheduling UX worked. Users who got through setup used it confidently. But setup required help every time. I treated onboarding as something engineering would figure out. It was the most important design problem and I designed it&nbsp;last.</p>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <p style="font-weight:600;margin-bottom:0.5rem;">The dispatch model broke our&nbsp;assumptions.</p>
+        <p style="font-size:clamp(0.85rem,0.95vw,0.95rem);line-height:1.6;">We designed for round-robin. The most common real-world pattern was dispatch: one manager receiving all appointments and redistributing manually. We didn't see it until early access. Earlier field research would have caught&nbsp;it.</p>
+      </div>
+      <div class="reveal reveal-delay-4">
+        <p style="font-weight:600;margin-bottom:0.5rem;">Recommending a delay is a design&nbsp;decision.</p>
+        <p style="font-size:clamp(0.85rem,0.95vw,0.95rem);line-height:1.6;">The feature was technically ready. I recommended we hold the launch because setup would create a support crisis. That call came from the research, not from product or engineering. Knowing when not to ship is part of the&nbsp;job.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 17: DC Cover -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--dc-cover" data-slide-number="17" data-section="cs2" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;min-height:100dvh;align-items:center;position:relative;z-index:2;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,4rem) clamp(2rem,4vw,5rem) clamp(3rem,5vw,6rem);">
+      <h1 class="reveal" style="font-size:clamp(3rem,7vw,7rem);font-weight:800;line-height:1;letter-spacing:-0.03em;">Design System<br>That Listens</h1>
+      <p class="subtitle reveal reveal-delay-2" style="max-width:480px;">When designers invest in process, they free themselves for the work that actually moves products. Interviews, strategy, and systems&nbsp;thinking.</p>
+    </div>
+    <div class="reveal reveal-delay-3" id="dcDemo" style="align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(1rem,2vw,2rem);gap:clamp(1rem,2vw,2rem);">
+      <!-- Mic + waveform (replaces preview) -->
+      <div style="width:calc(100% + 100px);margin-left:-100px;display:flex;align-items:center;gap:clamp(20px,2.5vw,32px);">
+        <div style="width:clamp(100px,10vw,140px);height:clamp(100px,10vw,140px);border-radius:28px;background:rgba(232,70,30,0.05);border:1px solid rgba(232,70,30,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg style="width:clamp(50px,5vw,70px);height:clamp(50px,5vw,70px);" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:5px;height:clamp(100px,10vw,140px);">
+          <span class="waveform-bar-xl" style="height:8%;animation-delay:0s;"></span>
+          <span class="waveform-bar-xl" style="height:12%;animation-delay:0.15s;"></span>
+          <span class="waveform-bar-xl" style="height:40%;animation-delay:0.08s;"></span>
+          <span class="waveform-bar-xl" style="height:70%;animation-delay:0.22s;"></span>
+          <span class="waveform-bar-xl" style="height:90%;animation-delay:0.36s;"></span>
+          <span class="waveform-bar-xl" style="height:75%;animation-delay:0.5s;"></span>
+          <span class="waveform-bar-xl" style="height:55%;animation-delay:0.64s;"></span>
+          <span class="waveform-bar-xl" style="height:85%;animation-delay:0.78s;"></span>
+          <span class="waveform-bar-xl" style="height:48%;animation-delay:0.92s;"></span>
+          <span class="waveform-bar-xl" style="height:10%;animation-delay:0.3s;"></span>
+          <span class="waveform-bar-xl" style="height:6%;animation-delay:0.44s;"></span>
+          <span class="waveform-bar-xl" style="height:50%;animation-delay:0.12s;"></span>
+          <span class="waveform-bar-xl" style="height:80%;animation-delay:0.26s;"></span>
+          <span class="waveform-bar-xl" style="height:100%;animation-delay:0.4s;"></span>
+          <span class="waveform-bar-xl" style="height:88%;animation-delay:0.54s;"></span>
+          <span class="waveform-bar-xl" style="height:60%;animation-delay:0.68s;"></span>
+          <span class="waveform-bar-xl" style="height:92%;animation-delay:0.82s;"></span>
+          <span class="waveform-bar-xl" style="height:45%;animation-delay:0.96s;"></span>
+          <span class="waveform-bar-xl" style="height:8%;animation-delay:0.58s;"></span>
+          <span class="waveform-bar-xl" style="height:35%;animation-delay:0.04s;"></span>
+          <span class="waveform-bar-xl" style="height:65%;animation-delay:0.18s;"></span>
+          <span class="waveform-bar-xl" style="height:82%;animation-delay:0.32s;"></span>
+          <span class="waveform-bar-xl" style="height:70%;animation-delay:0.46s;"></span>
+          <span class="waveform-bar-xl" style="height:42%;animation-delay:0.6s;"></span>
+          <span class="waveform-bar-xl" style="height:10%;animation-delay:0.74s;"></span>
+        </div>
+      </div>
+      <!-- DC App (no mic/waveform inside, larger) -->
+      <div style="width:100%;max-width:700px;background:#0c0e12;border-radius:8px;overflow:hidden;">
+        <!-- App header -->
+        <div style="padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9a9ca2;letter-spacing:0.05em;">DESIGN CAPTURE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div class="pulse-dot" style="width:7px;height:7px;"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.05em;">REC</span>
+          </div>
+        </div>
+        <!-- Transcript -->
+        <div style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:5px;min-height:66px;">
+          <div data-dc="t1" style="opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.5;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-muted);flex-shrink:0;padding-top:2px;">0:04</span>
+            <span style="color:var(--text);">I want a bold hero section with a big heading...</span>
+          </div>
+          <div data-dc="t2" style="opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.5;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-muted);flex-shrink:0;padding-top:2px;">0:12</span>
+            <span style="color:var(--text);">...warm orange CTA button, split layout</span>
+          </div>
+          <div data-dc="t3" style="opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.5;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-muted);flex-shrink:0;padding-top:2px;">0:18</span>
+            <span style="color:var(--text-dim);font-style:italic;">Give me a feature grid below that, three columns...</span>
+          </div>
+        </div>
+        <!-- Extraction output - cards animate in after transcript -->
+        <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div data-dc="elabel" style="opacity:0;transition:opacity 0.4s;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:8px;display:flex;align-items:center;gap:5px;">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span>
+            Extracted Ideas
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div data-dc="e1" style="opacity:0;transition:opacity 0.4s,transform 0.4s;transform:translateY(6px);flex:1;background:#1a1d24;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;">
+              <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Hero Section</div>
+              <div data-dc="thumb1" style="width:100%;height:18px;border-radius:3px;background:#1a1d24;margin-bottom:5px;transition:background 0.8s;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);background:rgba(232,70,30,0.06);padding:2px 6px;border-radius:2px;">hero</span>
+            </div>
+            <div data-dc="e2" style="opacity:0;transition:opacity 0.4s,transform 0.4s;transform:translateY(6px);flex:1;background:#1a1d24;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;">
+              <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Feature Grid</div>
+              <div data-dc="thumb2" style="display:flex;gap:2px;margin-bottom:5px;">
+                <div style="flex:1;height:18px;border-radius:3px;background:#1a1d24;transition:background 0.8s;"></div>
+                <div style="flex:1;height:18px;border-radius:3px;background:#1a1d24;transition:background 0.8s;"></div>
+                <div style="flex:1;height:18px;border-radius:3px;background:#1a1d24;transition:background 0.8s;"></div>
+              </div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);background:rgba(232,70,30,0.06);padding:2px 6px;border-radius:2px;">section</span>
+            </div>
+            <div data-dc="e3" style="opacity:0;transition:opacity 0.4s,transform 0.4s;transform:translateY(6px);flex:1;background:#1a1d24;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;">
+              <div style="font-size:11px;font-weight:600;margin-bottom:4px;">CTA Button</div>
+              <div data-dc="thumb3" style="width:60%;height:18px;border-radius:3px;background:#1a1d24;margin-bottom:5px;transition:background 0.8s;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);background:rgba(232,70,30,0.06);padding:2px 6px;border-radius:2px;">button</span>
+            </div>
+          </div>
+        </div>
+        <!-- Kanban mini - cards animate in after extraction -->
+        <div style="padding:12px 16px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+            <div data-dc="k1" style="opacity:0;transition:opacity 0.4s;">
+              <div style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.2);"></span>Queue</div>
+              <div style="background:#1a1d24;border:1px solid var(--border);border-radius:3px;padding:6px 8px;margin-bottom:4px;"><div style="font-size:9px;font-weight:500;">Nav bar</div></div>
+              <div style="background:#1a1d24;border:1px solid var(--border);border-radius:3px;padding:6px 8px;"><div style="font-size:9px;font-weight:500;">Pricing</div></div>
+            </div>
+            <div data-dc="k2" style="opacity:0;transition:opacity 0.4s;">
+              <div style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);"></span>Ready</div>
+              <div style="background:#1a1d24;border:1px solid var(--border);border-radius:3px;padding:6px 8px;"><div style="font-size:9px;font-weight:500;">Hero</div></div>
+            </div>
+            <div data-dc="k3" style="opacity:0;transition:opacity 0.4s;">
+              <div style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--quote-accent);"></span>Review</div>
+              <div style="background:#1a1d24;border:1px solid var(--border);border-radius:3px;padding:6px 8px;"><div style="font-size:9px;font-weight:500;">CTA block</div></div>
+            </div>
+            <div data-dc="k4" style="opacity:0;transition:opacity 0.4s;">
+              <div style="font-size:9px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span>Done</div>
+              <div style="background:#1a1d24;border:1px solid rgba(139,154,107,0.2);border-radius:3px;padding:6px 8px;"><div style="font-size:9px;font-weight:500;color:var(--green);">Footer</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var demo=document.getElementById('dcDemo');
+      if(!demo)return;
+      var q=function(s){return demo.querySelector('[data-dc="'+s+'"]');};
+      var timers=[];
+      function show(el){if(!el)return;el.style.opacity='1';el.style.transform='translateY(0) scale(1)';}
+      function hide(el){if(!el)return;el.style.opacity='0';el.style.transform='';}
+      function hideP(el){if(!el)return;el.style.opacity='0';el.style.transform='scale(0.97)';}
+      function thumb(id,bg){var el=q(id);if(!el)return;if(id==='thumb2'){var ds=el.querySelectorAll('div');for(var i=0;i<ds.length;i++)ds[i].style.background=bg;}else el.style.background=bg;}
+      function resetThumbs(){var t1=q('thumb1');if(t1)t1.style.background='#1a1d24';var t3=q('thumb3');if(t3)t3.style.background='#1a1d24';var t2=q('thumb2');if(t2){var ds=t2.querySelectorAll('div');for(var i=0;i<ds.length;i++)ds[i].style.background='#1a1d24';}}
+      function dimPage(el){if(!el)return;el.style.opacity='0';}
+      function lightPage(el){if(!el)return;el.style.opacity='1';}
+      var ids=['t1','t2','t3','elabel','e1','e2','e3','k1','k2','k3','k4'];
+      function reset(){for(var i=0;i<timers.length;i++)clearTimeout(timers[i]);timers=[];for(var j=0;j<ids.length;j++)hide(q(ids[j]));resetThumbs();lightPage(q('page-hero'));dimPage(q('page-grid'));dimPage(q('page-cta'));}
+      function s(ms,fn){timers.push(setTimeout(fn,ms));}
+      function run(){reset();s(500,function(){show(q('t1'));});s(1500,function(){show(q('t2'));});s(2500,function(){show(q('t3'));});s(3500,function(){show(q('elabel'));show(q('e1'));});s(3800,function(){show(q('e2'));});s(4100,function(){show(q('e3'));});s(4800,function(){thumb('thumb1','linear-gradient(135deg,#22252c,#2a2d34)');});s(5100,function(){thumb('thumb2','#22252c');lightPage(q('page-grid'));});s(5400,function(){thumb('thumb3','#e8461e');lightPage(q('page-cta'));});s(6000,function(){show(q('k1'));});s(6300,function(){show(q('k2'));});s(6600,function(){show(q('k3'));});s(6900,function(){show(q('k4'));});s(12000,run);}
+      setTimeout(run,800);
+    })();
+    </script>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 17.5: What is Design Capture -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--white" data-slide-number="17.5" data-section="cs2" style="padding:0;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:none;align-items:center;min-height:100dvh;">
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(2rem,3vw,4rem) clamp(2rem,4vw,5rem) clamp(3rem,5vw,6rem);max-width:560px;">
+      <div class="label reveal">Design Capture</div>
+      <h1 class="reveal reveal-delay-1">What is Design Capture?</h1>
+      <p class="reveal reveal-delay-2" style="margin-bottom:1.5rem;font-size:clamp(1.05rem,1.4vw,1.35rem);">A design environment I built for how I actually work. Speak naturally, and the system extracts ideas, generates token-constrained components, and assembles pages, all from&nbsp;voice.</p>
+      <div class="reveal reveal-delay-3">
+        <div class="label" style="margin-bottom:0.35rem;">My role</div>
+        <p style="font-size:clamp(1.05rem,1.4vw,1.35rem);"><strong>Sole designer + engineer</strong>. Concept through working demo.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-3" style="align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#141517;padding:clamp(1.5rem,2.5vw,2.5rem);">
+      <!-- Design Capture UI Preview -->
+      <div style="width:100%;max-width:620px;font-family:'Outfit',sans-serif;">
+        <!-- App top bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:#2a2d34;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">AB</div>
+            <span style="font-size:13px;font-weight:600;color:#fff;">Design <span style="color:#e8461e;">Capture</span></span>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="padding:4px 10px;border:1px solid #e8461e;border-radius:4px;font-size:10px;color:#e8461e;">Preview</div>
+            <div style="padding:4px 10px;border:1px solid #333;border-radius:4px;font-size:10px;color:#888;">Tasks</div>
+            <div style="padding:4px 10px;border:1px solid #333;border-radius:4px;font-size:10px;color:#888;">Design System</div>
+            <div style="padding:4px 10px;border:1px solid #333;border-radius:4px;font-size:10px;color:#888;">Findings</div>
+          </div>
+        </div>
+        <!-- Main content area -->
+        <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;">
+          <!-- Desktop preview -->
+          <div style="background:#1a1d24;border-radius:8px;overflow:hidden;">
+            <div style="padding:8px 12px;border-bottom:1px solid #2a2d34;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:9px;color:#555;letter-spacing:0.08em;text-transform:uppercase;">Portfolio Preview</span>
+              <span style="font-size:9px;color:#555;">Desktop</span>
+            </div>
+            <div style="padding:clamp(24px,3vw,40px) clamp(16px,2vw,24px);min-height:220px;">
+              <div style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:#e8461e;margin-bottom:8px;">Product Designer &middot; AI Engineer &middot; Salt Lake City</div>
+              <div style="font-weight:800;font-size:clamp(24px,3.2vw,38px);line-height:1.1;color:#F1EFEB;letter-spacing:-0.02em;">Designing<br><span style="font-style:italic;">products</span> users <span style="color:#e8461e;font-style:italic;">trust</span><br><span style="font-style:italic;">and keep</span></div>
+            </div>
+            <div style="padding:8px 12px;display:flex;align-items:center;gap:8px;">
+              <span style="font-size:10px;color:#555;">3/6</span>
+              <div style="flex:1;height:2px;background:#2a2d34;border-radius:1px;"><div style="width:50%;height:100%;background:#e8461e;border-radius:1px;"></div></div>
+              <div style="width:16px;height:16px;border-radius:50%;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-size:10px;color:#555;">+</div>
+            </div>
+          </div>
+          <!-- Right panel: mobile + voice -->
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <!-- Mobile preview -->
+            <div style="background:#1a1d24;border-radius:8px;overflow:hidden;flex:1;">
+              <div style="padding:6px 10px;border-bottom:1px solid #2a2d34;display:flex;justify-content:space-between;">
+                <span style="font-size:8px;color:#555;letter-spacing:0.08em;text-transform:uppercase;">Mobile</span>
+                <span style="font-size:8px;color:#555;">375px</span>
+              </div>
+              <div style="padding:10px 10px;">
+                <div style="font-size:11px;font-weight:600;color:#F1EFEB;text-align:center;margin-bottom:8px;">Adam Blair</div>
+                <div style="font-size:6px;letter-spacing:0.08em;text-transform:uppercase;color:#e8461e;margin-bottom:4px;">Product Designer &middot; AI Engineer</div>
+                <div style="font-weight:800;font-size:13px;line-height:1.15;color:#F1EFEB;">Designing <span style="font-style:italic;">products</span> users <span style="color:#e8461e;font-style:italic;">trust</span> <span style="font-style:italic;">and keep</span></div>
+              </div>
+            </div>
+            <!-- Voice input hint -->
+            <div style="background:#1a1d24;border-radius:8px;padding:12px 10px;text-align:center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" style="margin-bottom:4px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+              <div style="font-size:10px;font-weight:600;color:#aaa;">Start talking</div>
+              <div style="font-size:8px;color:#555;margin-top:2px;">Ideas appear as tasks as you speak.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Record bar -->
+        <div style="margin-top:10px;display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+          <div style="padding:4px 12px;border:1px solid #333;border-radius:4px;font-size:10px;color:#888;">Export HTML</div>
+          <div style="padding:4px 12px;border:1px solid #333;border-radius:4px;font-size:10px;color:#888;">Transcript</div>
+          <div style="padding:4px 12px;background:#e8461e;border-radius:4px;font-size:10px;color:#fff;display:flex;align-items:center;gap:4px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#fff;"></div> Record
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 19: The Problem -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="19" data-section="cs2">
+  <div class="slide-inner">
+    <div class="two-col" style="align-items:start;">
+      <div>
+        <div class="label reveal">The Problem</div>
+        <h1 class="reveal reveal-delay-1">The translation gap</h1>
+        <p class="reveal reveal-delay-2" style="margin-top:1rem;">Between describing a design idea and seeing it rendered, there are <strong>too many translation steps</strong>. A designer says "give me a hero with a bold heading and a warm CTA," then opens Figma, drags frames, sets tokens, exports, writes a ticket. The idea loses fidelity at every&nbsp;handoff.</p>
+        <p class="reveal reveal-delay-3" style="margin-top:1rem;">I wanted to explore: <strong>what if speech was the input and working UI was the&nbsp;output?</strong></p>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <!-- Step 1: Figma -->
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="width:28px;height:28px;border-radius:var(--radius);background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:clamp(0.8rem,0.95vw,0.95rem);">Design in Figma</div>
+              <div style="font-size:clamp(0.7rem,0.8vw,0.8rem);color:var(--text-dim);">Tokens, components, layouts</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--text-muted);font-size:0.8rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+          <!-- Step 2: MCP -->
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="width:28px;height:28px;border-radius:var(--radius);background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1.5" fill="var(--blue)"/><circle cx="16" cy="12" r="1.5" fill="var(--blue)"/><circle cx="10" cy="18" r="1.5" fill="var(--blue)"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:clamp(0.8rem,0.95vw,0.95rem);">Figma MCP Server</div>
+              <div style="font-size:clamp(0.7rem,0.8vw,0.8rem);color:var(--text-dim);">Extract tokens, styles, structure via API</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--text-muted);font-size:0.8rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+          <!-- Step 3: Generate -->
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="width:28px;height:28px;border-radius:var(--radius);background:var(--purple-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:clamp(0.8rem,0.95vw,0.95rem);">AI generates components</div>
+              <div style="font-size:clamp(0.7rem,0.8vw,0.8rem);color:var(--text-dim);">Token-constrained HTML from voice input</div>
+            </div>
+          </div>
+          <div style="text-align:center;color:var(--text-muted);font-size:0.8rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+          <!-- Step 4: Live preview -->
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+            <div style="width:28px;height:28px;border-radius:var(--radius);background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:clamp(0.8rem,0.95vw,0.95rem);">Live preview</div>
+              <div style="font-size:clamp(0.7rem,0.8vw,0.8rem);color:var(--text-dim);">Desktop + mobile, instant feedback</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 20: Working Prototype -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="20" data-section="cs2">
+  <div class="slide-inner">
+    <div class="label reveal">How It Works</div>
+    <h1 class="reveal reveal-delay-1">Orchestrating changes</h1>
+    <p class="reveal reveal-delay-2" style="max-width:680px;">Design Capture listens to natural speech, uses Claude to extract discrete component ideas, generates HTML constrained by a design token system, and assembles approved components into a live page preview.</p>
+    <a href="/design-capture.html" target="_blank" class="reveal reveal-delay-2" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;font-size:var(--body-size);font-weight:700;color:var(--red);text-decoration:none;border-bottom:2px solid transparent;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='transparent'">
+      View Design Capture
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <div class="app-mockup reveal reveal-delay-3" style="margin-top:clamp(1.5rem,3vw,3rem);">
+      <div class="app-topbar">
+        <div class="app-name"><span style="color:var(--accent);">Design</span> Capture</div>
+        <div class="rec-indicator">
+          <div class="pulse-dot"></div>
+          REC
+        </div>
+        <div class="view-tabs">
+          <div class="view-tab active">Board</div>
+          <div class="view-tab">Table</div>
+          <div class="view-tab">Page</div>
+          <div class="view-tab">Findings</div>
+        </div>
+      </div>
+      <div class="app-body">
+        <div class="app-kanban">
+          <div class="kb-col">
+            <div class="kb-col-label"><div class="kb-col-dot" style="background:rgba(255,255,255,0.2);"></div>Queue</div>
+            <div class="kb-card-mini"><div class="thumb"></div><div class="card-text">Navigation bar<div class="card-tag">layout</div></div></div>
+            <div class="kb-card-mini"><div class="thumb"></div><div class="card-text">Feature grid<div class="card-tag">section</div></div></div>
+          </div>
+          <div class="kb-col">
+            <div class="kb-col-label"><div class="kb-col-dot" style="background:var(--accent);"></div>Ready</div>
+            <div class="kb-card-mini"><div class="thumb" style="background:linear-gradient(135deg,#1a1d24,#2a2d34);"></div><div class="card-text">Hero section<div class="card-tag">hero</div></div></div>
+          </div>
+          <div class="kb-col">
+            <div class="kb-col-label"><div class="kb-col-dot" style="background:var(--quote-accent);"></div>Review</div>
+            <div class="kb-card-mini"><div class="thumb" style="background:linear-gradient(135deg,#22252c,#1a1d24);"></div><div class="card-text">CTA block<div class="card-tag">component</div></div></div>
+          </div>
+          <div class="kb-col">
+            <div class="kb-col-label"><div class="kb-col-dot" style="background:var(--green);"></div>Done</div>
+            <div class="kb-card-mini"><div class="thumb" style="background:linear-gradient(135deg,#1a2420,#1a1d24);"></div><div class="card-text">Footer<div class="card-tag">layout</div></div></div>
+          </div>
+        </div>
+        <div class="app-transcript">
+          <div class="transcript-label">Transcript</div>
+          <div class="transcript-line"><span class="t-time">0:04</span> I want a bold hero section with a big heading...</div>
+          <div class="transcript-line"><span class="t-time">0:12</span> ...warm orange CTA button, split layout</div>
+          <div class="transcript-line active"><span class="t-time">0:18</span> Give me a feature grid below that, three columns...</div>
+          <div class="transcript-line"><span class="t-time">0:25</span> ...navigation at the top, minimal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 21: 6-Step Pipeline -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="21" data-section="cs2">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="label reveal">How It Works</div>
+    <h1 class="reveal reveal-delay-1">Six-step pipeline</h1>
+    <div class="workflow-grid">
+      <div class="workflow-step reveal reveal-delay-1">
+        <div class="step-num">1</div>
+        <div class="step-icon" style="background:var(--red-light);"><svg viewBox="0 0 24 24" stroke="var(--red)" fill="none" stroke-width="1.5"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg></div>
+        <h3>Speak</h3>
+        <p>Describe ideas naturally using Web Speech API</p>
+        <div class="step-tag">Human</div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <div class="step-icon" style="background:var(--accent-light);"><svg viewBox="0 0 24 24" stroke="var(--accent)" fill="none" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h3>Extract</h3>
+        <p>Claude parses speech into discrete component ideas</p>
+        <div class="step-tag">AI</div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-3">
+        <div class="step-num">3</div>
+        <div class="step-icon" style="background:var(--quote-accent-bg);"><svg viewBox="0 0 24 24" stroke="var(--quote-accent)" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+        <h3>Constrain</h3>
+        <p>Design tokens injected into every generation prompt</p>
+        <div class="step-tag">System</div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-4">
+        <div class="step-num">4</div>
+        <div class="step-icon" style="background:var(--green-light);"><svg viewBox="0 0 24 24" stroke="var(--green)" fill="none" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h3>Render</h3>
+        <p>HTML drops into sandboxed iframe with live preview</p>
+        <div class="step-tag">Output</div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-5">
+        <div class="step-num">5</div>
+        <div class="step-icon" style="background:var(--purple-light);"><svg viewBox="0 0 24 24" stroke="var(--purple)" fill="none" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+        <h3>Refine</h3>
+        <p>Type corrections; AI regenerates with full context</p>
+        <div class="step-tag">Human</div>
+      </div>
+      <div class="workflow-step reveal reveal-delay-6">
+        <div class="step-num">6</div>
+        <div class="step-icon" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" stroke="var(--blue)" fill="none" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+        <h3>Approve</h3>
+        <p>Drag to Done, approve to page, HTML injects live</p>
+        <div class="step-tag">Board</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 26.7: What's Next -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide" data-slide-number="26.7" data-section="cs2">
+  <div class="slide-inner" style="max-width:1320px;">
+    <div class="label reveal" style="text-align:center;">What's Next</div>
+    <h1 class="reveal reveal-delay-1" style="text-align:center;margin-bottom:clamp(1.5rem,3vw,3rem);">Where this is going</h1>
+
+    <!-- 4-column pipeline -->
+    <div class="reveal reveal-delay-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;font-size:clamp(0.85rem,1vw,1rem);">
+
+      <!-- Col 1: Research -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.25rem,2vw,2rem);display:flex;flex-direction:column;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(0.7rem,0.8vw,0.8rem);letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">1 &middot; Research</div>
+        <h3 style="font-size:clamp(1.1rem,1.3vw,1.3rem);margin-bottom:0.75rem;"><span style="color:var(--accent);">Claude</span> Certified Architect</h3>
+        <p style="font-size:clamp(0.85rem,0.95vw,0.95rem);color:var(--text-dim);line-height:1.5;margin-bottom:0.75rem;">Anthropic's architecture-level certification for production AI systems. Covers 5 domains:</p>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;flex:1;">
+          <span style="font-size:clamp(0.8rem,0.9vw,0.9rem);color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:var(--accent);font-weight:700;font-size:0.8rem;min-width:2.2rem;">27%</span> Agentic architecture
+          </span>
+          <span style="font-size:clamp(0.8rem,0.9vw,0.9rem);color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:var(--accent);font-weight:700;font-size:0.8rem;min-width:2.2rem;">20%</span> Code configuration
+          </span>
+          <span style="font-size:clamp(0.8rem,0.9vw,0.9rem);color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:var(--accent);font-weight:700;font-size:0.8rem;min-width:2.2rem;">20%</span> Prompt engineering
+          </span>
+          <span style="font-size:clamp(0.8rem,0.9vw,0.9rem);color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:var(--accent);font-weight:700;font-size:0.8rem;min-width:2.2rem;">18%</span> Tool design + MCP
+          </span>
+          <span style="font-size:clamp(0.8rem,0.9vw,0.9rem);color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;">
+            <span style="color:var(--accent);font-weight:700;font-size:0.8rem;min-width:2.2rem;">15%</span> Context + reliability
+          </span>
+        </div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:clamp(0.8rem,0.85vw,0.85rem);color:var(--text-muted);">Formalizes the architecture behind Design&nbsp;Capture</div>
+      </div>
+
+      <!-- Col 2: Setup -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.25rem,2vw,2rem);display:flex;flex-direction:column;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(0.7rem,0.8vw,0.8rem);letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">2 &middot; Setup</div>
+        <h3 style="font-size:clamp(1.1rem,1.3vw,1.3rem);margin-bottom:0.75rem;">Automation infrastructure</h3>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;flex:1;">
+          <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:4px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span style="font-size:clamp(0.85rem,0.95vw,0.95rem);">MCP server connections</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:4px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            <span style="font-size:clamp(0.85rem,0.95vw,0.95rem);">Figma token extraction</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:4px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            <span style="font-size:clamp(0.85rem,0.95vw,0.95rem);">Agent skill definitions</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:4px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--quote-accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span style="font-size:clamp(0.85rem,0.95vw,0.95rem);">CI/CD pipeline hooks</span>
+          </div>
+        </div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:clamp(0.8rem,0.85vw,0.85rem);color:var(--text-muted);">One-time setup, continuous&nbsp;value</div>
+      </div>
+
+      <!-- Col 3: Feed -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.25rem,2vw,2rem);display:flex;flex-direction:column;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(0.7rem,0.8vw,0.8rem);letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">3 &middot; Feed</div>
+        <h3 style="font-size:clamp(1.1rem,1.3vw,1.3rem);margin-bottom:0.75rem;">Live data sources</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;flex:1;">
+          <div>
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
+              <span style="display:inline-block;padding:4px 10px;border-radius:4px;font-size:clamp(0.8rem,0.85vw,0.85rem);font-weight:600;background:var(--accent);color:#fff;">PostHog</span>
+            </div>
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);color:var(--text-dim);line-height:1.5;">Session replays, funnel data, heatmaps, feature flags</div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
+              <span style="display:inline-block;padding:4px 10px;border-radius:4px;font-size:clamp(0.8rem,0.85vw,0.85rem);font-weight:600;background:var(--quote-accent);color:#0F1013;">MiroFish</span>
+            </div>
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);color:var(--text-dim);line-height:1.5;">1,000 persona agents, simulated user testing, live heatmaps</div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
+              <span style="display:inline-block;padding:4px 10px;border-radius:4px;font-size:clamp(0.8rem,0.85vw,0.85rem);font-weight:600;background:var(--purple);color:#fff;">Paperclip</span>
+            </div>
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);color:var(--text-dim);line-height:1.5;">AI-native design, screenshot to production component</div>
+          </div>
+        </div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:clamp(0.8rem,0.85vw,0.85rem);color:var(--text-muted);">Real signals, not&nbsp;assumptions</div>
+      </div>
+
+      <!-- Col 4: Output -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.25rem,2vw,2rem);display:flex;flex-direction:column;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(0.7rem,0.8vw,0.8rem);letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">4 &middot; Output</div>
+        <h3 style="font-size:clamp(1.1rem,1.3vw,1.3rem);margin-bottom:0.75rem;">AI-generated suggestions</h3>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;flex:1;">
+          <div style="padding:0.6rem 0.75rem;background:var(--bg-elevated);border-left:2px solid var(--accent);border-radius:0 4px 4px 0;">
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);font-weight:600;">Component variants</div>
+            <div style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">A/B options from token system</div>
+          </div>
+          <div style="padding:0.6rem 0.75rem;background:var(--bg-elevated);border-left:2px solid var(--green);border-radius:0 4px 4px 0;">
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);font-weight:600;">UX improvements</div>
+            <div style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">Based on session replay patterns</div>
+          </div>
+          <div style="padding:0.6rem 0.75rem;background:var(--bg-elevated);border-left:2px solid var(--purple);border-radius:0 4px 4px 0;">
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);font-weight:600;">Copy refinements</div>
+            <div style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">Conversion-optimized alternatives</div>
+          </div>
+          <div style="padding:0.6rem 0.75rem;background:var(--bg-elevated);border-left:2px solid var(--quote-accent);border-radius:0 4px 4px 0;">
+            <div style="font-size:clamp(0.85rem,0.95vw,0.95rem);font-weight:600;">Accessibility flags</div>
+            <div style="font-size:clamp(0.75rem,0.85vw,0.85rem);color:var(--text-dim);">Contrast, focus, ARIA issues</div>
+          </div>
+        </div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:clamp(0.8rem,0.85vw,0.85rem);color:var(--text-muted);">Designer approves, AI&nbsp;executes</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SLIDE 27: Summary -->
+<!-- ════════════════════════════════════════════════ -->
+<section class="slide slide--gray" data-slide-number="27" data-section="summary" style="padding:0;">
+  <div style="display:grid;grid-template-columns:auto auto;gap:80px;width:100%;min-height:100dvh;align-items:center;justify-content:center;padding:0 clamp(3rem,5vw,6rem);">
+    <div class="reveal" style="display:flex;align-items:center;">
+      <img src="assets/portfolio/ted-lasso.gif" alt="Ted Lasso salute" style="width:clamp(300px,35vw,500px);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.1);">
+    </div>
+    <div style="padding:clamp(2rem,4vw,5rem) clamp(3rem,5vw,6rem) clamp(2rem,4vw,5rem) 0;">
+      <div class="label reveal" style="margin-bottom:1.5rem;">Summary</div>
+      <h1 class="reveal reveal-delay-1" style="font-size:clamp(2.5rem,5vw,5rem);font-weight:800;margin-bottom:1.5rem;">Thank you</h1>
+      <p class="reveal reveal-delay-2" style="font-size:var(--h3);margin-bottom:2.5rem;">Two case studies. One thread: <strong>making complex systems feel simple</strong>, whether that's scheduling for field sales or building design tools with&nbsp;AI.</p>
+      <div class="reveal reveal-delay-3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+        <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--radius);padding:1.25rem;text-align:center;">
+          <div class="label" style="margin-bottom:0.5rem;">Name</div>
+          <p style="font-weight:700;">Adam Blair</p>
+        </div>
+        <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--radius);padding:1.25rem;text-align:center;">
+          <div class="label" style="margin-bottom:0.5rem;">Location</div>
+          <p style="font-weight:700;">Salt Lake City, UT</p>
+        </div>
+        <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--radius);padding:1.25rem;text-align:center;">
+          <div class="label" style="margin-bottom:0.5rem;">Portfolio</div>
+          <p style="font-weight:700;"><a href="https://www.adamblair.design" style="color:var(--accent);text-decoration:none;">adamblair.design</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ── Pain slide scroll-in-place ──
+  (function() {
+    const slide = document.getElementById('painSlide');
+    if (!slide) return;
+    const panels = slide.querySelectorAll('.pain-panel');
+    const navItems = slide.querySelectorAll('.pain-nav-item');
+    const total = panels.length;
+    let current = 0;
+    let cooldown = false;
+
+    function isInView() {
+      const rect = slide.getBoundingClientRect();
+      return Math.abs(rect.top) < 20;
+    }
+
+    function goTo(idx) {
+      if (idx < 0 || idx >= total || idx === current) return false;
+      current = idx;
+      panels.forEach((p, i) => p.classList.toggle('active', i === current));
+      navItems.forEach((n, i) => {
+        const isActive = i === current;
+        n.style.borderLeftColor = isActive ? 'var(--accent)' : 'transparent';
+        n.querySelector('p').style.fontWeight = isActive ? '700' : '500';
+        n.querySelector('p').style.color = isActive ? 'var(--text)' : 'var(--text-muted)';
+      });
+      return true;
+    }
+
+    // Click nav items
+    navItems.forEach((n, i) => n.addEventListener('click', () => goTo(i)));
+
+    // Wheel handler
+    slide.addEventListener('wheel', function(e) {
+      if (!isInView()) return;
+      if (cooldown) { e.preventDefault(); return; }
+
+      const dir = e.deltaY > 0 ? 1 : -1;
+      if ((current === 0 && dir < 0) || (current === total - 1 && dir > 0)) return;
+
+      e.preventDefault();
+      if (goTo(current + dir)) {
+        cooldown = true;
+        setTimeout(() => { cooldown = false; }, 500);
+      }
+    }, { passive: false });
+
+    // Keyboard handler (called from global keydown)
+    window._painSlideKeyNav = function(dir) {
+      if (!isInView()) return false;
+      const delta = dir === 'down' ? 1 : -1;
+      if ((current === 0 && delta < 0) || (current === total - 1 && delta > 0)) return false;
+      return goTo(current + delta);
+    };
+  })();
+
+  // ── Slides + nav dots ──
+  const slides = document.querySelectorAll('.slide');
+  const navDotsContainer = document.getElementById('navDots');
+  const slideCounter = document.getElementById('slideCounter');
+  const totalSlides = slides.length;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => jumpToSlide(i));
+    navDotsContainer.appendChild(dot);
+  });
+
+  // ── IntersectionObserver for reveals + active tracking ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Reveal animations
+        entry.target.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+        // Active slide tracking
+        const idx = Array.from(slides).indexOf(entry.target);
+        if (idx >= 0) updateActiveSlide(idx);
+        // Count-up animations
+        entry.target.querySelectorAll('[data-count-target]').forEach(el => {
+          if (el.dataset.counted) return;
+          el.dataset.counted = 'true';
+          const target = parseInt(el.dataset.countTarget);
+          const duration = 1500;
+          const start = performance.now();
+          const step = (now) => {
+            const t = Math.min((now - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 4);
+            el.textContent = Math.round(target * ease);
+            if (t < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }
+    });
+  }, { threshold: 0.35 });
+
+  slides.forEach(s => observer.observe(s));
+
+  function updateActiveSlide(idx) {
+    // Nav dots
+    navDotsContainer.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    // Slide counter
+    slideCounter.textContent = (idx + 1) + ' / ' + totalSlides;
+    // Section nav
+    const section = slides[idx]?.dataset.section;
+    document.querySelectorAll('.section-nav-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.section === section);
+    });
+  }
+
+  function jumpToSlide(idx) {
+    if (slides[idx]) slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Keyboard navigation ──
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      // Check if pain slide is active and can consume the event
+      if (window._painSlideKeyNav && window._painSlideKeyNav('down')) return;
+      const current = getCurrentSlideIndex();
+      if (current < totalSlides - 1) jumpToSlide(current + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (window._painSlideKeyNav && window._painSlideKeyNav('up')) return;
+      const current = getCurrentSlideIndex();
+      if (current > 0) jumpToSlide(current - 1);
+    }
+  });
+
+  function getCurrentSlideIndex() {
+    let closest = 0;
+    let minDist = Infinity;
+    slides.forEach((s, i) => {
+      const dist = Math.abs(s.getBoundingClientRect().top);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    return closest;
+  }
+
+  // Ensure first slide is visible immediately
+  requestAnimationFrame(() => {
+    if (slides[0]) slides[0].querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  });
+</script>
+</body>
+</html>
