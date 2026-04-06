@@ -398,32 +398,31 @@ const caseStudies = [
 ];
 
 const resumeJobs = [
-  { company: "SalesRabbit", role: "Lead UX Designer", period: "Oct 2022 – Present", desc: "B2B SaaS · Workflow Tools · Analytics", highlights: [
-    "Stabilized and grew the design team through intentional backfills, a clear growth framework and strong 1:1 feedback practices that built psychological safety",
-    "Elevated product credibility by driving a problem-first, data-informed culture and aligning Sales + Support as active partners in design decisions",
-    "Directed the mobile platform rewrite and unified design systems across products, improving scalability, consistency and delivery velocity",
-    "Championed AI-assisted workflows (Bolt, Cursor, Claude, Figma, ChatGPT) to accelerate prototyping, unify product copy, simulate personas and reduce engineering bottlenecks",
-    "Shaped roadmaps, identified hiring needs, and established design career path for 3 designers",
-    "Led redesign of web and mobile products to scale for key strategic customers across North America, Australia and Europe",
-    "Integrated multiple acquired products into single unified experience"
+  { company: "SalesRabbit", role: "Lead Product Designer", period: "Oct 2022 – Present", desc: "B2B SaaS · Workflow Tools · Analytics", highlights: [
+    "Consolidated three acquired products (SalesRabbit, Rooflink, Roofle) with no shared design foundation. Reverse-engineered design systems from production codebases and guided decisions on what to merge, separate, and deprecate.",
+    "Stabilized and grew the design team through intentional backfills, a clear growth framework, and strong 1:1 feedback practices that built psychological safety.",
+    "Partnered with Product and Engineering to shape roadmap priorities, pairing customer discovery with design rationale to influence scope and sequencing.",
+    "Directed the mobile platform rewrite and unified design systems across iOS, Android, and web, surfacing inconsistencies across contractor teams and establishing scalable patterns.",
+    "Championed AI-assisted workflows (Bolt, Cursor, Claude, Figma, ChatGPT) for research synthesis, rapid prototyping, and faster design decisions across the team.",
+    "Designed leaderboards and performance stat dashboards, using PostHog for funnel analysis and session review to inform decisions with behavioral data."
   ]},
-  { company: "Cricut", role: "Senior UX Designer", period: "Jun 2017 – Oct 2022", desc: "B2C · E-Commerce · Connected Hardware", highlights: [
-    "Led UX strategy and design for Cricut Access, a core subscription service used by millions globally, contributing to growth in paid memberships from 2M to 2.6M",
-    "Launched social features in Cricut Design Space: user profiles, sharing, collections & moderation for 7.5M users",
-    "Directed redesigns for shopping & checkout flows, significantly improving conversion",
-    "Redesigned the shop experience, coordinating cross-functional teams for messaging and visuals"
+  { company: "Cricut", role: "Senior Product Designer", period: "Jun 2017 – Oct 2022", desc: "B2C · E-Commerce · Connected Hardware", highlights: [
+    "Owned end-to-end UX for Cricut Access, a subscription product with millions of active members globally, across acquisition, onboarding, and retention flows on iOS, Android, and web.",
+    "Redesigned shop navigation architecture, scaling to 7 country-specific variations. Drove 25% increase in menu engagement, 18% lift in average purchase size, and 42% drop in compatibility-related support tickets.",
+    "Launched social features in Cricut Design Space: user profiles, sharing, collections, and moderation.",
+    "Led customer discovery and usability testing to validate navigation decisions. Findings directly shaped IA strategy and product direction."
   ]},
-  { company: "Overstock", role: "Senior UX Designer", period: "Jul 2015 – Jul 2017", desc: "B2C E-Commerce · Checkout · Vendor Tools", highlights: [
-    "Sole designer over checkout team, redesigned responsive layout and integrated Klarna pay-later service",
-    "Contracted Baymard Institute for UX evaluation, used analytics and user recordings to identify post-launch pain points",
-    "Built vendor portal letting sellers manage products, pricing, and inventory to maximize competitive listing",
-    "Designed multi-option-set PDP UI (pills, thumbnails, swatches) and A/B tested email strategies for onboarding and checkout"
+  { company: "Overstock", role: "Senior Product Designer", period: "Jul 2015 – Jul 2017", desc: "B2C E-Commerce · Checkout · Vendor Tools", highlights: [
+    "Sole designer over checkout team, redesigned responsive layout and integrated Klarna pay-later service.",
+    "Contracted Baymard Institute for UX evaluation, used analytics and user recordings to identify post-launch pain points.",
+    "Built vendor portal letting sellers manage products, pricing, and inventory to maximize competitive listing.",
+    "Designed multi-option-set PDP UI (pills, thumbnails, swatches) and A/B tested email strategies for onboarding and checkout."
   ]},
-  { company: "Intelity", role: "Lead Designer", period: "Jun 2010 – Jul 2015", desc: "Hospitality SaaS · Guest Experience · Connected Hardware", highlights: [
-    "First design hire in a startup of three (designer, CTO, CEO), built the design org from scratch",
-    "Designed guest experiences across 22\" touchscreens, TV, mobile, and tablet with multi-language support and per-hotel customization",
-    "Created custom experiences for Conrad Hotels, Four Seasons, and Peninsula Hotels including in-room controls",
-    "Built staff platform with PMS, POS, and ticket management integrations, tracking guest usage and in-room dining revenue"
+  { company: "Intelity", role: "Lead Product Designer", period: "Jun 2010 – Jul 2015", desc: "Hospitality SaaS · Guest Experience · Connected Hardware", highlights: [
+    "Designed guest experiences across TV, mobile, iPad, and 22\" touchscreen surfaces for a hospitality platform deployed at Four Seasons, Conrad, The Peninsula, and The Plaza.",
+    "Architected a multilingual CMS and analytics dashboard integrating with POS and PMS systems, giving hotel operators a unified view of content and guest activity.",
+    "Built a real-time staff request app for in-room service assignment and resolution, plus room control interfaces for The Peninsula and Plaza hotels.",
+    "First design hire in a startup of three (designer, CTO, CEO), built the design org from scratch."
   ]}
 ];
 
@@ -637,7 +636,7 @@ function DesktopResume() {
               <div key={i} style={{ position: i === 0 ? "relative" : "absolute", top: 0, left: i === 0 ? 0 : "48px", right: 0, opacity: activeJob === i ? 1 : 0, transform: activeJob === i ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)", pointerEvents: activeJob === i ? "auto" : "none" }}>
                 <p style={{ fontFamily: t.headingFont, fontSize: "clamp(32px, 3.5vw, 44px)", fontWeight: 800, color: t.text, lineHeight: 1.1, marginBottom: "6px" }}>{job.company}</p>
                 <p style={{ fontFamily: t.bodyFont, fontSize: "18px", fontWeight: 600, color: t.accent, marginBottom: "4px" }}>{job.role}</p>
-                <p style={{ fontFamily: t.monoFont, fontSize: "12px", color: t.textMuted, marginBottom: "28px" }}>{job.desc} · {job.period}</p>
+                <p style={{ fontFamily: t.monoFont, fontSize: "12px", color: t.textMuted, marginBottom: "28px" }}>{job.period} · {job.desc}</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {job.highlights.map((h, j) => (
                     <div key={j} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
