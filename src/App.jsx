@@ -401,9 +401,9 @@ const resumeJobs = [
   { company: "SalesRabbit", role: "Lead Product Designer", period: "Oct 2022 – Present", desc: "B2B SaaS · Workflow Tools · Analytics", highlights: [
     "Consolidated three acquired products (SalesRabbit, Rooflink, Roofle) with no shared design foundation. Reverse-engineered design systems from production codebases and guided decisions on what to merge, separate, and deprecate.",
     "Stabilized and grew the design team through intentional backfills, a clear growth framework, and strong 1:1 feedback practices that built psychological safety.",
-    "Partnered with Product and Engineering to shape roadmap priorities, pairing customer discovery with design rationale to influence scope and sequencing.",
-    "Directed the mobile platform rewrite and unified design systems across iOS, Android, and web, surfacing inconsistencies across contractor teams and establishing scalable patterns.",
-    "Championed AI-assisted workflows (Bolt, Cursor, Claude, Figma, ChatGPT) for research synthesis, rapid prototyping, and faster design decisions across the team.",
+    "Partnered with Product and Engineering to shape roadmap priorities. Used customer research and design rationale to push back on scope and reorder what shipped first.",
+    "Directed the mobile platform rewrite, pulling from HIG and Material Design to build a single Flutter design system across iOS and Android. Surfaced inconsistencies across contractor teams and established scalable patterns.",
+    "Championed AI-assisted workflows (Bolt, Cursor, Claude, Figma, ChatGPT) for research, rapid prototyping, and faster design decisions across the team.",
     "Designed leaderboards and performance stat dashboards, using PostHog for funnel analysis and session review to inform decisions with behavioral data."
   ]},
   { company: "Cricut", role: "Senior Product Designer", period: "Jun 2017 – Oct 2022", desc: "B2C · E-Commerce · Connected Hardware", highlights: [
