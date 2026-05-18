@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Design Capture</title>
+<script>
+  // Apply theme before paint to avoid flash
+  (function() {
+    try {
+      var t = localStorage.getItem('dc_theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,15 +27,150 @@
     --text: #ffffff;
     --text-dim: #9a9ca2;
     --text-muted: #6b6e76;
-    --border: rgba(255,255,255,0.06);
+    --border: var(--border);
+    --border-strong: var(--border-strong);
     --accent: #e8461e;
     --quote-accent: #F4B56F;
     --success: #8B9A6B;
     --error: #ff5f5f;
+
+    /* Surface overlays — wash colors for hover, drag, etc. */
+    --overlay-1: var(--overlay-1);
+    --overlay-2: var(--overlay-2);
+    --overlay-3: var(--overlay-3);
+    --overlay-4: var(--border);
+    --overlay-5: var(--overlay-5);
+    --overlay-6: var(--overlay-6);
+    --overlay-7: var(--border-strong);
+
+    /* Shadows — always darken */
+    --shadow-soft: var(--shadow-soft);
+    --shadow-strong: var(--shadow-strong);
+    --shadow-xl: var(--shadow-xl);
+    --shadow-modal: var(--shadow-modal);
+    --shadow-approve: var(--shadow-approve);
+
+    /* Translucent surfaces (used with backdrop-filter) */
+    --bg-translucent: var(--bg-translucent);
+    --bg-card-translucent: var(--bg-card-translucent);
+
+    /* Accent color tints — one per opacity tier */
+    --accent-tint-1: var(--accent-tint-1);
+    --accent-tint-2: var(--accent-tint-2);
+    --accent-tint-3: var(--accent-tint-3);
+    --accent-tint-4: var(--accent-tint-4);
+    --accent-tint-5: var(--accent-tint-5);
+    --accent-tint-6: var(--accent-tint-6);
+    --accent-tint-7: var(--accent-tint-7);
+    --accent-tint-8: var(--accent-tint-8);
+
+    /* Quote-accent tints */
+    --quote-tint-1: var(--quote-tint-1);
+    --quote-tint-2: var(--quote-tint-2);
+    --quote-tint-3: var(--quote-tint-3);
+    --quote-tint-4: var(--quote-tint-4);
+    --quote-tint-5: var(--quote-tint-5);
+    --quote-tint-6: var(--quote-tint-6);
+    --quote-tint-7: var(--quote-tint-7);
+    --quote-tint-8: var(--quote-tint-8);
+    --quote-tint-9: var(--quote-tint-9);
+
+    /* Success tints */
+    --success-tint-1: var(--success-tint-1);
+    --success-tint-2: var(--success-tint-2);
+    --success-tint-3: var(--success-tint-3);
+    --success-tint-4: var(--success-tint-4);
+    --success-tint-5: var(--success-tint-5);
+    --success-tint-6: var(--success-tint-6);
+    --success-tint-7: var(--success-tint-7);
+    --success-tint-8: var(--success-tint-8);
+
+    /* Error tints */
+    --error-tint-1: var(--error-tint-1);
+    --error-tint-2: var(--error-tint-2);
+    --error-tint-3: var(--error-tint-3);
+
+    /* Muted/dim tints */
+    --muted-tint-1: var(--muted-tint-1);
+    --muted-tint-2: var(--muted-tint-2);
+    --dim-tint-1: var(--dim-tint-1);
+
+    /* Button text on accent — white in both themes */
+    --on-accent: #ffffff;
+
     --heading: 'Outfit', sans-serif;
     --body: 'Outfit', sans-serif;
     --mono: 'JetBrains Mono', monospace;
     --radius: 4px;
+  }
+
+  /* ── Light theme ── */
+  [data-theme="light"] {
+    --bg: #f6f7f9;
+    --bg-card: #ffffff;
+    --bg-elevated: #eef0f3;
+    --text: #14171c;
+    --text-dim: #555861;
+    --text-muted: #878a92;
+    --border: var(--shadow-soft);
+    --border-strong: rgba(0,0,0,0.16);
+    --accent: #d8401a;
+    --quote-accent: #a4641a;
+    --success: #5d6b3e;
+    --error: #c83434;
+
+    --overlay-1: rgba(0,0,0,0.02);
+    --overlay-2: rgba(0,0,0,0.03);
+    --overlay-3: rgba(0,0,0,0.04);
+    --overlay-4: rgba(0,0,0,0.06);
+    --overlay-5: var(--shadow-soft);
+    --overlay-6: rgba(0,0,0,0.1);
+    --overlay-7: rgba(0,0,0,0.14);
+
+    --shadow-soft: rgba(15,20,30,0.06);
+    --shadow-strong: rgba(15,20,30,0.1);
+    --shadow-xl: rgba(15,20,30,0.16);
+    --shadow-modal: rgba(15,20,30,0.35);
+    --shadow-approve: rgba(15,20,30,0.4);
+
+    --bg-translucent: rgba(255,255,255,0.85);
+    --bg-card-translucent: rgba(255,255,255,0.92);
+
+    --accent-tint-1: rgba(216,64,26,0.04);
+    --accent-tint-2: rgba(216,64,26,0.06);
+    --accent-tint-3: rgba(216,64,26,0.08);
+    --accent-tint-4: rgba(216,64,26,0.12);
+    --accent-tint-5: rgba(216,64,26,0.16);
+    --accent-tint-6: rgba(216,64,26,0.22);
+    --accent-tint-7: rgba(216,64,26,0.3);
+    --accent-tint-8: rgba(216,64,26,0.5);
+
+    --quote-tint-1: rgba(164,100,26,0.05);
+    --quote-tint-2: rgba(164,100,26,0.08);
+    --quote-tint-3: rgba(164,100,26,0.1);
+    --quote-tint-4: rgba(164,100,26,0.12);
+    --quote-tint-5: rgba(164,100,26,0.15);
+    --quote-tint-6: rgba(164,100,26,0.2);
+    --quote-tint-7: rgba(164,100,26,0.26);
+    --quote-tint-8: rgba(164,100,26,0.36);
+    --quote-tint-9: rgba(164,100,26,0.45);
+
+    --success-tint-1: rgba(93,107,62,0.06);
+    --success-tint-2: rgba(93,107,62,0.1);
+    --success-tint-3: rgba(93,107,62,0.14);
+    --success-tint-4: rgba(93,107,62,0.18);
+    --success-tint-5: rgba(93,107,62,0.24);
+    --success-tint-6: rgba(93,107,62,0.34);
+    --success-tint-7: rgba(93,107,62,0.4);
+    --success-tint-8: rgba(93,107,62,0.5);
+
+    --error-tint-1: rgba(200,52,52,0.08);
+    --error-tint-2: rgba(200,52,52,0.28);
+    --error-tint-3: rgba(200,52,52,0.34);
+
+    --muted-tint-1: rgba(0,0,0,0.04);
+    --muted-tint-2: rgba(0,0,0,0.06);
+    --dim-tint-1: rgba(0,0,0,0.05);
   }
 
   body {
@@ -54,7 +198,7 @@
   }
   .rec-btn:hover { border-color: var(--text-muted); }
   .rec-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--error); opacity: 0.4; }
-  .rec-btn.active { border-color: var(--error); background: rgba(255,95,95,0.06); }
+  .rec-btn.active { border-color: var(--error); background: var(--error-tint-1); }
   .rec-btn.active .rec-dot { opacity: 1; animation: pulse-dot 1.5s ease infinite; }
   @keyframes pulse-dot {
     0%,100% { opacity:1; transform:scale(1); }
@@ -69,7 +213,7 @@
     color: var(--text-muted); cursor: pointer; transition: all 0.15s;
   }
   .view-btn:hover { color: var(--text); border-color: var(--text-muted); }
-  .view-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(232,70,30,0.06); }
+  .view-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-tint-3); }
 
   .topbar-right { display: flex; align-items: center; gap: 10px; }
   .topbar-action {
@@ -80,7 +224,31 @@
     text-decoration: none;
   }
   .topbar-action:hover { color: var(--text); border-color: var(--text-muted); }
-  .topbar-action.danger:hover { color: var(--error); border-color: rgba(255,95,95,0.3); }
+  .topbar-action.danger:hover { color: var(--error); border-color: var(--error-tint-3); }
+  .topbar-action-test { border-color: var(--quote-tint-7); color: var(--quote-accent); }
+
+  .ab-home {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--heading); font-size: 11px; font-weight: 700;
+    color: var(--text); text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.2s; flex-shrink: 0; margin-right: 8px;
+  }
+  .ab-home:hover { border-color: var(--accent); color: var(--accent); }
+
+  .theme-toggle {
+    width: 30px; height: 30px; margin-left: 4px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius); border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--text-muted); }
+  .theme-toggle .theme-icon-sun { display: none; }
+  .theme-toggle .theme-icon-moon { display: block; }
+  [data-theme="light"] .theme-toggle .theme-icon-sun { display: block; }
+  [data-theme="light"] .theme-toggle .theme-icon-moon { display: none; }
 
   .processing-bar {
     flex-shrink: 0; height: 2px; background: var(--bg);
@@ -177,12 +345,12 @@
     display: none; position: absolute; right: 0; top: 3px;
     font-family: var(--mono); font-size: 8px; font-weight: 500;
     color: var(--accent); background: var(--bg-card);
-    border: 1px solid rgba(232,70,30,0.25); border-radius: var(--radius);
+    border: 1px solid var(--accent-tint-7); border-radius: var(--radius);
     padding: 2px 6px; cursor: pointer; transition: all 0.15s;
   }
   .t-chunk:hover .t-extract-btn { display: block; }
   .t-chunk.extracted:hover .t-extract-btn { display: none; }
-  .t-chunk .t-extract-btn:hover { background: rgba(232,70,30,0.08); border-color: var(--accent); }
+  .t-chunk .t-extract-btn:hover { background: var(--accent-tint-4); border-color: var(--accent); }
   .t-chunk .t-extracted-tag {
     display: none;
     font-family: var(--mono); font-size: 7px; color: var(--text-muted);
@@ -215,7 +383,7 @@
     background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.15s;
   }
   .tasks-mode-btn:hover { color: var(--text); border-color: var(--text-muted); }
-  .tasks-mode-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(232,70,30,0.06); }
+  .tasks-mode-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-tint-3); }
 
   /* ── Table view ── */
   .table-view { flex: 1; overflow-y: auto; display: none; }
@@ -250,12 +418,12 @@
     border-radius: var(--radius); font-family: var(--mono);
     font-size: 9px; font-weight: 600; text-transform: uppercase;
   }
-  .table-status[data-status="not-started"] { background: rgba(107,110,118,0.1); color: var(--text-muted); }
-  .table-status[data-status="ready"] { background: rgba(232,70,30,0.08); color: var(--accent); }
-  .table-status[data-status="in-progress"] { background: rgba(244,181,111,0.08); color: var(--quote-accent); }
-  .table-status[data-status="review"] { background: rgba(139,154,107,0.08); color: var(--success); }
-  .table-status[data-status="done"] { background: rgba(139,154,107,0.12); color: var(--success); }
-  .table-status[data-status="archive"] { background: rgba(107,110,118,0.06); color: var(--text-muted); }
+  .table-status[data-status="not-started"] { background: var(--muted-tint-2); color: var(--text-muted); }
+  .table-status[data-status="ready"] { background: var(--accent-tint-4); color: var(--accent); }
+  .table-status[data-status="in-progress"] { background: var(--quote-tint-3); color: var(--quote-accent); }
+  .table-status[data-status="review"] { background: var(--success-tint-2); color: var(--success); }
+  .table-status[data-status="done"] { background: var(--success-tint-3); color: var(--success); }
+  .table-status[data-status="archive"] { background: var(--muted-tint-1); color: var(--text-muted); }
   .kanban-board {
     flex: 1; display: grid;
     grid-template-columns: repeat(4, 1fr) 48px;
@@ -282,8 +450,8 @@
   .kb-col-body::-webkit-scrollbar { width: 3px; }
   .kb-col-body::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 2px; }
   .kb-col-body.drag-over {
-    background: rgba(232,70,30,0.02);
-    outline: 1px dashed rgba(232,70,30,0.12);
+    background: var(--accent-tint-1);
+    outline: 1px dashed var(--accent-tint-5);
     outline-offset: -3px; border-radius: var(--radius);
   }
 
@@ -314,9 +482,9 @@
     animation: card-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .kb-card:hover {
-    border-color: rgba(255,255,255,0.08);
+    border-color: var(--overlay-5);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px var(--shadow-soft);
   }
   .kb-card.dragging { opacity: 0.4; transform: scale(0.96); }
   @keyframes card-in {
@@ -339,7 +507,7 @@
 
   .kb-card-variations-badge {
     position: absolute; top: 6px; right: 6px;
-    background: rgba(12,14,18,0.85); border: 1px solid var(--border);
+    background: var(--bg-translucent); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 2px 6px;
     font-family: var(--mono); font-size: 8px; color: var(--quote-accent);
     backdrop-filter: blur(4px);
@@ -361,24 +529,24 @@
   .kb-card-time { font-family: var(--mono); font-size: 8px; color: var(--text-muted); }
   .kb-card-type {
     font-family: var(--mono); font-size: 8px; color: var(--accent);
-    background: rgba(232,70,30,0.06); padding: 1px 5px; border-radius: var(--radius);
+    background: var(--accent-tint-3); padding: 1px 5px; border-radius: var(--radius);
   }
 
   .kb-card-new-pattern {
     font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--quote-accent); padding: 3px 8px; border-radius: 2px;
-    background: rgba(244,181,111,0.08); border: 1px solid rgba(244,181,111,0.2);
+    background: var(--quote-tint-3); border: 1px solid var(--quote-tint-7);
   }
 
   /* Done column approve button */
   .kb-card-approve {
     display: block; width: 100%; padding: 4px 0; margin-top: 4px;
-    border-radius: var(--radius); border: 1px solid rgba(139,154,107,0.2);
-    background: rgba(139,154,107,0.06); color: var(--success);
+    border-radius: var(--radius); border: 1px solid var(--success-tint-5);
+    background: var(--success-tint-1); color: var(--success);
     font-family: var(--heading); font-size: 9px; font-weight: 600;
     cursor: pointer; transition: all 0.15s; text-align: center;
   }
-  .kb-card-approve:hover { background: rgba(139,154,107,0.12); border-color: rgba(139,154,107,0.35); }
+  .kb-card-approve:hover { background: var(--success-tint-3); border-color: var(--success-tint-7); }
 
   /* ── Page view ── */
   .page-view {
@@ -472,7 +640,7 @@
     padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px;
     cursor: pointer; transition: background 0.15s;
   }
-  .finding-header:hover { background: rgba(255,255,255,0.015); }
+  .finding-header:hover { background: var(--overlay-1); }
   .finding-num {
     font-family: var(--mono); font-size: 9px; color: var(--text-muted);
     letter-spacing: 0.1em; padding-top: 3px; flex-shrink: 0; width: 24px;
@@ -489,10 +657,10 @@
     text-transform: uppercase; padding: 2px 8px; border-radius: var(--radius);
     flex-shrink: 0; margin-top: 2px;
   }
-  .finding-tag.extraction { background: rgba(244,181,111,0.08); color: var(--quote-accent); }
-  .finding-tag.generation { background: rgba(232,70,30,0.08); color: var(--accent); }
-  .finding-tag.rendering { background: rgba(139,154,107,0.08); color: var(--success); }
-  .finding-tag.layout { background: rgba(154,156,162,0.08); color: var(--text-dim); }
+  .finding-tag.extraction { background: var(--quote-tint-3); color: var(--quote-accent); }
+  .finding-tag.generation { background: var(--accent-tint-4); color: var(--accent); }
+  .finding-tag.rendering { background: var(--success-tint-2); color: var(--success); }
+  .finding-tag.layout { background: var(--dim-tint-1); color: var(--text-dim); }
   .finding-detail {
     display: none; padding: 0 20px 16px 56px;
     border-top: 1px solid var(--border);
@@ -566,13 +734,13 @@
   .hv-mic { padding: 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
   .hv-mic-icon {
     width: 32px; height: 32px; border-radius: var(--radius);
-    background: rgba(244,181,111,0.08); border: 1px solid rgba(244,181,111,0.2);
+    background: var(--quote-tint-3); border: 1px solid var(--quote-tint-7);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .hv-mic-icon svg { width: 14px; height: 14px; color: var(--quote-accent); }
   .hv-wave { flex: 1; display: flex; align-items: center; gap: 2px; height: 22px; }
   .hv-wave span {
-    flex: 1; background: rgba(244,181,111,0.4); border-radius: 1px;
+    flex: 1; background: var(--quote-tint-9); border-radius: 1px;
     animation: hv-w 1.2s ease-in-out infinite;
   }
   @keyframes hv-w { 0%,100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
@@ -599,7 +767,7 @@
   .hv-ex-in .lbl { color: var(--text-muted); }
   .hv-ex-out .lbl { color: var(--success); }
   .hv-ex-text { font-size: 10px; font-weight: 300; font-style: italic; color: var(--text-dim); line-height: 1.4; }
-  .hv-ex-text mark { background: rgba(244,181,111,0.12); color: var(--quote-accent); border-radius: 2px; padding: 0 2px; }
+  .hv-ex-text mark { background: var(--quote-tint-5); color: var(--quote-accent); border-radius: 2px; padding: 0 2px; }
   .hv-ex-arrow { display: flex; justify-content: center; color: var(--text-muted); }
   .hv-ex-arrow svg { width: 12px; height: 12px; }
   .hv-ex-out { padding: 12px; display: flex; flex-direction: column; gap: 4px; }
@@ -607,7 +775,7 @@
     background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 8px;
   }
   .hv-idea-t { font-size: 9px; font-weight: 600; margin-bottom: 1px; }
-  .hv-idea-tag { font-family: var(--mono); font-size: 7px; color: var(--quote-accent); background: rgba(244,181,111,0.08); padding: 1px 4px; border-radius: 2px; }
+  .hv-idea-tag { font-family: var(--mono); font-size: 7px; color: var(--quote-accent); background: var(--quote-tint-3); padding: 1px 4px; border-radius: 2px; }
 
   .hv-token-lbl {
     padding: 8px 12px; border-bottom: 1px solid var(--border);
@@ -618,7 +786,7 @@
   .hv-token-lbl::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--success); }
   .hv-token-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); }
   .hv-token-cell { background: var(--bg-card); padding: 7px 8px; display: flex; align-items: center; gap: 6px; }
-  .hv-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.06); }
+  .hv-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; border: 1px solid var(--border); }
   .hv-tn { font-family: var(--mono); font-size: 8px; color: var(--text-dim); }
 
   .hv-render-bar {
@@ -630,14 +798,14 @@
   .hv-hero-ey { font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--quote-accent); margin-bottom: 8px; }
   .hv-hero-h { font-family: var(--heading); font-size: 20px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 8px; }
   .hv-hero-s { font-weight: 300; font-size: 10px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
-  .hv-hero-cta { display: inline-block; background: var(--accent); color: #fff; font-size: 9px; font-weight: 600; padding: 6px 14px; border-radius: var(--radius); }
+  .hv-hero-cta { display: inline-block; background: var(--accent); color: var(--on-accent); font-size: 9px; font-weight: 600; padding: 6px 14px; border-radius: var(--radius); }
 
   .hv-var-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
   .hv-var-cell {
     background: var(--bg); padding: 12px 10px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 6px;
   }
-  .hv-var-cell.selected { background: rgba(244,181,111,0.04); }
+  .hv-var-cell.selected { background: var(--quote-tint-1); }
   .hv-var-thumb {
     width: 100%; aspect-ratio: 16/10; background: var(--bg-elevated);
     border-radius: 2px; display: flex; flex-direction: column; justify-content: center;
@@ -646,7 +814,7 @@
   .hv-var-thumb .b { height: 3px; border-radius: 1px; width: 60%; }
   .hv-var-lbl { font-family: var(--mono); font-size: 7px; color: var(--text-muted); }
   .hv-var-cell.selected .hv-var-lbl { color: var(--quote-accent); }
-  .hv-var-cell.selected .hv-var-thumb { border: 1px solid rgba(244,181,111,0.3); }
+  .hv-var-cell.selected .hv-var-thumb { border: 1px solid var(--quote-tint-8); }
   .hv-var-pick { font-family: var(--mono); font-size: 7px; color: var(--text-muted); padding: 8px 12px; text-align: center; }
 
   .hv-refine-bar {
@@ -659,7 +827,7 @@
     font-size: 10px; color: var(--text-dim); font-style: italic;
   }
   .hv-refine-btn {
-    background: var(--accent); color: #fff; font-size: 9px; font-weight: 600;
+    background: var(--accent); color: var(--on-accent); font-size: 9px; font-weight: 600;
     padding: 6px 12px; border-radius: var(--radius);
   }
 
@@ -707,7 +875,7 @@
   .how-text strong { color: var(--text); font-weight: 500; }
   .how-insight {
     border-left: 2px solid var(--quote-accent); padding: 14px 18px;
-    background: rgba(244,181,111,0.04); border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--quote-tint-1); border-radius: 0 var(--radius) var(--radius) 0;
     max-width: 600px;
   }
   .how-insight-lbl {
@@ -719,7 +887,7 @@
   .how-spacer { height: 40px; }
 
   .how-view [data-component] { position: relative; transition: outline 0.15s; }
-  .how-view [data-component]:hover { outline: 1px dashed rgba(232,70,30,0.5); outline-offset: 4px; }
+  .how-view [data-component]:hover { outline: 1px dashed var(--accent-tint-8); outline-offset: 4px; }
 
   /* ── Token Editor Panel ── */
   .token-editor {
@@ -727,7 +895,7 @@
     background: var(--bg-card); border-left: 1px solid var(--border);
     z-index: 400; display: flex; flex-direction: column;
     transition: right 0.25s cubic-bezier(0.4,0,0.2,1);
-    box-shadow: -8px 0 32px rgba(0,0,0,0.3);
+    box-shadow: -8px 0 32px var(--shadow-strong);
   }
   .token-editor.open { right: 0; }
   .token-editor-head {
@@ -769,7 +937,7 @@
     transition: all 0.15s;
   }
   .te-option:hover { border-color: var(--text-muted); color: var(--text); }
-  .te-option.active { border-color: var(--accent); color: var(--accent); background: rgba(232,70,30,0.06); }
+  .te-option.active { border-color: var(--accent); color: var(--accent); background: var(--accent-tint-3); }
 
   /* Icon picker grid */
   .te-icon-tabs {
@@ -782,7 +950,7 @@
     transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.04em;
   }
   .te-icon-tab:hover { color: var(--text); border-color: var(--text-muted); }
-  .te-icon-tab.active { color: var(--accent); border-color: var(--accent); background: rgba(232,70,30,0.06); }
+  .te-icon-tab.active { color: var(--accent); border-color: var(--accent); background: var(--accent-tint-3); }
   .te-icon-grid {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px;
   }
@@ -794,7 +962,7 @@
   }
   .te-icon-pick svg { width: 16px; height: 16px; }
   .te-icon-pick:hover { border-color: var(--text-muted); color: var(--text); background: var(--bg-elevated); }
-  .te-icon-pick.active { border-color: var(--accent); color: var(--accent); background: rgba(232,70,30,0.06); }
+  .te-icon-pick.active { border-color: var(--accent); color: var(--accent); background: var(--accent-tint-3); }
 
   /* Button style picker */
   .te-btn-style-grid {
@@ -866,12 +1034,12 @@
     flex-shrink: 0;
   }
   .te-child-level.atom {
-    background: rgba(232,70,30,0.08); color: var(--accent);
-    border: 1px solid rgba(232,70,30,0.15);
+    background: var(--accent-tint-4); color: var(--accent);
+    border: 1px solid var(--accent-tint-6);
   }
   .te-child-level.composite {
-    background: rgba(244,181,111,0.08); color: var(--quote-accent);
-    border: 1px solid rgba(244,181,111,0.15);
+    background: var(--quote-tint-3); color: var(--quote-accent);
+    border: 1px solid var(--quote-tint-6);
   }
   .te-child-info { flex: 1; min-width: 0; }
   .te-child-name {
@@ -904,7 +1072,7 @@
   }
   .te-scale-btn:last-child { border-bottom: none; }
   .te-scale-btn:hover { background: var(--bg-elevated); }
-  .te-scale-btn.active { background: rgba(232,70,30,0.06); }
+  .te-scale-btn.active { background: var(--accent-tint-3); }
   .te-scale-btn.active .te-scale-meta { color: var(--accent); }
   .te-scale-name {
     color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -934,7 +1102,7 @@
   }
   .te-btn-apply {
     flex: 1; padding: 8px 0; border-radius: var(--radius); border: none;
-    background: var(--accent); color: #fff; cursor: pointer;
+    background: var(--accent); color: var(--on-accent); cursor: pointer;
     font-family: var(--heading); font-size: 12px; font-weight: 600;
     transition: opacity 0.15s;
   }
@@ -977,7 +1145,7 @@
     align-items: center; justify-content: center; flex-shrink: 0;
     font-family: var(--mono); font-size: 10px; font-weight: 600;
     background: var(--bg-elevated); color: var(--quote-accent);
-    border: 1px solid rgba(244,181,111,0.2);
+    border: 1px solid var(--quote-tint-7);
   }
   .te-saved-preview {
     flex: 1; line-height: 1.2; overflow: hidden; text-overflow: ellipsis;
@@ -993,7 +1161,7 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 14px; line-height: 1; transition: all 0.15s;
   }
-  .te-saved-remove:hover { color: var(--accent); background: rgba(232,70,30,0.08); }
+  .te-saved-remove:hover { color: var(--accent); background: var(--accent-tint-4); }
 
   /* ── Token Editor: Compare View (Step 2) ── */
   .te-compare-list {
@@ -1006,7 +1174,7 @@
   .te-compare-card:hover { border-color: var(--text-muted); }
   .te-compare-card.previewing {
     border-color: var(--quote-accent);
-    box-shadow: 0 0 0 1px rgba(244,181,111,0.15), 0 4px 16px rgba(0,0,0,0.3);
+    box-shadow: 0 0 0 1px var(--quote-tint-6), 0 4px 16px var(--shadow-strong);
   }
   .te-compare-card-head {
     display: flex; align-items: center; justify-content: space-between;
@@ -1036,7 +1204,7 @@
   }
   .te-compare-card-meta span { white-space: nowrap; }
   .te-compare-original {
-    border-style: dashed; border-color: rgba(255,255,255,0.1);
+    border-style: dashed; border-color: var(--overlay-6);
   }
   .te-compare-original .te-compare-card-head { background: transparent; }
   .te-compare-original .te-compare-card-num { color: var(--text-muted); }
@@ -1052,7 +1220,7 @@
   .te-btn-compare:disabled { opacity: 0.3; cursor: default; }
   .te-btn-save {
     flex: 1; padding: 8px 0; border-radius: var(--radius); border: none;
-    background: var(--accent); color: #fff; cursor: pointer;
+    background: var(--accent); color: var(--on-accent); cursor: pointer;
     font-family: var(--heading); font-size: 12px; font-weight: 600;
     transition: opacity 0.15s;
   }
@@ -1068,7 +1236,7 @@
   .te-btn-back:hover { color: var(--text); border-color: var(--text-muted); }
   .te-btn-use {
     flex: 1; padding: 8px 0; border-radius: var(--radius); border: none;
-    background: var(--accent); color: #fff; cursor: pointer;
+    background: var(--accent); color: var(--on-accent); cursor: pointer;
     font-family: var(--heading); font-size: 12px; font-weight: 600;
     transition: opacity 0.15s;
   }
@@ -1081,7 +1249,7 @@
     z-index: 500; display: flex; align-items: center; gap: 10px;
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 20px; padding: 8px 16px 8px 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+    box-shadow: 0 8px 32px var(--shadow-xl), 0 0 0 1px var(--overlay-3);
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s, transform 0.25s;
     transform: translateX(-50%) translateY(8px);
@@ -1112,7 +1280,7 @@
 
   /* ── Preview modal ── */
   .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    position: fixed; inset: 0; background: var(--shadow-modal);
     z-index: 500; display: none; align-items: center; justify-content: center;
     backdrop-filter: blur(4px);
   }
@@ -1137,7 +1305,7 @@
   .modal-title { font-family: var(--heading); font-size: 14px; font-weight: 600; }
   .modal-var-badge {
     font-family: var(--mono); font-size: 9px; color: var(--quote-accent);
-    background: rgba(244,181,111,0.08); padding: 3px 8px; border-radius: var(--radius);
+    background: var(--quote-tint-3); padding: 3px 8px; border-radius: var(--radius);
   }
   .modal-close {
     font-family: var(--heading); font-size: 11px; font-weight: 600;
@@ -1158,33 +1326,33 @@
     white-space: nowrap;
   }
   .modal-move-btn:hover { color: var(--text); border-color: var(--text-muted); }
-  .modal-move-btn.move-ready { color: var(--accent); border-color: rgba(232,70,30,0.25); }
-  .modal-move-btn.move-ready:hover { border-color: var(--accent); background: rgba(232,70,30,0.06); }
+  .modal-move-btn.move-ready { color: var(--accent); border-color: var(--accent-tint-7); }
+  .modal-move-btn.move-ready:hover { border-color: var(--accent); background: var(--accent-tint-3); }
   .modal-move-btn.move-archive { color: var(--text-muted); }
-  .modal-move-btn.move-archive:hover { color: var(--error); border-color: rgba(255,95,95,0.25); }
+  .modal-move-btn.move-archive:hover { color: var(--error); border-color: var(--error-tint-2); }
   .modal-nav-arrow {
     position: fixed; top: 50%; z-index: 510;
     width: 40px; height: 40px; border-radius: var(--radius);
-    background: rgba(12,14,18,0.85); border: 1px solid var(--border);
+    background: var(--bg-translucent); border: 1px solid var(--border);
     color: var(--text-muted); cursor: pointer;
     display: none; align-items: center; justify-content: center;
     transition: all 0.15s; backdrop-filter: blur(4px);
     transform: translateY(-50%);
   }
   .modal-overlay.open .modal-nav-arrow { display: flex; }
-  .modal-nav-arrow:hover { color: var(--text); border-color: var(--text-muted); background: rgba(26,29,36,0.9); }
+  .modal-nav-arrow:hover { color: var(--text); border-color: var(--text-muted); background: var(--bg-card-translucent); }
   .modal-nav-arrow svg { width: 16px; height: 16px; }
   .modal-nav-arrow.prev { left: 16px; }
   .modal-nav-arrow.next { right: 16px; }
   .modal-context-banner {
     flex-shrink: 0; padding: 10px 20px;
-    background: rgba(244,181,111,0.06); border-bottom: 1px solid rgba(244,181,111,0.12);
+    background: var(--quote-tint-2); border-bottom: 1px solid var(--quote-tint-5);
     display: none; align-items: center; gap: 10px;
   }
   .modal-context-banner.visible { display: flex; }
   .modal-context-banner .mcb-icon {
     width: 18px; height: 18px; flex-shrink: 0;
-    border-radius: 50%; background: rgba(244,181,111,0.12);
+    border-radius: 50%; background: var(--quote-tint-5);
     display: flex; align-items: center; justify-content: center;
   }
   .modal-context-banner .mcb-icon svg { width: 10px; height: 10px; stroke: var(--quote-accent); fill: none; stroke-width: 2; }
@@ -1195,7 +1363,7 @@
   .modal-context-banner .mcb-tag {
     font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em;
     text-transform: uppercase; padding: 2px 6px; border-radius: var(--radius);
-    background: rgba(244,181,111,0.1); color: var(--quote-accent); flex-shrink: 0;
+    background: var(--quote-tint-4); color: var(--quote-accent); flex-shrink: 0;
   }
 
   /* Modal content area: iframe left, sidebar right */
@@ -1239,7 +1407,7 @@
     border: 1px dashed var(--border); background: transparent;
     color: var(--text-muted); cursor: pointer; transition: all 0.15s;
   }
-  .sidebar-add-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(232,70,30,0.04); }
+  .sidebar-add-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-tint-2); }
   .modal-iframe { width: 100%; height: 100%; border: none; background: var(--bg); }
   .modal-foot {
     flex-shrink: 0; padding: 12px 20px;
@@ -1255,7 +1423,7 @@
   }
   .modal-foot-type {
     font-family: var(--mono); font-size: 9px; color: var(--accent);
-    background: rgba(232,70,30,0.06); padding: 3px 8px; border-radius: var(--radius);
+    background: var(--accent-tint-3); padding: 3px 8px; border-radius: var(--radius);
   }
   .refine-row { display: flex; gap: 8px; width: 100%; }
   .refine-input {
@@ -1278,7 +1446,7 @@
 
   /* ── Approve preview modal ── */
   .approve-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    position: fixed; inset: 0; background: var(--shadow-approve);
     z-index: 510; display: none; align-items: center; justify-content: center;
     backdrop-filter: blur(4px);
   }
@@ -1299,7 +1467,7 @@
   .approve-head-title { font-family: var(--heading); font-size: 14px; font-weight: 600; }
   .approve-head-component {
     font-family: var(--mono); font-size: 10px; color: var(--accent);
-    background: rgba(232,70,30,0.06); padding: 3px 8px; border-radius: var(--radius);
+    background: var(--accent-tint-3); padding: 3px 8px; border-radius: var(--radius);
   }
   .approve-head-btns { display: flex; gap: 8px; }
   .approve-cancel {
@@ -1312,10 +1480,10 @@
   .approve-confirm {
     font-family: var(--heading); font-size: 11px; font-weight: 600;
     padding: 6px 14px; border-radius: var(--radius);
-    border: 1px solid rgba(139,154,107,0.3); background: rgba(139,154,107,0.08);
+    border: 1px solid var(--success-tint-6); background: var(--success-tint-2);
     color: var(--success); cursor: pointer; transition: all 0.15s;
   }
-  .approve-confirm:hover { background: rgba(139,154,107,0.15); border-color: rgba(139,154,107,0.45); }
+  .approve-confirm:hover { background: var(--success-tint-4); border-color: var(--success-tint-8); }
 
   .approve-body {
     flex: 1; display: grid; grid-template-columns: 1fr 1fr;
@@ -1361,7 +1529,7 @@
 
 <div class="topbar">
   <div class="topbar-left">
-    <a href="index.html" class="ab-home" style="width:28px;height:28px;border:1px solid rgba(255,255,255,0.06);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-size:11px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;flex-shrink:0;margin-right:8px" onmouseover="this.style.borderColor='#e8461e';this.style.color='#e8461e'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.color='#fff'">AB</a>
+    <a href="index.html" class="ab-home">AB</a>
     <div class="app-name">Design <span>Capture</span></div>
   </div>
   <div class="topbar-center">
@@ -1372,10 +1540,13 @@
     <button class="view-btn" id="btnFindings" onclick="switchView('findings')">Findings</button>
   </div>
   <div class="topbar-right">
-    <button class="topbar-action" onclick="loadDemo()" style="border-color:rgba(139,154,107,0.2);color:var(--success)">Load Demo</button>
-    <button class="topbar-action" onclick="openTestHarness()" style="border-color:rgba(244,181,111,0.2);color:var(--quote-accent)">Test</button>
+    <button class="topbar-action topbar-action-test" onclick="openTestHarness()">Test</button>
     <button class="topbar-action" onclick="exportSession()">Export Session</button>
     <button class="topbar-action danger" onclick="clearSession()">Clear</button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle light/dark mode">
+      <svg class="theme-icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <svg class="theme-icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
   </div>
 </div>
 
@@ -1600,11 +1771,11 @@
             </div>
             <div class="hv-kb-col">
               <div class="hv-kb-col-h"><div class="hv-kb-dot" style="background:var(--quote-accent)"></div><span class="hv-kb-cn">In Progress</span></div>
-              <div class="hv-kb-cards"><div class="hv-kb-c" style="border-color:rgba(244,181,111,0.2)">Hero</div></div>
+              <div class="hv-kb-cards"><div class="hv-kb-c" style="border-color:var(--quote-tint-7)">Hero</div></div>
             </div>
             <div class="hv-kb-col">
               <div class="hv-kb-col-h"><div class="hv-kb-dot" style="background:var(--success)"></div><span class="hv-kb-cn">Review</span></div>
-              <div class="hv-kb-cards"><div class="hv-kb-c" style="border-color:rgba(74,223,138,0.2)">Nav</div></div>
+              <div class="hv-kb-cards"><div class="hv-kb-c" style="border-color:var(--success-tint-5)">Nav</div></div>
             </div>
             <div class="hv-kb-col">
               <div class="hv-kb-col-h"><div class="hv-kb-dot" style="background:var(--success)"></div><span class="hv-kb-cn">Done</span></div>
@@ -1642,7 +1813,7 @@
 
   <!-- Design System view -->
   <div class="ds-view" id="dsView">
-    <iframe id="dsIframe" class="ds-iframe" src="/design-system/" loading="lazy"></iframe>
+    <iframe id="dsIframe" class="ds-iframe" src="design-system/index.html" loading="lazy"></iframe>
   </div>
 
   <!-- Findings view -->
@@ -1899,15 +2070,15 @@
 <!-- DS element confirmation -->
 <div class="approve-overlay" id="dsConfirmOverlay" onclick="cancelDsConfirm()" style="z-index:520">
   <div onclick="event.stopPropagation()" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:32px;max-width:420px;width:90vw;text-align:center;animation:modal-in 0.3s cubic-bezier(0.16,1,0.3,1)">
-    <div style="width:48px;height:48px;border-radius:50%;background:rgba(244,181,111,0.1);border:1px solid rgba(244,181,111,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+    <div style="width:48px;height:48px;border-radius:50%;background:var(--quote-tint-4);border:1px solid var(--quote-tint-7);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--quote-accent)" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
     </div>
     <div style="font-family:var(--heading);font-size:16px;font-weight:600;margin-bottom:8px">New Design System Element</div>
     <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:6px">This introduces a new element to the design system:</div>
-    <div id="dsConfirmName" style="font-family:var(--mono);font-size:14px;color:var(--quote-accent);padding:8px 16px;background:rgba(244,181,111,0.06);border:1px solid rgba(244,181,111,0.15);border-radius:var(--radius);display:inline-block;margin-bottom:20px">Badge</div>
+    <div id="dsConfirmName" style="font-family:var(--mono);font-size:14px;color:var(--quote-accent);padding:8px 16px;background:var(--quote-tint-2);border:1px solid var(--quote-tint-6);border-radius:var(--radius);display:inline-block;margin-bottom:20px">Badge</div>
     <div style="display:flex;gap:8px;justify-content:center">
       <button onclick="cancelDsConfirm()" style="padding:8px 20px;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-muted);font-family:var(--heading);font-size:12px;font-weight:600;cursor:pointer">Cancel</button>
-      <button onclick="confirmDsAdd()" style="padding:8px 20px;border-radius:var(--radius);border:1px solid rgba(139,154,107,0.3);background:rgba(139,154,107,0.06);color:var(--success);font-family:var(--heading);font-size:12px;font-weight:600;cursor:pointer">Add to Design System</button>
+      <button onclick="confirmDsAdd()" style="padding:8px 20px;border-radius:var(--radius);border:1px solid var(--success-tint-6);background:var(--success-tint-1);color:var(--success);font-family:var(--heading);font-size:12px;font-weight:600;cursor:pointer">Add to Design System</button>
     </div>
   </div>
 </div>
@@ -1922,7 +2093,7 @@
   </div>
   <div style="display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid var(--border)">
     <button onclick="teEditText()" style="flex:1;padding:5px 0;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:var(--heading);font-size:10px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--text-muted)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='';this.style.color='var(--text-dim)'">Edit Text</button>
-    <button onclick="teDeleteEl()" style="flex:1;padding:5px 0;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:var(--heading);font-size:10px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(255,95,95,0.3)';this.style.color='var(--error)'" onmouseout="this.style.borderColor='';this.style.color='var(--text-dim)'">Delete</button>
+    <button onclick="teDeleteEl()" style="flex:1;padding:5px 0;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:var(--heading);font-size:10px;font-weight:600;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--error-tint-3)';this.style.color='var(--error)'" onmouseout="this.style.borderColor='';this.style.color='var(--text-dim)'">Delete</button>
   </div>
   <div class="te-steps">
     <button class="te-step-tab active" id="teStepCreate" onclick="teGoToStep('create')">1 · Create</button>
@@ -2423,11 +2594,18 @@ let currentModalCardId = null;
 let transcriptChunks = []; // {time, text} for persistence
 let autoProcessInterval = null;
 
-// ── API Key (hidden but still functional) ──
-let currentApiKey = localStorage.getItem('dc_api_key') || localStorage.getItem('anthropic_api_key') || '';
+// ── Access passphrase ──
+// Claude is called through /api/design-capture (key lives in a Vercel env var,
+// never in the browser). This holds the shared passphrase the proxy checks.
+// `currentApiKey` keeps its name so the existing `if (!currentApiKey)` guards
+// throughout the file still work — it just holds a passphrase now.
+let currentApiKey = localStorage.getItem('dc_pass') || '';
+// Drop any stale Anthropic key left over from the old direct-to-API flow.
+localStorage.removeItem('dc_api_key');
+localStorage.removeItem('anthropic_api_key');
 if (!currentApiKey) {
-  const key = prompt('Enter your Anthropic API key (saved to localStorage):');
-  if (key) { currentApiKey = key.trim(); localStorage.setItem('dc_api_key', currentApiKey); }
+  const pass = prompt('Enter the design-capture passphrase (saved to this browser):');
+  if (pass) { currentApiKey = pass.trim(); localStorage.setItem('dc_pass', currentApiKey); }
 }
 
 // ── Persistence ──
@@ -2511,6 +2689,26 @@ function exportSession() {
   URL.revokeObjectURL(url);
   showToast('Session exported');
 }
+
+// ── Theme ──
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('dc_theme', next); } catch(e) {}
+  syncIframeTheme(next);
+}
+function syncIframeTheme(theme) {
+  const t = theme || document.documentElement.getAttribute('data-theme') || 'dark';
+  const ds = document.getElementById('dsIframe');
+  if (ds && ds.contentWindow) {
+    try { ds.contentWindow.postMessage({ type: 'dc-theme', theme: t }, '*'); } catch(e) {}
+  }
+}
+window.addEventListener('DOMContentLoaded', () => {
+  const ds = document.getElementById('dsIframe');
+  if (ds) ds.addEventListener('load', () => syncIframeTheme());
+});
 
 // ── Views ──
 function switchView(view) {
@@ -2854,8 +3052,8 @@ function approveCard(cardId) {
   changesEl.innerHTML = `<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase">Changes:</span>` +
     changes.map(c => {
       const colors = { add: 'var(--success)', ds: 'var(--quote-accent)', element: 'var(--text-dim)' };
-      const bgs = { add: 'rgba(139,154,107,0.06)', ds: 'rgba(244,181,111,0.06)', element: 'rgba(255,255,255,0.03)' };
-      const borders = { add: 'rgba(139,154,107,0.2)', ds: 'rgba(244,181,111,0.15)', element: 'var(--border)' };
+      const bgs = { add: 'var(--success-tint-1)', ds: 'var(--quote-tint-2)', element: 'var(--overlay-2)' };
+      const borders = { add: 'var(--success-tint-5)', ds: 'var(--quote-tint-6)', element: 'var(--border)' };
       return `<span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:var(--radius);color:${colors[c.type]};background:${bgs[c.type]};border:1px solid ${borders[c.type]}">${esc(c.label)}</span>`;
     }).join('');
 
@@ -2891,7 +3089,7 @@ function confirmApprove() {
     // Add undo button
     const undoBtn = document.createElement('button');
     undoBtn.className = 'kb-card-approve kb-card-undo';
-    undoBtn.style.cssText = 'border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text-muted)';
+    undoBtn.style.cssText = 'border-color:var(--overlay-6);background:var(--overlay-2);color:var(--text-muted)';
     undoBtn.innerHTML = 'Undo';
     undoBtn.onclick = (e) => { e.stopPropagation(); undoApprove(pendingApproveCardId); };
     el.querySelector('.kb-card-body').appendChild(undoBtn);
@@ -3049,7 +3247,7 @@ function updateInterim(text) {
 
 // ── Process ──
 async function processBuffer() {
-  if (!currentApiKey) { showToast('No API key set'); return; }
+  if (!currentApiKey) { showToast('No passphrase set'); return; }
   if (isProcessing || transcriptBuffer.trim() === lastSentBuffer.trim()) return;
   isProcessing = true;
   document.getElementById('processingBar').classList.add('active');
@@ -3164,7 +3362,7 @@ async function processBuffer() {
 
 // ── Manual extract from transcript chunk ──
 async function extractChunk(chunkIdx) {
-  if (!currentApiKey) { showToast('No API key set'); return; }
+  if (!currentApiKey) { showToast('No passphrase set'); return; }
   const chunk = transcriptChunks[chunkIdx];
   if (!chunk) return;
   const el = document.querySelector(`[data-chunk-idx="${chunkIdx}"]`);
@@ -3256,14 +3454,19 @@ function levenshteinSimilar(a, b) {
 }
 
 async function callClaude(system, user) {
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST', headers: {
-      'Content-Type':'application/json', 'x-api-key':currentApiKey,
-      'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:4096, system, messages:[{role:'user',content:user}] })
+  const r = await fetch('/api/design-capture', {
+    method:'POST', headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({ system, user, passphrase: currentApiKey })
   });
-  if (!r.ok) throw new Error(`API ${r.status}`);
+  if (!r.ok) {
+    const body = await r.text().catch(()=>'');
+    if (r.status === 401) {
+      localStorage.removeItem('dc_pass'); currentApiKey = '';
+      throw new Error('Wrong passphrase — reload the page to re-enter it.');
+    }
+    console.error('[callClaude] API error', r.status, body);
+    throw new Error(`API ${r.status}: ${body.slice(0,200)}`);
+  }
   let text = (await r.json()).content[0].text;
   // Strip markdown code fences if Sonnet wraps the response
   text = text.replace(/^```(?:html|json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
@@ -3329,7 +3532,7 @@ function renderCard(card, isRestore) {
         <span class="kb-card-type">${esc(card.componentType)}</span>
       </div>
       ${inReview ? `<button class="kb-card-approve" onclick="event.stopPropagation();approveCard('${card.id}')">Approve &amp; Add to Page</button>` : ''}
-      ${card.column === 'not-started' ? `<button class="kb-card-approve kb-card-start" style="border-color:rgba(244,181,111,0.2);background:rgba(244,181,111,0.06);color:var(--quote-accent)" onclick="event.stopPropagation();startAgent('${card.id}')">Update</button>` : ''}
+      ${card.column === 'not-started' ? `<button class="kb-card-approve kb-card-start" style="border-color:var(--quote-tint-7);background:var(--quote-tint-2);color:var(--quote-accent)" onclick="event.stopPropagation();startAgent('${card.id}')">Update</button>` : ''}
     </div>`;
   el.addEventListener('dragstart', e => { draggedCardId = card.id; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
   el.addEventListener('dragend', () => { el.classList.remove('dragging'); draggedCardId = null; document.querySelectorAll('.kb-col-body').forEach(c => c.classList.remove('drag-over')); });
@@ -3366,7 +3569,7 @@ function onCardMoved(cardId, toCol) {
   if (toCol === 'done') {
     const undoBtn = document.createElement('button');
     undoBtn.className = 'kb-card-approve kb-card-undo';
-    undoBtn.style.cssText = 'border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text-muted)';
+    undoBtn.style.cssText = 'border-color:var(--overlay-6);background:var(--overlay-2);color:var(--text-muted)';
     undoBtn.innerHTML = 'Undo';
     undoBtn.onclick = (e) => { e.stopPropagation(); undoApprove(cardId); };
     el.querySelector('.kb-card-body').appendChild(undoBtn);
@@ -3375,7 +3578,7 @@ function onCardMoved(cardId, toCol) {
     // Add "Start Agent" button
     const btn = document.createElement('button');
     btn.className = 'kb-card-approve kb-card-start';
-    btn.style.cssText = 'border-color:rgba(244,181,111,0.2);background:rgba(244,181,111,0.06);color:var(--quote-accent)';
+    btn.style.cssText = 'border-color:var(--quote-tint-7);background:var(--quote-tint-2);color:var(--quote-accent)';
     btn.innerHTML = 'Update';
     btn.onclick = (e) => { e.stopPropagation(); startAgent(cardId); };
     el.querySelector('.kb-card-body').appendChild(btn);
@@ -3603,7 +3806,7 @@ function genFloatUpdate() {
 }
 
 async function generateForCard(card) {
-  if (!currentApiKey) { showToast('No API key set'); return; }
+  if (!currentApiKey) { showToast('No passphrase set'); return; }
   const el = document.getElementById(card.id);
   document.getElementById('processingBar').classList.add('active');
   genQueue.push({ id: card.id, title: card.title });
@@ -4905,13 +5108,13 @@ function openTestHarness() {
   if (testPanel) { testPanel.remove(); testPanel = null; return; }
   testPanel = document.createElement('div');
   testPanel.id = 'testHarness';
-  testPanel.style.cssText = 'position:fixed;bottom:16px;right:16px;width:480px;max-height:70vh;background:#1a1d24;border:1px solid rgba(255,255,255,0.1);border-radius:8px;z-index:99999;overflow:hidden;display:flex;flex-direction:column;font-family:var(--body);box-shadow:0 24px 64px rgba(0,0,0,0.6);';
+  testPanel.style.cssText = 'position:fixed;bottom:16px;right:16px;width:480px;max-height:70vh;background:var(--bg-card);border:1px solid var(--border-strong);border-radius:8px;z-index:99999;overflow:hidden;display:flex;flex-direction:column;font-family:var(--body);box-shadow:0 24px 64px var(--shadow-modal);';
   testPanel.innerHTML = `
-    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:12px;font-weight:600;color:#fff">Test Harness</span>
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">Test Harness</span>
       <div style="display:flex;gap:6px">
-        <button id="testRunAllBtn" onclick="runAllTests()" style="font-family:var(--mono);font-size:9px;padding:4px 10px;border-radius:4px;border:1px solid rgba(232,70,30,0.3);background:rgba(232,70,30,0.08);color:var(--accent);cursor:pointer">Run All</button>
-        <button onclick="openTestHarness()" style="font-family:var(--mono);font-size:9px;padding:4px 8px;border-radius:4px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-muted);cursor:pointer">Close</button>
+        <button id="testRunAllBtn" onclick="runAllTests()" style="font-family:var(--mono);font-size:9px;padding:4px 10px;border-radius:4px;border:1px solid var(--accent-tint-7);background:var(--accent-tint-4);color:var(--accent);cursor:pointer">Run All</button>
+        <button onclick="openTestHarness()" style="font-family:var(--mono);font-size:9px;padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer">Close</button>
       </div>
     </div>
     <div id="testResults" style="flex:1;overflow:auto;padding:8px 12px"></div>
@@ -4923,10 +5126,10 @@ function openTestHarness() {
 function renderTestList() {
   const container = document.getElementById('testResults');
   container.innerHTML = TEST_SCENARIOS.map((t, i) => `
-    <div class="test-row" id="test-${i}" style="padding:8px 10px;margin-bottom:6px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:4px">
+    <div class="test-row" id="test-${i}" style="padding:8px 10px;margin-bottom:6px;background:var(--overlay-1);border:1px solid var(--overlay-3);border-radius:4px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:11px;font-weight:600;color:#fff">${t.name}</span>
-        <button onclick="runSingleTest(${i})" style="font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:3px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text-dim);cursor:pointer">Run</button>
+        <span style="font-size:11px;font-weight:600;color:var(--text)">${t.name}</span>
+        <button onclick="runSingleTest(${i})" style="font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:3px;border:1px solid var(--overlay-5);background:transparent;color:var(--text-dim);cursor:pointer">Run</button>
       </div>
       <div style="font-size:9px;color:var(--text-muted);font-style:italic;margin-bottom:2px">"${t.transcript.slice(0,90)}${t.transcript.length > 90 ? '...' : ''}"</div>
       <div style="font-family:var(--mono);font-size:8px;color:var(--text-muted)">
@@ -4938,14 +5141,14 @@ function renderTestList() {
 }
 
 async function runSingleTest(idx) {
-  if (!currentApiKey) { showToast('Set API key first'); return; }
+  if (!currentApiKey) { showToast('Set passphrase first'); return; }
   if (testRunning) return;
   testRunning = true;
   const t = TEST_SCENARIOS[idx];
   const statusEl = document.getElementById(`test-status-${idx}`);
   const rowEl = document.getElementById(`test-${idx}`);
   statusEl.innerHTML = '<span style="font-family:var(--mono);font-size:9px;color:var(--quote-accent)">Extracting...</span>';
-  rowEl.style.borderColor = 'rgba(244,181,111,0.3)';
+  rowEl.style.borderColor = 'var(--quote-tint-8)';
 
   try {
     // Step 1: Extract
@@ -4962,8 +5165,8 @@ async function runSingleTest(idx) {
     }
 
     if (ideas.length === 0) {
-      statusEl.innerHTML = '<span style="color:#ff5f5f;font-family:var(--mono);font-size:9px">No ideas extracted</span>';
-      rowEl.style.borderColor = 'rgba(255,95,95,0.3)';
+      statusEl.innerHTML = '<span style="color:var(--error);font-family:var(--mono);font-size:9px">No ideas extracted</span>';
+      rowEl.style.borderColor = 'var(--error-tint-3)';
       testRunning = false;
       return;
     }
@@ -4972,12 +5175,12 @@ async function runSingleTest(idx) {
     // Validate extraction
     const typeOk = (idea.componentType || '').toLowerCase() === t.expect.componentType;
     const actionOk = (idea.actionType || '').toLowerCase() === t.expect.actionType;
-    const color = (typeOk && actionOk) ? 'var(--success)' : '#ff5f5f';
-    rowEl.style.borderColor = (typeOk && actionOk) ? 'rgba(139,154,107,0.4)' : 'rgba(255,95,95,0.3)';
+    const color = (typeOk && actionOk) ? 'var(--success)' : 'var(--error)';
+    rowEl.style.borderColor = (typeOk && actionOk) ? 'var(--success-tint-7)' : 'var(--error-tint-3)';
 
     statusEl.innerHTML = `
-      <div style="font-family:var(--mono);font-size:8px;color:${typeOk ? 'var(--success)' : '#ff5f5f'}">type: ${idea.componentType} ${typeOk ? '✓' : '✗'}</div>
-      <div style="font-family:var(--mono);font-size:8px;color:${actionOk ? 'var(--success)' : '#ff5f5f'}">action: ${idea.actionType} ${actionOk ? '✓' : '✗'}</div>
+      <div style="font-family:var(--mono);font-size:8px;color:${typeOk ? 'var(--success)' : 'var(--error)'}">type: ${idea.componentType} ${typeOk ? '✓' : '✗'}</div>
+      <div style="font-family:var(--mono);font-size:8px;color:${actionOk ? 'var(--success)' : 'var(--error)'}">action: ${idea.actionType} ${actionOk ? '✓' : '✗'}</div>
       ${idea.targetElement ? `<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim)">target: ${idea.targetElement}</div>` : ''}
       <div style="font-family:var(--mono);font-size:9px;color:var(--quote-accent);margin-top:2px">Generating card...</div>
     `;
@@ -4991,14 +5194,14 @@ async function runSingleTest(idx) {
     statusEl.innerHTML = statusEl.innerHTML.replace('Generating card...', 'Card created — check kanban');
 
   } catch(e) {
-    statusEl.innerHTML = `<span style="color:#ff5f5f;font-family:var(--mono);font-size:9px">Error: ${e.message}</span>`;
-    rowEl.style.borderColor = 'rgba(255,95,95,0.3)';
+    statusEl.innerHTML = `<span style="color:var(--error);font-family:var(--mono);font-size:9px">Error: ${e.message}</span>`;
+    rowEl.style.borderColor = 'var(--error-tint-3)';
   }
   testRunning = false;
 }
 
 async function runAllTests() {
-  if (!currentApiKey) { showToast('Set API key first'); return; }
+  if (!currentApiKey) { showToast('Set passphrase first'); return; }
   if (testRunning) return;
   // Clear existing cards so tests don't dedup against each other
   cards = [];
@@ -5022,166 +5225,6 @@ document.addEventListener('keydown', e => {
   if (e.ctrlKey && e.shiftKey && e.key === 'T') { e.preventDefault(); openTestHarness(); }
 });
 
-// ── Demo Seed ──
-function loadDemo() {
-  if (cards.length > 0 && !confirm('This will replace your current session with demo data. Continue?')) return;
-
-  // Clear existing
-  localStorage.removeItem(STORAGE_KEY);
-  cards = []; approvedSections = []; transcriptChunks = [];
-  transcriptBuffer = ''; lastSentBuffer = '';
-  ['colNotStarted','colInProgress','colReview','colDone','colArchive'].forEach(id => {
-    document.getElementById(id).innerHTML = '';
-  });
-  document.getElementById('transcriptFeed').innerHTML = '';
-
-  // Demo transcript chunks
-  const demoTranscript = [
-    { time: '9:02 AM', text: 'Okay so looking at this dashboard, the metrics cards at the top feel too heavy. The numbers are fine but the labels underneath are getting lost.' },
-    { time: '9:02 AM', text: 'We need a status badge component, like a little green dot with text that says active or pending. Something really compact.' },
-    { time: '9:03 AM', text: 'The onboarding flow needs a progress stepper. Horizontal, four steps, with the current step highlighted in the accent color.' },
-    { time: '9:03 AM', text: 'I keep seeing this pattern where we need an empty state. Just a simple illustration placeholder, a heading, a description, and a CTA button.' },
-    { time: '9:04 AM', text: 'For the settings page, we need a toggle row component. Label on the left, description underneath, toggle on the right. Should handle the disabled state too.' },
-    { time: '9:05 AM', text: 'One more thing. The notification cards need a timestamp and an unread indicator. Small accent dot on the left edge.' },
-  ];
-
-  // Show transcript
-  document.getElementById('transcriptEmpty').style.display = 'none';
-  const feed = document.getElementById('transcriptFeed');
-  transcriptChunks = demoTranscript;
-  demoTranscript.forEach((ch, i) => {
-    const el = document.createElement('div');
-    el.className = 't-chunk extracted';
-    el.dataset.chunkIdx = i;
-    el.innerHTML = `<span class="t-time">${esc(ch.time)}</span><span class="t-text">${esc(ch.text)}</span><span class="t-extracted-tag">captured</span><button class="t-extract-btn" onclick="event.stopPropagation();extractChunk(${i})">+ Capture</button>`;
-    feed.appendChild(el);
-  });
-
-  // Demo cards with inline-generated thumbnails
-  const demoCards = [
-    {
-      id: 'demo-1', title: 'Status Badge', quote: 'We need a status badge component, like a little green dot with text.',
-      description: 'Compact status indicator with colored dot and label',
-      componentType: 'Badge', column: 'done', isNewPattern: true,
-      html: `<div style="display:flex;gap:12px;align-items:center;padding:24px;background:#0c0e12;font-family:Outfit,sans-serif">
-        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06)">
-          <span style="width:6px;height:6px;border-radius:50%;background:#8B9A6B"></span>
-          <span style="font-size:12px;font-weight:500;color:#ffffff">Active</span>
-        </span>
-        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06)">
-          <span style="width:6px;height:6px;border-radius:50%;background:#F4B56F"></span>
-          <span style="font-size:12px;font-weight:500;color:#ffffff">Pending</span>
-        </span>
-        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06)">
-          <span style="width:6px;height:6px;border-radius:50%;background:#6b6e76"></span>
-          <span style="font-size:12px;font-weight:500;color:#9a9ca2">Inactive</span>
-        </span>
-      </div>`
-    },
-    {
-      id: 'demo-2', title: 'Progress Stepper', quote: 'Horizontal, four steps, with the current step highlighted in the accent color.',
-      description: 'Horizontal step indicator for onboarding flows',
-      componentType: 'Navigation', column: 'review',
-      html: `<div style="padding:32px 24px;background:#0c0e12;font-family:Outfit,sans-serif">
-        <div style="display:flex;align-items:center;gap:0">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:#e8461e;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff">1</div>
-            <span style="font-size:11px;color:#ffffff;font-weight:500">Account</span>
-          </div>
-          <div style="flex:1;height:2px;background:#e8461e;margin-top:-20px"></div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:#e8461e;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff">2</div>
-            <span style="font-size:11px;color:#ffffff;font-weight:500">Business</span>
-          </div>
-          <div style="flex:1;height:2px;background:rgba(255,255,255,0.06);margin-top:-20px"></div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:#22252c;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#6b6e76">3</div>
-            <span style="font-size:11px;color:#6b6e76">Plan</span>
-          </div>
-          <div style="flex:1;height:2px;background:rgba(255,255,255,0.06);margin-top:-20px"></div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:#22252c;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#6b6e76">4</div>
-            <span style="font-size:11px;color:#6b6e76">Review</span>
-          </div>
-        </div>
-      </div>`
-    },
-    {
-      id: 'demo-3', title: 'Empty State', quote: 'A simple illustration placeholder, a heading, a description, and a CTA button.',
-      description: 'Reusable empty state for pages with no content yet',
-      componentType: 'Layout', column: 'in-progress', isNewPattern: true,
-      html: `<div style="padding:48px 24px;background:#0c0e12;font-family:Outfit,sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">
-        <div style="width:64px;height:64px;border-radius:4px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b6e76" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-        </div>
-        <div style="font-size:18px;font-weight:800;color:#ffffff">No projects yet</div>
-        <div style="font-size:14px;color:#9a9ca2;max-width:280px;line-height:1.6">Create your first project to get started. It only takes a few minutes.</div>
-        <button style="margin-top:8px;padding:10px 24px;border-radius:4px;background:#e8461e;border:none;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer">Create Project</button>
-      </div>`
-    },
-    {
-      id: 'demo-4', title: 'Toggle Row', quote: 'Label on the left, description underneath, toggle on the right.',
-      description: 'Settings toggle with label, description, and switch',
-      componentType: 'Input', column: 'not-started',
-      html: `<div style="padding:20px;background:#0c0e12;font-family:Outfit,sans-serif;display:flex;flex-direction:column;gap:1px">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06);border-radius:4px 4px 0 0">
-          <div><div style="font-size:14px;font-weight:500;color:#ffffff">Email Notifications</div><div style="font-size:12px;color:#9a9ca2;margin-top:2px">Receive updates about your account</div></div>
-          <div style="width:40px;height:22px;border-radius:11px;background:#e8461e;position:relative;cursor:pointer"><div style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px"></div></div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06);border-radius:0 0 4px 4px">
-          <div><div style="font-size:14px;font-weight:500;color:#ffffff">SMS Alerts</div><div style="font-size:12px;color:#9a9ca2;margin-top:2px">Get text messages for critical updates</div></div>
-          <div style="width:40px;height:22px;border-radius:11px;background:#22252c;border:1px solid rgba(255,255,255,0.06);position:relative;cursor:pointer"><div style="width:18px;height:18px;border-radius:50%;background:#6b6e76;position:absolute;top:2px;left:2px"></div></div>
-        </div>
-      </div>`
-    },
-    {
-      id: 'demo-5', title: 'Notification Card', quote: 'Notification cards need a timestamp and an unread indicator. Small accent dot.',
-      description: 'Notification list item with unread dot and timestamp',
-      componentType: 'Card', column: 'not-started',
-      html: `<div style="padding:16px;background:#0c0e12;font-family:Outfit,sans-serif;display:flex;flex-direction:column;gap:2px">
-        <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06);border-radius:4px">
-          <div style="width:8px;height:8px;border-radius:50%;background:#e8461e;margin-top:6px;flex-shrink:0"></div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#ffffff">Your LLC formation is complete</div><div style="font-size:12px;color:#9a9ca2;margin-top:4px;line-height:1.5">Your documents are ready for download. Check your dashboard for next steps.</div></div>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b6e76;white-space:nowrap;margin-top:2px">2m ago</span>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#1a1d24;border:1px solid rgba(255,255,255,0.06);border-radius:4px;opacity:0.7">
-          <div style="width:8px;height:8px;border-radius:50%;background:transparent;margin-top:6px;flex-shrink:0"></div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#9a9ca2">Annual report reminder</div><div style="font-size:12px;color:#6b6e76;margin-top:4px;line-height:1.5">Your annual report is due in 30 days.</div></div>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b6e76;white-space:nowrap;margin-top:2px">1h ago</span>
-        </div>
-      </div>`
-    }
-  ];
-
-  const now = new Date();
-  demoCards.forEach((dc, i) => {
-    const card = {
-      id: dc.id, title: dc.title, quote: dc.quote, description: dc.description,
-      componentType: dc.componentType, column: dc.column,
-      timestamp: new Date(now.getTime() - (demoCards.length - i) * 45000),
-      thumbnail: null, html: dc.html, isNewPattern: dc.isNewPattern || false,
-      variations: [{ html: dc.html, thumbnail: null }], selectedVariation: 0
-    };
-    cards.push(card);
-    renderCard(card, true);
-
-    // Generate thumbnails async
-    renderAndCapture(dc.html).then(thumb => {
-      if (thumb) {
-        card.thumbnail = thumb;
-        card.variations[0].thumbnail = thumb;
-        updateCardThumb(card.id, thumb, 1);
-      }
-    });
-  });
-
-  updateCounts();
-  saveSession();
-  showToast('Demo loaded: 5 cards across the pipeline');
-
-  // Switch to tasks view to show the kanban
-  switchView('tasks');
-}
 </script>
 </body>
 </html>
