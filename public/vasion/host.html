@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="robots" content="noindex"/>
+<title>Host — Vasion CYOA</title>
+<link rel="icon" href="/favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0c0e12;--bg-card:#16181f;--bg-elevated:#1f2229;
+    --text:#fff;--text-dim:#9a9ca2;--text-muted:#6b6e76;
+    --border:rgba(255,255,255,0.08);--accent:#E8843F;--cyoa-red:#c8202b;
+  }
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;padding:max(env(safe-area-inset-top),1.5rem) 1.5rem calc(env(safe-area-inset-bottom) + 1.5rem);}
+  .wrap{max-width:760px;margin:0 auto;}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.75rem;flex-wrap:wrap;}
+  .lbl{font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);}
+  .total{font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);}
+  .total b{color:var(--accent);font-size:1.05rem;}
+  h1{font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.35rem;}
+  .leader{font-family:'JetBrains Mono',monospace;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:2rem;}
+  .leader b{color:var(--accent);}
+  .rows{display:flex;flex-direction:column;gap:1.1rem;}
+  .row{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.25rem;transition:border-color .2s ease;}
+  .row.win{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+  .row-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.6rem;}
+  .row-name{font-size:1.25rem;font-weight:700;}
+  .row-name .tag{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-left:0.6rem;}
+  .row-count{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:600;color:var(--accent);}
+  .bar{height:10px;border-radius:6px;background:var(--bg-elevated);overflow:hidden;}
+  .bar > i{display:block;height:100%;width:0;background:var(--accent);border-radius:6px;transition:width .5s ease;}
+  .actions{display:flex;gap:0.85rem;margin-top:2rem;flex-wrap:wrap;}
+  button{font-family:inherit;cursor:pointer;border-radius:10px;padding:0.85rem 1.25rem;font-size:0.9rem;font-weight:600;border:1px solid var(--border);background:var(--bg-card);color:var(--text);-webkit-tap-highlight-color:transparent;}
+  button:active{transform:scale(0.98);}
+  button.danger{border-color:rgba(200,32,43,0.5);color:#ff8a8a;}
+  .conn{font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-top:1.75rem;}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3ec46d;margin-right:0.5rem;vertical-align:middle;}
+  .dot.off{background:#c8202b;}
+  .hint{color:var(--text-muted);font-size:0.85rem;line-height:1.5;margin-top:0.5rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="lbl">Vasion · Choose Your Own Adventure · Host</span>
+    <span class="total">Votes <b id="total">0</b></span>
+  </div>
+  <h1>Where the room wants to go</h1>
+  <div class="leader">Leading: <b id="leader">—</b></div>
+
+  <div class="rows" id="rows"></div>
+
+  <div class="actions">
+    <button id="reset" class="danger">Reset round</button>
+    <button id="pollToggle">Pause</button>
+  </div>
+
+  <div class="conn"><span class="dot" id="dot"></span><span id="connText">Connecting…</span></div>
+  <div class="hint">Clicker is canonical — this is just a glance. If the network is down, ignore this and present the path you choose.</div>
+</div>
+
+<script>
+(function(){
+  var SESSION='live';
+  var DEST=[
+    { leaf:'appointments', name:'Appointments',  tag:'$10M gap → shipped' },
+    { leaf:'workshop',     name:'The Workshop',  tag:'AI tooling / Design Capture' },
+    { leaf:'designsystem', name:'Design System', tag:'3 products → 1 system' }
+  ];
+  var rowsEl=document.getElementById('rows');
+  var nodes={};
+  DEST.forEach(function(d){
+    var row=document.createElement('div'); row.className='row'; row.id='row-'+d.leaf;
+    row.innerHTML='<div class="row-top"><div class="row-name">'+d.name+'<span class="tag">'+d.tag+'</span></div><div class="row-count" id="c-'+d.leaf+'">0</div></div><div class="bar"><i id="b-'+d.leaf+'"></i></div>';
+    rowsEl.appendChild(row); nodes[d.leaf]=row;
+  });
+
+  var polling=true, timer=null;
+  function setConn(ok,msg){
+    document.getElementById('dot').className='dot'+(ok?'':' off');
+    document.getElementById('connText').textContent=msg;
+  }
+
+  function gj(url){
+    var ctrl=new AbortController(); var t=setTimeout(function(){ctrl.abort();},4500);
+    return fetch(url,{signal:ctrl.signal}).then(function(r){clearTimeout(t);return r.json();});
+  }
+
+  function refresh(){
+    gj('/api/storage?action=list&prefix=' + encodeURIComponent('vasion:vote:'+SESSION+':'))
+      .then(function(d){
+        var keys=(d && d.keys) || [];
+        if(!keys.length){ render({appointments:0,workshop:0,designsystem:0},0); setConn(true,'Live · no votes yet'); return; }
+        return Promise.all(keys.map(function(k){
+          return gj('/api/storage?action=get&key='+encodeURIComponent(k)).then(function(v){return v&&v.value;}).catch(function(){return null;});
+        })).then(function(vals){
+          var tally={appointments:0,workshop:0,designsystem:0};
+          vals.forEach(function(v){ if(v&&v.leaf&&tally.hasOwnProperty(v.leaf)) tally[v.leaf]++; });
+          render(tally, vals.filter(Boolean).length);
+          setConn(true,'Live');
+        });
+      })
+      .catch(function(){ setConn(false,'Offline — use the clicker'); });
+  }
+
+  function render(tally,total){
+    document.getElementById('total').textContent=total;
+    var max=Math.max(tally.appointments,tally.workshop,tally.designsystem,0);
+    var leadLeaf=null;
+    DEST.forEach(function(d){
+      var n=tally[d.leaf]||0;
+      document.getElementById('c-'+d.leaf).textContent=n;
+      document.getElementById('b-'+d.leaf).style.width=(total>0?Math.round(n/total*100):0)+'%';
+      var win = max>0 && n===max;
+      nodes[d.leaf].classList.toggle('win', win);
+      if(win && leadLeaf===null) leadLeaf=d.name;
+    });
+    var ties=DEST.filter(function(d){return (tally[d.leaf]||0)===max && max>0;});
+    document.getElementById('leader').textContent = max===0 ? '—' : (ties.length>1 ? 'Tie — your call' : leadLeaf);
+  }
+
+  function loop(){ if(!polling) return; refresh(); timer=setTimeout(loop,2000); }
+  loop();
+
+  document.getElementById('pollToggle').addEventListener('click',function(){
+    polling=!polling; this.textContent=polling?'Pause':'Resume';
+    if(polling) loop(); else { clearTimeout(timer); setConn(true,'Paused'); }
+  });
+
+  document.getElementById('reset').addEventListener('click',function(){
+    if(!confirm('Clear all votes for this round?')) return;
+    setConn(true,'Resetting…');
+    gj('/api/storage?action=list&prefix='+encodeURIComponent('vasion:vote:'+SESSION+':'))
+      .then(function(d){
+        var keys=(d&&d.keys)||[];
+        return Promise.all(keys.map(function(k){
+          return fetch('/api/storage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',key:k})}).catch(function(){});
+        }));
+      })
+      .then(function(){ render({appointments:0,workshop:0,designsystem:0},0); setConn(true,'Round reset'); })
+      .catch(function(){ setConn(false,'Reset failed — use the clicker'); });
+  });
+})();
+</script>
+</body>
+</html>

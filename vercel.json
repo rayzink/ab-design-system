@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/vasion", "destination": "/vasion/index.html" },
+    { "source": "/vasion/choose", "destination": "/vasion/choose.html" },
+    { "source": "/vasion/host", "destination": "/vasion/host.html" }
+  ]
+}

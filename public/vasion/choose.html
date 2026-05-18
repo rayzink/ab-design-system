@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="robots" content="noindex"/>
+<title>Choose Your Own Adventure — Adam Blair</title>
+<link rel="icon" href="/favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0c0e12;--bg-card:#16181f;--bg-elevated:#1f2229;
+    --text:#ffffff;--text-dim:#9a9ca2;--text-muted:#6b6e76;
+    --border:rgba(255,255,255,0.08);
+    --cyoa-red:#c8202b;--accent:#E8843F;
+  }
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Outfit',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100dvh;display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) 1.25rem calc(env(safe-area-inset-bottom) + 1.25rem);
+  }
+  .wrap{flex:1;display:flex;flex-direction:column;max-width:540px;width:100%;margin:0 auto;}
+  header{padding:1.5rem 0 0.5rem;text-align:center;}
+  .badge{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    background:var(--cyoa-red);color:#fff;
+    font-family:'Outfit',sans-serif;font-weight:800;
+    font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
+    padding:0.5rem 0.95rem;border-radius:7px;
+  }
+  .badge .star{width:1.1rem;height:1.1rem;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--cyoa-red);border-radius:50%;font-size:0.7rem;line-height:1;}
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.5rem 0;}
+  .step{display:none;animation:fade .35s ease both;}
+  .step.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.85rem;}
+  h1{font-size:clamp(1.6rem,6.5vw,2.2rem);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1.75rem;}
+  .opts{display:flex;flex-direction:column;gap:0.9rem;}
+  button.opt{
+    width:100%;text-align:left;cursor:pointer;
+    background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+    padding:1.25rem 1.3rem;color:var(--text);
+    font-family:inherit;transition:transform .12s ease,border-color .12s ease,background .12s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  button.opt:active{transform:scale(0.98);}
+  button.opt:hover{border-color:rgba(255,255,255,0.22);background:var(--bg-elevated);}
+  .opt-title{font-size:1.2rem;font-weight:700;margin-bottom:0.3rem;}
+  .opt-sub{font-size:0.95rem;color:var(--text-dim);line-height:1.4;}
+  .back{margin-top:1.5rem;background:none;border:none;color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;padding:0.5rem 0;}
+  /* confirmation */
+  #done{text-align:center;}
+  #done .check{width:64px;height:64px;border-radius:50%;background:rgba(232,132,63,0.14);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.5rem;}
+  #done h1{font-size:clamp(1.5rem,6vw,2rem);margin-bottom:0.75rem;}
+  #done .dest{color:var(--accent);}
+  #done p{color:var(--text-dim);font-size:1.05rem;line-height:1.5;max-width:24rem;margin:0 auto 2rem;}
+  #done .status{font-family:'JetBrains Mono',monospace;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);}
+  footer{text-align:center;padding-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge"><span class="star">&starf;</span>Choose Your Own Adventure</span>
+  </header>
+
+  <main>
+    <!-- Q1 -->
+    <section class="step active" id="q1">
+      <div class="kicker">Your move</div>
+      <h1>What do you want to see more of?</h1>
+      <div class="opts">
+        <button class="opt" data-next="work">
+          <div class="opt-title">Professional work</div>
+          <div class="opt-sub">A shipped product or the system underneath it.</div>
+        </button>
+        <button class="opt" data-leaf="workshop">
+          <div class="opt-title">Something more personal</div>
+          <div class="opt-sub">How I actually work — the AI tooling I build for myself.</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Q2 (work only) -->
+    <section class="step" id="q2">
+      <div class="kicker">One more</div>
+      <h1>Which pull is stronger?</h1>
+      <div class="opts">
+        <button class="opt" data-leaf="appointments">
+          <div class="opt-title">The shipped outcome</div>
+          <div class="opt-sub">A $10M gap turned into a launched product.</div>
+        </button>
+        <button class="opt" data-leaf="designsystem">
+          <div class="opt-title">The system underneath</div>
+          <div class="opt-sub">Three products unified into one design system.</div>
+        </button>
+      </div>
+      <button class="back" id="back">&larr; Back</button>
+    </section>
+
+    <!-- Confirmation -->
+    <section class="step" id="done">
+      <div class="check">&#10003;</div>
+      <h1>Locked in.<br>You picked <span class="dest" id="destName">—</span>.</h1>
+      <p id="destBlurb"></p>
+      <div class="status" id="statusLine">The room is deciding&hellip;</div>
+      <button class="back" id="change">&larr; Change my pick</button>
+    </section>
+  </main>
+
+  <footer>adamblair.design &middot; designed like I design products</footer>
+</div>
+
+<script>
+(function(){
+  var SESSION = 'live';
+  var DEST = {
+    workshop:     { name: 'The Workshop',  blurb: 'The Design Capture pipeline and the AI demos I build for myself.' },
+    appointments: { name: 'Appointments',  blurb: 'How I turned a $10M gap into a shipped product.' },
+    designsystem: { name: 'Design System', blurb: 'Unifying three SalesRabbit products into one system.' }
+  };
+
+  // stable per-device id so re-votes overwrite instead of stacking
+  var dev;
+  try {
+    dev = localStorage.getItem('vasion_dev');
+    if (!dev) { dev = (Date.now().toString(36) + Math.random().toString(36).slice(2,8)); localStorage.setItem('vasion_dev', dev); }
+  } catch(e) { dev = (Date.now().toString(36) + Math.random().toString(36).slice(2,8)); }
+
+  var steps = { q1: el('q1'), q2: el('q2'), done: el('done') };
+  var choice = { q1:null, q2:null, leaf:null };
+
+  function el(id){ return document.getElementById(id); }
+  function show(name){
+    Object.keys(steps).forEach(function(k){ steps[k].classList.toggle('active', k===name); });
+    window.scrollTo(0,0);
+  }
+
+  function submit(leaf){
+    choice.leaf = leaf;
+    var d = DEST[leaf];
+    el('destName').textContent = d.name;
+    el('destBlurb').textContent = d.blurb;
+    el('statusLine').textContent = 'The room is deciding…';
+    show('done');
+    sendVote(leaf);
+  }
+
+  function sendVote(leaf){
+    var payload = {
+      action: 'set',
+      key: 'vasion:vote:' + SESSION + ':' + dev,
+      value: { leaf: leaf, q1: choice.q1, q2: choice.q2, ts: new Date().toISOString() }
+    };
+    var ctrl = new AbortController();
+    var t = setTimeout(function(){ ctrl.abort(); }, 4500);
+    fetch('/api/storage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal
+    }).then(function(r){
+      clearTimeout(t);
+      el('statusLine').textContent = r && r.ok ? 'Your pick is in. The room is deciding…' : 'Your pick is in.';
+    }).catch(function(){
+      clearTimeout(t);
+      // never hard-fail on stage — the clicker path is canonical
+      el('statusLine').textContent = 'Your pick is in.';
+    });
+  }
+
+  // Q1
+  Array.prototype.forEach.call(steps.q1.querySelectorAll('button.opt'), function(b){
+    b.addEventListener('click', function(){
+      if (b.dataset.leaf) { choice.q1='personal'; submit(b.dataset.leaf); }
+      else { choice.q1='work'; show('q2'); }
+    });
+  });
+  // Q2
+  Array.prototype.forEach.call(steps.q2.querySelectorAll('button.opt'), function(b){
+    b.addEventListener('click', function(){ choice.q2 = b.dataset.leaf; submit(b.dataset.leaf); });
+  });
+  el('back').addEventListener('click', function(){ show('q1'); });
+  el('change').addEventListener('click', function(){ choice={q1:null,q2:null,leaf:null}; show('q1'); });
+})();
+</script>
+</body>
+</html>
