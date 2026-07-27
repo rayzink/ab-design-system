@@ -29,3 +29,6 @@ dist-ssr
 
 # Large media (use CDN or LFS for these)
 public/videos
+
+# Local-only pages (not deployed, not pushed to remote)
+local-only
